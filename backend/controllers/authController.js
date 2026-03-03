@@ -8,7 +8,7 @@ const User = require("../models/user");
 const generateToken = (user) =>
   jwt.sign(
     { id: user._id, email: user.email, userType: user.userType },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || "fallback_secret_for_render_12345",
     { expiresIn: "30d" }
   );
 
@@ -56,7 +56,7 @@ exports.signup = [
       });
     } catch (err) {
       console.error("Signup error:", err);
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: "Internal server error", error: err.message });
     }
   },
 ];
@@ -100,7 +100,7 @@ exports.login = async (req, res) => {
     });
   } catch (err) {
     console.error("Login error:", err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error: err.message });
   }
 };
 

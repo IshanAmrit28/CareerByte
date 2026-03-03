@@ -27,7 +27,7 @@ const Login = () => {
     } catch (err) {
       console.error("Login error:", err);
       setError(
-        err.response?.data?.message || "Invalid credentials. Please try again."
+        err.response?.data?.error || err.response?.data?.message || "Invalid credentials. Please try again."
       );
     }
   };
