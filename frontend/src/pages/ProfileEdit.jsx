@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { User, Mail, Save, ArrowLeft, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL as BASE_URL } from '../constants';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = `${BASE_URL}/api`;
 
 const ProfileEdit = () => {
   const { user, login } = useAuth(); // We might need to refresh user context after edit

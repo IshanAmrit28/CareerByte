@@ -7,8 +7,9 @@ import 'react-calendar-heatmap/dist/styles.css';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import './UserDashboard.css';
+import { API_BASE_URL as BASE_URL } from '../constants';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = `${BASE_URL}/api`;
 
 const PublicProfile = () => {
   const { id } = useParams();

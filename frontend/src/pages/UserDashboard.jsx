@@ -21,10 +21,10 @@ import ProgressGraph from '../components/ProgressGraph';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
-// Add custom CSS for the heatmap to match the dark theme
 import './UserDashboard.css';
+import { API_BASE_URL as BASE_URL } from '../constants';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = `${BASE_URL}/api`;
 
 const UserDashboard = () => {
   const { user, loading: authLoading } = useAuth();
