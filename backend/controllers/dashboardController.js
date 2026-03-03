@@ -62,15 +62,13 @@ const getGlobalRankings = async () => {
     for (const group of uniqueCandidates) {
         // Fetch reports matching any instance of this linked email
         const reports = await Report.find({ candidateId: { $in: group.candidateIds } });
-        if (reports && reports.length > 0) {
-            const rating = computeUserRating(reports);
-            rankings.push({
-                userId: group.userId, // Return primary candidate ID
-                userName: group.userName,
-                email: group.email,    // Send email to match strictly on frontend
-                rating: rating
-            });
-        }
+        const rating = computeUserRating(reports);
+        rankings.push({
+            userId: group.userId, // Return primary candidate ID
+            userName: group.userName,
+            email: group.email,    // Send email to match strictly on frontend
+            rating: rating
+        });
     }
 
     // Sort descending
