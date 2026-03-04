@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { User, LogOut } from "lucide-react";
-import "./Navbar.css";
+import "../Navbar.css"; // Reuse the styling but completely isolate the structure
 
-function Navbar() {
+function RecruiterNavbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logoutUser } = useAuth();
@@ -25,14 +25,8 @@ function Navbar() {
   const isActive = (path) => (location.pathname === path ? "active" : "");
 
   const navItems = [
-    { name: "Dashboard", path: "/dashboard" },
-    { name: "Jobs", path: "/jobs" },
-    { name: "AI Chat", path: "/chat" },
-    { name: "Interview", path: "/practice" },
-    { name: "Roadmap", path: "/roadmap" },
-    { name: "Video Feed", path: "/video-feed" },
-    { name: "Notes", path: "/notes" },
-    { name: "Quiz", path: "/quiz" },
+    { name: "Companies", path: "/recruiter/companies" },
+    { name: "Manage Jobs", path: "/recruiter/jobs" }
   ];
 
   return (
@@ -40,8 +34,8 @@ function Navbar() {
       <div className="navbar-container">
         
         {/* Brand Logo - Text Only */}
-        <Link to="/" className="navbar-brand">
-          InterVerse
+        <Link to="/recruiter/companies" className="navbar-brand">
+          InterVerse Recruiter
         </Link>
 
         {/* Global Navigation Links */}
@@ -72,21 +66,10 @@ function Navbar() {
           {isProfileOpen && (
             <div className="profile-dropdown">
               <div className="profile-dropdown-header">
-                <span className="profile-dropdown-name">{user?.userName || "Guest"}</span>
+                <span className="profile-dropdown-name">{user?.userName || "Recruiter"}</span>
                 <span className="profile-dropdown-email">{user?.email || ""}</span>
               </div>
               <div className="profile-dropdown-divider"></div>
-              
-              <button 
-                className="profile-dropdown-item"
-                onClick={() => {
-                  setIsProfileOpen(false);
-                  navigate("/profile");
-                }}
-              >
-                <User className="w-4 h-4" />
-                <span>Profile</span>
-              </button>
               
               <button 
                 className="profile-dropdown-item text-red-400 hover:text-red-300 hover:bg-red-500/10"
@@ -108,4 +91,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default RecruiterNavbar;
