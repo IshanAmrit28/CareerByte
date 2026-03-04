@@ -38,6 +38,17 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminSignup from "./pages/AdminSignup";
 import AdminDashboard from "./pages/AdminDashboard";
 
+// Job Board Imports
+import Jobs from './components/Jobs';
+import JobDescription from './components/JobDescription';
+import Companies from './components/recruiter/Companies';
+import CompanyCreate from './components/recruiter/CompanyCreate';
+import CompanySetup from './components/recruiter/CompanySetup';
+import AdminJobs from "./components/recruiter/RecruiterJobs";
+import PostJob from './components/recruiter/PostJob';
+import Applicants from './components/recruiter/Applicants';
+import JobboardProtectedRoute from './components/recruiter/ProtectedRoute';
+
 import "./Appmain.css";
 
 function AppContent() {
@@ -106,7 +117,17 @@ function AppContent() {
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/signup" element={<AdminSignup />} />
-            <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["super_admin"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+            
+            {/* Job Board Routes */}
+            <Route path="/jobs" element={<Jobs />} />
+            <Route path="/description/:id" element={<JobDescription />} />
+            <Route path="/admin/companies" element={<JobboardProtectedRoute><Companies/></JobboardProtectedRoute>} />
+            <Route path="/admin/companies/create" element={<JobboardProtectedRoute><CompanyCreate/></JobboardProtectedRoute>} />
+            <Route path="/admin/companies/:id" element={<JobboardProtectedRoute><CompanySetup/></JobboardProtectedRoute>} />
+            <Route path="/admin/jobs" element={<JobboardProtectedRoute><AdminJobs/></JobboardProtectedRoute>} />
+            <Route path="/admin/jobs/create" element={<JobboardProtectedRoute><PostJob/></JobboardProtectedRoute>} />
+            <Route path="/admin/jobs/:id/applicants" element={<JobboardProtectedRoute><Applicants/></JobboardProtectedRoute>} />
           </Routes>
         </main>
       </div>

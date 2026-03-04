@@ -16,6 +16,12 @@ userRouter.post("/logout", authController.logout);
 
 // Update route (Private)
 const { protect } = require("../middleware/authMiddleware");
-userRouter.put("/update", protect, authController.updateProfile);
+const { singleUpload } = require("../middleware/multer");
+
+userRouter.put("/update", protect, singleUpload, authController.updateProfile);
+
+// Job board routes
+userRouter.post("/register", singleUpload, authController.register);
+userRouter.post("/profile/update", protect, singleUpload, authController.updateProfile);
 
 module.exports = userRouter;

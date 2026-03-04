@@ -1,30 +1,45 @@
 import { useState, useEffect } from 'react'
 import { Plus, Briefcase, Calendar, MapPin, DollarSign, Trash2, Edit2, Filter } from 'lucide-react'
+import axios from 'axios'
+import { API_BASE_URL } from '../constants'
 
 import Button from '../components/Button'
 import './JobTracker.css'
 
 function JobTracker() {
-    const [jobs, setJobs] = useState(() => {
-        const saved = localStorage.getItem('job_applications')
-        return saved ? JSON.parse(saved) : []
-    })
+    const [jobs, setJobs] = useState([])
+    const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [editingJob, setEditingJob] = useState(null)
     const [filterStatus, setFilterStatus] = useState('all')
     const [formData, setFormData] = useState({
-        company: '',
-        position: '',
+        companyName: '',
+        roleTitle: '',
         location: '',
         salary: '',
         status: 'Applied',
-        appliedDate: new Date().toISOString().split('T')[0],
+        dateApplied: new Date().toISOString().split('T')[0],
+        link: '',
         notes: ''
     })
 
+    const fetchJobs = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const res = await axios.get(`${API_BASE_URL}/api/v1/job-tracker`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            setJobs(res.data)
+        } catch (error) {
+            console.error("Failed to fetch jobs", error)
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
-        localStorage.setItem('job_applications', JSON.stringify(jobs))
-    }, [jobs])
+        fetchJobs()
+    }, [])
 
     const statuses = ['Applied', 'Interview Scheduled', 'Interview Completed', 'Offer', 'Rejected']
     const statusColors = {
@@ -35,33 +50,52 @@ function JobTracker() {
         'Rejected': '#f5576c'
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        if (editingJob) {
-            setJobs(jobs.map(job => job.id === editingJob.id ? { ...formData, id: job.id } : job))
-        } else {
-            setJobs([...jobs, { ...formData, id: Date.now() }])
+        try {
+            const token = localStorage.getItem('token')
+            const headers = { Authorization: `Bearer ${token}` }
+            if (editingJob) {
+                const res = await axios.put(`${API_BASE_URL}/api/v1/job-tracker/${editingJob._id}`, formData, { headers })
+                setJobs(jobs.map(job => job._id === editingJob._id ? res.data : job))
+            } else {
+                const res = await axios.post(`${API_BASE_URL}/api/v1/job-tracker`, formData, { headers })
+                setJobs([res.data, ...jobs])
+            }
+            resetForm()
+        } catch (err) {
+            console.error("Failed to save job application", err)
+            alert("Error saving job application")
         }
-        resetForm()
     }
 
     const resetForm = () => {
         setFormData({
-            company: '',
-            position: '',
+            companyName: '',
+            roleTitle: '',
             location: '',
             salary: '',
             status: 'Applied',
-            appliedDate: new Date().toISOString().split('T')[0],
+            dateApplied: new Date().toISOString().split('T')[0],
+            link: '',
             notes: ''
         })
         setEditingJob(null)
         setShowModal(false)
     }
 
-    const deleteJob = (id) => {
+    const deleteJob = async (id) => {
         if (confirm('Are you sure you want to delete this application?')) {
-            setJobs(jobs.filter(job => job.id !== id))
+            try {
+                const token = localStorage.getItem('token')
+                await axios.delete(`${API_BASE_URL}/api/v1/job-tracker/${id}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+                setJobs(jobs.filter(job => job._id !== id))
+            } catch (err) {
+                console.error("Failed to delete job", err)
+                alert("Failed to delete application")
+            }
         }
     }
 
@@ -140,11 +174,11 @@ function JobTracker() {
                     </div>
                 ) : (
                     filteredJobs.map(job => (
-                        <div key={job.id} className="job-card">
+                        <div key={job._id} className="job-card">
                             <div className="job-card-header">
                                 <div>
-                                    <h3>{job.position}</h3>
-                                    <p className="company-name">{job.company}</p>
+                                    <h3>{job.roleTitle}</h3>
+                                    <p className="company-name">{job.companyName}</p>
                                 </div>
                                 <span
                                     className="status-badge"
@@ -168,7 +202,7 @@ function JobTracker() {
                                 )}
                                 <div className="detail-item">
                                     <Calendar size={14} />
-                                    <span>Applied: {new Date(job.appliedDate).toLocaleDateString()}</span>
+                                    <span>Applied: {new Date(job.dateApplied).toLocaleDateString()}</span>
                                 </div>
                             </div>
                             {job.notes && (
@@ -180,7 +214,7 @@ function JobTracker() {
                                 <button className="action-btn" onClick={() => editJob(job)}>
                                     <Edit2 size={16} /> Edit
                                 </button>
-                                <button className="action-btn delete" onClick={() => deleteJob(job.id)}>
+                                <button className="action-btn delete" onClick={() => deleteJob(job._id)}>
                                     <Trash2 size={16} /> Delete
                                 </button>
                             </div>
@@ -201,8 +235,8 @@ function JobTracker() {
                                     <input
                                         type="text"
                                         required
-                                        value={formData.company}
-                                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                                        value={formData.companyName}
+                                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -210,8 +244,8 @@ function JobTracker() {
                                     <input
                                         type="text"
                                         required
-                                        value={formData.position}
-                                        onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                                        value={formData.roleTitle}
+                                        onChange={(e) => setFormData({ ...formData, roleTitle: e.target.value })}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -247,8 +281,8 @@ function JobTracker() {
                                     <input
                                         type="date"
                                         required
-                                        value={formData.appliedDate}
-                                        onChange={(e) => setFormData({ ...formData, appliedDate: e.target.value })}
+                                        value={formData.dateApplied}
+                                        onChange={(e) => setFormData({ ...formData, dateApplied: e.target.value })}
                                     />
                                 </div>
                             </div>
@@ -262,7 +296,7 @@ function JobTracker() {
                                 />
                             </div>
                             <div className="modal-actions">
-                                <Button type="submit" variant="primary">
+                                <Button type="submit" variant="primary" onClick={() => {}}>
                                     {editingJob ? 'Update' : 'Add'} Application
                                 </Button>
                                 <Button type="button" variant="ghost" onClick={resetForm}>

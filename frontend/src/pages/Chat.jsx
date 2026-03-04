@@ -93,7 +93,7 @@ function Chat() {
       const context = getContext(userMessage.text);
 
       // Call backend API instead of Gemini directly
-      const response = await fetch(`${FRONTEND_API_BASE_URL}/api/chat`, {
+      const response = await fetch(`${FRONTEND_API_BASE_URL}/api/v1/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

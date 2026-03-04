@@ -187,3 +187,15 @@ ${JSON.stringify(qaList)}
     };
   }
 };
+
+// ====================== DYNAMIC INTERVIEW MANAGER GENERATION (AI 3) ======================
+exports.generateInterviewPrompt = async (promptText) => {
+    try {
+        const model = genAI3.getGenerativeModel({ model: "gemini-flash-latest" });
+        const result = await model.generateContent(promptText);
+        return result.response.text();
+    } catch (err) {
+        console.error("AI Error generating interview conversation:", err);
+        throw new Error("Failed to generate response");
+    }
+};

@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children, allowedRoles = undefined }) => {
       console.warn("Access denied. User role:", user.userType, "Allowed:", allowedRoles);
       // Role not authorized - redirect to a safe page like home/dashboard
       // Or if they are a super admin trying to hit user routes, maybe redirect to admin dash
-      if (user.userType === "super_admin") {
+      if (user.userType === "admin") {
          return <Navigate to="/admin/dashboard" replace />;
       }
       return <Navigate to="/dashboard" replace />;

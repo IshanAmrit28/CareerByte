@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Upload, FileText, CheckCircle2, AlertCircle, Loader2, Download } from 'lucide-react'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { BACKEND_API_BASE_URL } from '../constants'
 
 import Button from '../components/Button'
 import './ResumeAnalyzer.css'
@@ -9,8 +9,6 @@ function ResumeAnalyzer() {
     const [file, setFile] = useState(null)
     const [analyzing, setAnalyzing] = useState(false)
     const [analysis, setAnalysis] = useState(null)
-    const [apiKey, setApiKey] = useState(localStorage.getItem('gemini_api_key') || '')
-    const [showSettings, setShowSettings] = useState(false)
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0]
@@ -23,72 +21,48 @@ function ResumeAnalyzer() {
     }
 
     const analyzeResume = async () => {
-        if (!file || !apiKey) {
-            setShowSettings(true)
+        if (!file) {
+            alert('Please select a file first.')
             return
         }
 
         setAnalyzing(true)
 
         try {
-            const text = await file.text()
-            const genAI = new GoogleGenerativeAI(apiKey)
-            const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' })
+            const formData = new FormData()
+            formData.append("resume", file)
 
-            const prompt = `You are an expert resume reviewer and career coach. Analyze the following resume and provide detailed feedback:
+            const token = localStorage.getItem("token") || ""
 
-Resume Content:
-${text}
+            const response = await fetch(`${BACKEND_API_BASE_URL}/api/v1/resume/analyze`, {
+                method: "POST",
+                headers: {
+                    // Multipart form data doesn't require Content-Type header manually, fetch does it
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            })
 
-Please provide:
-1. **Overall Score** (out of 10)
-2. **Strengths** (3-5 bullet points)
-3. **Areas for Improvement** (3-5 bullet points)
-4. **ATS Compatibility** (score out of 10 and tips)
-5. **Specific Recommendations** (actionable suggestions)
+            const data = await response.json()
 
-Format your response in markdown.`
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Analysis failed from backend')
+            }
 
-            const result = await model.generateContent(prompt)
-            const feedback = result.response.text()
-
-            setAnalysis(feedback)
+            setAnalysis(data.analysis)
         } catch (error) {
             console.error('Analysis error:', error)
-            alert('Error analyzing resume. Please check your API key and try again.')
+            alert('Error analyzing resume. Please ensure you are logged in and the backend is running.')
         } finally {
             setAnalyzing(false)
         }
-    }
-
-    const saveApiKey = (key) => {
-        setApiKey(key)
-        localStorage.setItem('gemini_api_key', key)
-        setShowSettings(false)
     }
 
     return (
         <div className="app-container">
 
 
-            {showSettings && (
-                <div className="settings-modal-overlay">
-                    <div className="settings-modal">
-                        <h2 className="page-title" style={{ fontSize: 18, marginBottom: 16 }}>Configure API Key</h2>
-                        <input
-                            type="password"
-                            placeholder="Paste Gemini API Key"
-                            className="api-input"
-                            defaultValue={apiKey}
-                            onChange={(e) => setApiKey(e.target.value)}
-                        />
-                        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 16 }}>
-                            <Button variant="primary" onClick={() => saveApiKey(apiKey)}>Save Key</Button>
-                            <Button variant="ghost" onClick={() => setShowSettings(false)}>Cancel</Button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {/* API Settings Modal Removed - Managed by Backend Now */}
 
             <div className="resume-analyzer-container">
                 {/* Upload Section */}

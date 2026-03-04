@@ -3,7 +3,8 @@
  * Ported from TalentScout-Hiring-Assistant Python implementation
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import axios from 'axios';
+import { API_BASE_URL } from '../constants';
 
 // Conversation States
 export const ConversationState = {
@@ -93,11 +94,8 @@ export class CandidateInfo {
 
 // Interview Manager Class
 export class InterviewManager {
-    constructor(apiKey, modelName = null) {
-        this.apiKey = apiKey
-        this.genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null
-        const model = modelName || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_GEMINI_MODEL) || 'gemini-2.5-flash'
-        this.model = this.genAI ? this.genAI.getGenerativeModel({ model }) : null
+    constructor() {
+        this.apiUrl = `${API_BASE_URL}/api/v1/interview/generate-content`;
         this.state = ConversationState.GREETING
         this.candidate = new CandidateInfo()
         this.conversationHistory = []
@@ -120,15 +118,17 @@ export class InterviewManager {
     }
 
     async generateContent(prompt) {
-        if (!this.model) {
-            throw new Error('API key not configured')
-        }
         try {
-            const result = await this.model.generateContent(prompt)
-            return result.response.text()
+            const token = localStorage.getItem('token');
+            const response = await axios.post(
+                this.apiUrl, 
+                { prompt }, 
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            return response.data.text;
         } catch (error) {
-            console.error('AI Generation Error:', error)
-            return "I'm having trouble connecting to the AI service. Please try again."
+            console.error('AI Generation Error:', error);
+            return "I'm having trouble connecting to the AI service. Please try again.";
         }
     }
 

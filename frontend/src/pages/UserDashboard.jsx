@@ -10,14 +10,19 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
-  Search
+  Search,
+  Moon,
+  Sun
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { 
   BarChart, Bar, Legend, Cell, CartesianGrid, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer
 } from 'recharts';
 import ProgressGraph from '../components/ProgressGraph';
+import AppliedJobTable from '../components/AppliedJobTable';
+import useGetAppliedJobs from '../hooks/useGetAppliedJobs';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
@@ -27,6 +32,8 @@ import { API_BASE_URL as BASE_URL } from '../constants';
 const API_BASE_URL = `${BASE_URL}/api`;
 
 const UserDashboard = () => {
+  const { theme, setTheme } = useTheme();
+  useGetAppliedJobs();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   
@@ -125,9 +132,9 @@ const UserDashboard = () => {
   const CustomTooltipBar = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-gray-800 border border-gray-700 p-3 rounded-xl shadow-xl backdrop-blur-sm">
+        <div className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 p-3 rounded-xl shadow-md dark:shadow-xl backdrop-blur-sm">
           <p className="text-indigo-400 font-bold">{payload[0].payload.subject}</p>
-          <p className="text-gray-200">Score: {payload[0].value}%</p>
+          <p className="text-gray-800 dark:text-gray-200">Score: {payload[0].value}%</p>
         </div>
       );
     }
@@ -136,7 +143,7 @@ const UserDashboard = () => {
 
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen bg-[#020817] flex items-center justify-center text-white">
+      <div className="min-h-screen bg-gray-50 dark:bg-[#020817] flex items-center justify-center text-gray-900 dark:text-white">
         <Loader2 className="w-12 h-12 animate-spin text-indigo-500" />
       </div>
     );
@@ -144,7 +151,7 @@ const UserDashboard = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#020817] pt-24 px-8 text-white flex flex-col items-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-[#020817] pt-24 px-8 text-gray-900 dark:text-white flex flex-col items-center">
         <div className="bg-red-900/20 border border-red-500/30 text-red-400 p-6 rounded-2xl text-center max-w-md w-full">
           <h2 className="text-xl font-bold mb-2">Error Loading Dashboard</h2>
           <p>{error}</p>
@@ -164,36 +171,36 @@ const UserDashboard = () => {
     if (rating >= 1800) return 'text-purple-400 font-bold'; // Tier 2
     if (rating >= 1500) return 'text-blue-400 font-bold'; // Tier 3
     if (rating >= 1200) return 'text-emerald-400 font-semibold'; // Tier 4
-    return 'text-gray-400 font-medium'; // Base
+    return 'text-gray-600 dark:text-gray-400 font-medium'; // Base
   };
 
   const { profileData, heatmapData, sectorScores } = dashboardData;
-  const ratingColors = profileData.rating >= 2000 ? 'text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]' :
-                       profileData.rating >= 1500 ? 'text-indigo-400 drop-shadow-[0_0_15px_rgba(129,140,248,0.5)]' :
-                       'text-gray-300';
+  const ratingColors = profileData.rating >= 2000 ? 'text-yellow-400 drop-shadow-[0_0_8px_rgba(250,204,21,0.4)]' :
+                       profileData.rating >= 1500 ? 'text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.4)]' :
+                       'text-gray-700 dark:text-gray-300';
                        
   // Generate bar colors dynamically to make it beautiful
   const barColors = ['#8b5cf6', '#3b82f6', '#10b981'];
 
   return (
-    <div className="min-h-screen bg-[#020817] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
-      <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none" />
-      <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-gray-50 dark:bg-[#020817] text-gray-900 dark:text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
+      <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 dark:opacity-100 pointer-events-none" />
+      <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 dark:opacity-100 pointer-events-none" />
       
       <div className="max-w-6xl mx-auto relative z-10 space-y-8">
-        
+
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8 items-start">
            {/* Main Left Content Area */}
            <div className="xl:col-span-2 flex flex-col gap-6 lg:gap-8">
               
               {/* Header section with Ranking */}
-              <div className="bg-gradient-to-br from-gray-900/60 to-gray-800/40 border border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-xl flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
+              <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-900/60 dark:to-gray-800/40 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-md dark:shadow-xl flex flex-col md:flex-row items-center gap-6 relative overflow-hidden">
                  {/* Decorative glow */}
                  <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px]" />
                  
                  <div className="flex-shrink-0 relative">
                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-1">
-                     <div className="w-full h-full bg-gray-900 rounded-full flex items-center justify-center text-3xl font-extrabold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-br from-indigo-300 to-purple-300">
+                     <div className="w-full h-full bg-white dark:bg-gray-900 rounded-full flex items-center justify-center text-3xl font-extrabold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-purple-600 dark:from-indigo-300 dark:to-purple-300">
                        {user?.userName?.substring(0, 2) || "U"}
                      </div>
                    </div>
@@ -206,13 +213,13 @@ const UserDashboard = () => {
 
                  <div className="text-center md:text-left z-10 w-full">
                     <h1 className="text-2xl md:text-4xl font-extrabold mb-1">{user?.userName}</h1>
-                    <p className="text-gray-400 mb-6 flex items-center justify-center md:justify-start gap-2 text-sm">
+                    <p className="text-gray-600 dark:text-gray-400 mb-6 flex items-center justify-center md:justify-start gap-2 text-sm">
                       <Star className="w-4 h-4" /> Global Talent Profile
                     </p>
                     
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-6">
                        <div className="group relative">
-                         <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider font-semibold">InterVerse Rating</div>
+                         <div className="text-xs text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wider font-semibold">InterVerse Rating</div>
                          <div className={`text-4xl font-black ${ratingColors}`}>
                             {profileData.rating}
                          </div>
@@ -221,9 +228,9 @@ const UserDashboard = () => {
                        <div className="h-10 w-px bg-gray-700/50 hidden md:block"></div>
                        
                        <div>
-                         <div className="text-xs text-gray-400 mb-1 uppercase tracking-wider font-semibold">Global Rank</div>
+                         <div className="text-xs text-gray-600 dark:text-gray-400 mb-1 uppercase tracking-wider font-semibold">Global Rank</div>
                          <div className="text-2xl font-bold flex items-baseline gap-1">
-                            <span className="text-white">#{profileData.rank}</span>
+                            <span className="text-gray-900 dark:text-white">#{profileData.rank}</span>
                             <span className="text-sm text-gray-500 font-normal">/ {profileData.totalRankedUsers}</span>
                          </div>
                          <div className="text-xs text-indigo-400 font-medium mt-1 bg-indigo-500/10 inline-block px-2 py-0.5 rounded border border-indigo-500/20">
@@ -238,16 +245,16 @@ const UserDashboard = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Quick Stats side cards inside 1 box */}
                   <div className="grid grid-cols-2 gap-4">
-                     <div className="bg-gray-900/40 border border-gray-800 rounded-2xl p-5 backdrop-blur-md shadow-xl flex flex-col justify-center text-center items-center">
-                        <div className="flex items-center gap-2 text-gray-400 mb-2">
+                     <div className="bg-white dark:bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 backdrop-blur-md shadow-md dark:shadow-xl flex flex-col justify-center text-center items-center">
+                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mb-2">
                            <Activity className="w-4 h-4 text-blue-400" />
                            <h3 className="font-semibold text-xs uppercase tracking-wider">Interviews</h3>
                         </div>
-                        <div className="text-3xl font-black text-gray-100">{dashboardData.reports.length}</div>
+                        <div className="text-3xl font-black text-gray-900 dark:text-gray-100">{dashboardData.reports.length}</div>
                      </div>
                      
-                     <div className="bg-gray-900/40 border border-gray-800 rounded-2xl p-5 backdrop-blur-md shadow-xl flex flex-col justify-center text-center items-center">
-                        <div className="flex items-center gap-2 text-gray-400 mb-2">
+                     <div className="bg-white dark:bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 backdrop-blur-md shadow-md dark:shadow-xl flex flex-col justify-center text-center items-center">
+                        <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mb-2">
                            <Target className="w-4 h-4 text-emerald-400" />
                            <h3 className="font-semibold text-xs uppercase tracking-wider">Top Section</h3>
                         </div>
@@ -255,7 +262,7 @@ const UserDashboard = () => {
                           const topSector = [...sectorScores].sort((a,b) => b.score - a.score)[0];
                           return (
                             <div className="w-full">
-                              <div className="text-lg font-bold text-gray-100 truncate w-full">{topSector.subject}</div>
+                              <div className="text-lg font-bold text-gray-900 dark:text-gray-100 truncate w-full">{topSector.subject}</div>
                               <div className="text-xs text-emerald-400 mt-1">{topSector.score}% Acc</div>
                             </div>
                           );
@@ -266,15 +273,15 @@ const UserDashboard = () => {
                   </div>
 
                   {/* Shrunken Section Mastery Bar Chart */}
-                  <div className="bg-gray-900/40 border border-gray-800 rounded-2xl p-5 backdrop-blur-md shadow-xl">
+                  <div className="bg-white dark:bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-2xl p-5 backdrop-blur-md shadow-md dark:shadow-xl">
                      <div className="flex items-center gap-2 mb-4">
                         <Target className="w-4 h-4 text-purple-400" />
-                        <h2 className="text-sm uppercase tracking-wider font-bold text-gray-300">Section Mastery</h2>
+                        <h2 className="text-sm uppercase tracking-wider font-bold text-gray-700 dark:text-gray-300">Section Mastery</h2>
                      </div>
                      
                      <div className="h-28 w-full relative">
                        {sectorScores.length === 0 ? (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 text-xs text-center border border-dashed border-gray-700/50 rounded-lg">
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 text-xs text-center border border-dashed border-gray-300 dark:border-gray-700/50 rounded-lg">
                             <p>No section data found.</p>
                           </div>
                        ) : (
@@ -297,7 +304,7 @@ const UserDashboard = () => {
               </div>
 
               {/* Performance Area Chart */}
-              <div className="bg-gray-900/40 border border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-xl">
+              <div className="bg-white dark:bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-md dark:shadow-xl">
                  <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                         <TrendingUp className="w-5 h-5 text-indigo-400" />
@@ -310,17 +317,28 @@ const UserDashboard = () => {
                  </div>
               </div>
 
+              {/* Applied Jobs Table */}
+              <div className="bg-white dark:bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-md dark:shadow-xl overflow-hidden mt-8">
+                 <div className="flex items-center gap-3 mb-6">
+                    <Activity className="w-5 h-5 text-blue-400" />
+                    <h2 className="text-lg font-bold">Applied Jobs</h2>
+                 </div>
+                 <div className="w-full overflow-x-auto">
+                    <AppliedJobTable />
+                 </div>
+              </div>
+
               {/* Activity Heatmap */}
-              <div className="bg-gray-900/40 border border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-xl overflow-hidden">
-                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-gray-800/50 pb-4">
+              <div className="bg-white dark:bg-white dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-md dark:shadow-xl overflow-hidden mt-8">
+                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-gray-200 dark:border-gray-800/50 pb-4">
                     <div className="flex items-center gap-3">
                        <CalendarIcon className="w-5 h-5 text-pink-400" />
                        <div>
                           <h2 className="text-lg font-bold">Activity Grid</h2>
-                          <p className="text-xs text-gray-400">1-Year History</p>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">1-Year History</p>
                        </div>
                     </div>
-                    <div className="flex items-center gap-1.5 text-[10px] text-gray-400 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-700">
+                    <div className="flex items-center gap-1.5 text-[10px] text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-white dark:bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-300 dark:border-gray-700">
                        <span>Less</span>
                        <div className="w-2.5 h-2.5 rounded-[2px] bg-[#1e293b]"></div>
                        <div className="w-2.5 h-2.5 rounded-[2px] bg-indigo-900"></div>
@@ -348,15 +366,15 @@ const UserDashboard = () => {
            </div>
 
            {/* Vertical Right Side Panel (Leaderboard Widget) */}
-           <div className="xl:col-span-1 border border-gray-800/80 bg-gray-900/50 rounded-3xl backdrop-blur-md shadow-2xl overflow-hidden flex flex-col h-fit">
-              <div className="p-6 border-b border-gray-800/80 bg-gray-900/80 flex flex-col gap-1">
+           <div className="xl:col-span-1 border border-gray-200 dark:border-gray-800/80 bg-gray-100 dark:bg-white dark:bg-gray-900/50 rounded-3xl backdrop-blur-md shadow-lg dark:shadow-2xl overflow-hidden flex flex-col h-fit">
+              <div className="p-6 border-b border-gray-200 dark:border-gray-800/80 bg-gray-100/50 dark:bg-white dark:bg-gray-900/80 flex flex-col gap-1">
                  <div className="flex items-center justify-between">
                     <h2 className="text-xl font-bold flex items-center gap-2">
                       <Trophy className="w-5 h-5 text-yellow-500" />
                       Top 10 Rankings
                     </h2>
                  </div>
-                 <p className="text-xs text-gray-400">Global Standings</p>
+                 <p className="text-xs text-gray-600 dark:text-gray-400">Global Standings</p>
               </div>
 
               <div className="overflow-y-auto custom-scrollbar p-2 max-h-[380px]">
@@ -375,15 +393,15 @@ const UserDashboard = () => {
                                key={u.id}
                                onClick={() => { if (!isCurrentUser) navigate(`/profile/${u.id}`); }} 
                                className={`flex items-center justify-between p-3 rounded-xl transition-colors ${
-                                  isCurrentUser ? 'bg-indigo-900/20 border border-indigo-500/30' : 'hover:bg-gray-800/40 cursor-pointer border border-transparent'
+                                  isCurrentUser ? 'bg-indigo-900/20 border border-indigo-500/30' : 'hover:bg-gray-100 dark:bg-white dark:bg-gray-800/40 cursor-pointer border border-transparent'
                                }`}
                              >
                                 <div className="flex items-center gap-3">
                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
                                       u.rank === 1 ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 shadow-[0_0_10px_rgba(234,179,8,0.2)]' : 
-                                      u.rank === 2 ? 'bg-gray-300/20 text-gray-300 border border-gray-300/40' :
+                                      u.rank === 2 ? 'bg-gray-300/20 text-gray-700 dark:text-gray-300 border border-gray-300/40' :
                                       u.rank === 3 ? 'bg-amber-700/20 text-amber-600 border border-amber-700/40' :
-                                      'bg-gray-800 text-gray-500'
+                                      'bg-white dark:bg-gray-800 text-gray-500'
                                    }`}>
                                       {u.rank}
                                    </div>
@@ -395,7 +413,7 @@ const UserDashboard = () => {
                                       <div className="text-xs text-gray-500 mt-0.5">{u.totalInterviews} mock sessions</div>
                                    </div>
                                 </div>
-                                <div className={`text-sm font-black tracking-wide ${getRatingColor(u.rating)} bg-gray-900/50 px-2.5 py-1 rounded-lg border border-gray-800/80 shadow-inner`}>
+                                <div className={`text-sm font-black tracking-wide ${getRatingColor(u.rating)} bg-gray-100 dark:bg-white dark:bg-gray-900/50 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-gray-800/80 shadow-inner`}>
                                    {u.rating}
                                 </div>
                              </div>
@@ -406,7 +424,7 @@ const UserDashboard = () => {
               </div>
 
               {/* Link to Full Leaderboard */}
-              <div className="bg-gray-900/80 border-t border-gray-800/80 p-3 flex justify-center items-center">
+              <div className="bg-gray-100/50 dark:bg-white dark:bg-gray-900/80 border-t border-gray-200 dark:border-gray-800/80 p-3 flex justify-center items-center">
                  <button 
                    onClick={() => navigate('/leaderboard')}
                    className="w-full py-2.5 bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-300 hover:text-indigo-200 text-sm font-semibold rounded-lg border border-indigo-500/20 transition-colors flex items-center justify-center gap-2"

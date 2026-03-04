@@ -35,7 +35,7 @@ const AdminLogin = () => {
     try {
       const data = await adminLogin(formData);
       
-      if (data.user.userType !== "super_admin") {
+      if (data.user.userType !== "admin") {
           throw new Error("Unauthorized account access. Super Admin only.");
       }
 

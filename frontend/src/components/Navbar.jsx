@@ -24,12 +24,17 @@ function Navbar() {
 
   const isActive = (path) => (location.pathname === path ? "active" : "");
 
-  const navItems = user?.userType === "super_admin" 
+  const navItems = user?.userType === "admin" 
     ? [
         { name: "Admin Dashboard", path: "/admin/dashboard" },
       ]
     : [
         { name: "Dashboard", path: "/dashboard" },
+        { name: "Jobs", path: "/jobs" },
+        ...(user?.userType === "recruiter" || user?.role === "recruiter" ? [
+          { name: "Companies", path: "/admin/companies" },
+          { name: "Manage Jobs", path: "/admin/jobs" }
+        ] : []),
         { name: "AI Chat", path: "/chat" },
         { name: "Interview", path: "/practice" },
         { name: "Roadmap", path: "/roadmap" },

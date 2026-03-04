@@ -28,7 +28,7 @@ export const adminLogin = async (credentials) => {
 };
 
 export const adminSignup = async (userData) => {
-  const payload = { ...userData, userType: "super_admin" };
+  const payload = { ...userData, userType: "admin" };
   const response = await fetch(`${BACKEND_API_BASE_URL}${API_ENDPOINTS.AUTH.SIGNUP}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -48,7 +48,7 @@ export const adminSignup = async (userData) => {
 
 // Get all users
 export const fetchAllUsers = async () => {
-  const response = await fetch(`${BACKEND_API_BASE_URL}/api/admin/users`, {
+  const response = await fetch(`${BACKEND_API_BASE_URL}/api/v1/admin/users`, {
     method: "GET",
     headers: getAuthHeaders(),
   });
@@ -60,7 +60,7 @@ export const fetchAllUsers = async () => {
 
 // Create a new question
 export const createQuestion = async (questionData) => {
-  const response = await fetch(`${BACKEND_API_BASE_URL}/api/admin/questions`, {
+  const response = await fetch(`${BACKEND_API_BASE_URL}/api/v1/admin/questions`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify(questionData),
@@ -74,7 +74,7 @@ export const createQuestion = async (questionData) => {
 
 // Delete a question
 export const deleteQuestion = async (id) => {
-  const response = await fetch(`${BACKEND_API_BASE_URL}/api/admin/questions/${id}`, {
+  const response = await fetch(`${BACKEND_API_BASE_URL}/api/v1/admin/questions/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
@@ -86,7 +86,7 @@ export const deleteQuestion = async (id) => {
 
 // Update question category
 export const updateQuestionCategory = async (id, category) => {
-  const response = await fetch(`${BACKEND_API_BASE_URL}/api/admin/questions/${id}/category`, {
+  const response = await fetch(`${BACKEND_API_BASE_URL}/api/v1/admin/questions/${id}/category`, {
     method: "PUT",
     headers: getAuthHeaders(),
     body: JSON.stringify({ category }),
@@ -99,8 +99,8 @@ export const updateQuestionCategory = async (id, category) => {
 };
 
 export const fetchAllQuestions = async () => {
-    // Fetch directly from the public GET /api/questions endpoint
-    const response = await fetch(`${BACKEND_API_BASE_URL}/api/questions`, {
+    // Fetch directly from the public GET /api/v1/questions endpoint
+    const response = await fetch(`${BACKEND_API_BASE_URL}/api/v1/questions`, {
       method: "GET",
       // GET requests to questions shouldn't require auth on the backend, but we send headers anyway
       headers: getAuthHeaders(),

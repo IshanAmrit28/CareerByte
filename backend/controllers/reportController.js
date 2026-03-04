@@ -5,7 +5,8 @@ const Report = require("../models/reportModel");
 const Question = require("../models/questionModel");
 const User = require("../models/user");
 // ✅ Import the new evaluateAnswers function
-const { processResume, evaluateAnswers } = require("../utils/aiProcessor");
+// ✅ Import the new evaluateAnswers function
+const { processResume, evaluateAnswers, generateInterviewPrompt } = require("../utils/aiProcessor");
 
 // 🟢 Start Interview (Unchanged from previous step)
 exports.startInterview = async (req, res) => {
@@ -191,11 +192,22 @@ exports.endInterview = async (req, res) => {
 
     report.markModified("reportStructure"); // --- 5. Save the updated report ---
 
-    await report.save(); // --- 6. Link to User and Clean up ---
+    await report.save(); // --- 6. Link to User and Update Rating ---
+
+    // Calculate rating delta
+    let delta = (aiEvaluation.overallScore - 60) * 0.5;
+    if (report.reportStructure?.ResumeScore) {
+       delta += (report.reportStructure.ResumeScore - 50) / 10;
+    }
+    const roundedDelta = Math.round(delta);
 
     await User.findByIdAndUpdate(candidateId, {
       $push: { report: report._id },
+      $inc: { rating: roundedDelta },
     });
+
+    // Ensure rating doesn't drop below 0
+    await User.updateOne({ _id: candidateId, rating: { $lt: 0 } }, { $set: { rating: 0 } });
 
     res.json({
       message: "Interview ended and report updated successfully",
@@ -294,4 +306,20 @@ exports.getUserReports = async (req, res) => {
       .status(500)
       .json({ message: "Error fetching user reports", error: err.message });
   }
+};
+
+// 🟢 Generate Custom Content (For dynamic interview manager)
+exports.generateContent = async (req, res) => {
+    try {
+        const { prompt } = req.body;
+        if (!prompt) {
+            return res.status(400).json({ message: "Missing required field: prompt" });
+        }
+
+        const aiResponse = await generateInterviewPrompt(prompt);
+        res.json({ text: aiResponse });
+    } catch (err) {
+        console.error("Error generating dynamic content:", err);
+        res.status(500).json({ message: "Error generating dynamic content", error: err.message });
+    }
 };

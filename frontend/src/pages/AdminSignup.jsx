@@ -51,7 +51,7 @@ const AdminSignup = () => {
 
     setLoading(true);
     try {
-      // adminSignup automatically sets userType to "super_admin"
+      // adminSignup automatically sets userType to "admin"
       const data = await adminSignup({
           userName: formData.userName,
           email: formData.email,

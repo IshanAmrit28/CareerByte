@@ -68,7 +68,7 @@ export async function fetchReport(reportId) {
 
 // Fetches all reports for the logged-in user
 export async function getUserReports() {
-  const url = `${BACKEND_API_BASE_URL}/api/interview/user`;
+  const url = `${BACKEND_API_BASE_URL}/api/v1/interview/user`;
 
   const response = await fetch(url, {
     method: "GET",

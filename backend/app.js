@@ -2,6 +2,13 @@
 // Core Module
 const path = require("path");
 require("dotenv").config();
+
+// FATAL STARTUP VALIDATION: Prevent token forgery by enforcing JWT_SECRET
+if (!process.env.JWT_SECRET || process.env.JWT_SECRET.trim() === "") {
+  console.error("FATAL ERROR: JWT_SECRET environment variable is missing or empty. Server cannot start securely.");
+  process.exit(1);
+}
+
 // External Module
 const express = require("express");
 const { default: mongoose } = require("mongoose");
@@ -17,12 +24,17 @@ const youtubeRouter = require("./routes/youtubeRoutes");
 const adminRouter = require("./routes/adminRoutes");
 const dashboardRouter = require("./routes/dashboardRoutes");
 const leaderboardRoutes = require("./routes/leaderboardRoutes");
+const resumeAnalyzerRoutes = require("./routes/resumeAnalyzerRoutes");
+const jobTrackerRoutes = require("./routes/jobTrackerRoutes");
 
 const app = express();
 
 // FIX: Ensure body parsers are executed FIRST to populate req.body
 app.use(express.urlencoded({ extended: true })); // Handles application/x-www-form-urlencoded
 app.use(express.json()); // Handles application/json (used by Login/Signup)
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 app.use(
   cors({
     origin: "*", // Allow all origins (standard for public/development APIs)
@@ -31,13 +43,25 @@ app.use(
   }),
 ); // CORS should also run before the routers
 
-app.use("/api/questions", questionRouter);
-app.use("/api/interview", reportRouter);
-app.use("/api/auth", userRouter);
-app.use("/api/youtube", youtubeRouter);
-app.use("/api/admin", adminRouter);
-app.use("/api/dashboard", dashboardRouter);
-app.use("/api/leaderboard", leaderboardRoutes);
+const companyRouter = require("./routes/company.route");
+const jobBoardRouter = require("./routes/job.route");
+const applicationRouter = require("./routes/application.route");
+
+app.use("/api/v1/questions", questionRouter);
+app.use("/api/v1/interview", reportRouter);
+app.use("/api/v1/auth", userRouter);
+app.use("/api/v1/youtube", youtubeRouter);
+app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/leaderboard", leaderboardRoutes);
+app.use("/api/v1/resume", resumeAnalyzerRoutes);
+app.use("/api/v1/job-tracker", jobTrackerRoutes);
+
+// Job Board Routes
+app.use("/api/v1/user", userRouter); // Alias for Job Board Auth
+app.use("/api/v1/company", companyRouter);
+app.use("/api/v1/job", jobBoardRouter);
+app.use("/api/v1/application", applicationRouter);
 
 app.use(errorsController.pageNotFound);
 

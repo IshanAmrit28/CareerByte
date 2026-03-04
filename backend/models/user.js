@@ -17,20 +17,50 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
     },
+    fullname: {
+      type: String,
+      required: false // Optional for backward compatibility with old signup
+    },
+    phoneNumber: {
+      type: Number,
+      required: false
+    },
     userType: {
       type: String,
-      enum: ["candidate", "recruiter", "super_admin"],
+      enum: ["candidate", "recruiter", "admin"],
       default: "candidate",
     },
-    report: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        // Fix: Must match the model name 'Report'
-        ref: "Report",
-      },
-    ],
+    profile:{
+        bio:{type:String},
+        skills:[{type:String}],
+        resume:{type:String}, // URL to resume file
+        resumeOriginalName:{type:String},
+        company:{type:mongoose.Schema.Types.ObjectId, ref:'Company'}, 
+        profilePhoto:{
+            type:String,
+            default:""
+        }
+    },
+    rating: {
+      type: Number,
+      default: 1000,
+      index: true,
+    },
   },
-  { timestamps: true }
+  { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 );
+
+// Virtual for query-based relationships to prevent MongoDB 16MB document limit
+userSchema.virtual('report', {
+    ref: "Report",
+    localField: '_id',
+    foreignField: 'candidateId'
+}).get(function(val) {
+    return val || [];
+});
 
 module.exports = mongoose.model("User", userSchema);
