@@ -14,10 +14,8 @@ import {
   Loader2,
   FileText,
   Briefcase,
-  Moon,
-  Sun
+  ThumbsDown
 } from "lucide-react";
-import { useTheme } from 'next-themes';
 
 import { useAuth } from "../context/AuthContext";
 import { endInterview } from "../services/interviewService";
@@ -87,7 +85,6 @@ const ParticipantTile = ({
 );
 
 const InterviewRoom = () => {
-  const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();

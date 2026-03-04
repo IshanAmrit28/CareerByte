@@ -10,11 +10,8 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
-  Search,
-  Moon,
-  Sun
+  Search
 } from 'lucide-react';
-import { useTheme } from 'next-themes';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { 
@@ -32,7 +29,6 @@ import { API_BASE_URL as BASE_URL } from '../constants';
 const API_BASE_URL = `${BASE_URL}/api`;
 
 const UserDashboard = () => {
-  const { theme, setTheme } = useTheme();
   useGetAppliedJobs();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
