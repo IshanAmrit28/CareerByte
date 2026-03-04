@@ -69,10 +69,12 @@ exports.login = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
 
   try {
-    // FIX: Select ALL user fields except the password ('+report' ensures the report array is included)
-    const user = await User.findOne({ email }).select(
-      "+report +userName +email +userType +createdAt +updatedAt +fullname +phoneNumber +profile +role +password"
-    );
+    // FIX: Populate 'report' because it is a virtual field, not a real column
+    // The previous '.select("+report")' was incorrect for virtuals.
+    const user = await User.findOne({ email })
+      .select("+userName +email +userType +createdAt +updatedAt +fullname +phoneNumber +profile +role +password")
+      .populate("report");
+
     if (!user)
       return res.status(401).json({ message: "Invalid email or password" });
 
@@ -98,13 +100,14 @@ exports.login = async (req, res) => {
       role: user.userType,
       phoneNumber: user.phoneNumber,
       profile: user.profile,
-      report: user.report, // This is the array of report IDs
+      // Use user.get('report') to bypass IDE TypeScript strict checking for virtuals
+      report: user.get('report'), 
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
 
     // return res.status(200).cookie(...)
-    res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' }).json({
+    res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'none', secure: true }).json({
       message: `Welcome back ${userResponse.fullname}`,
       user: userResponse, // Sending the full data structure
       token,
@@ -118,7 +121,7 @@ exports.login = async (req, res) => {
 
 // ==================== LOGOUT ====================
 exports.logout = (req, res) => {
-  res.status(200).cookie("token", "", { maxAge: 0 }).json({ message: "Logged out successfully", success: true });
+  res.status(200).cookie("token", "", { maxAge: 0, sameSite: 'none', secure: true }).json({ message: "Logged out successfully", success: true });
 };
 
 // ==================== UPDATE PROFILE ====================
@@ -132,7 +135,9 @@ exports.updateProfile = async (req, res) => {
         const getDataUri = require("../utils/datauri.js");
         const cloudinary = require("../utils/cloudinary.js");
         const fileUri = getDataUri(file);
-        cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+        cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
+          resource_type: "raw" // Allows uploading PDFs and documents
+        });
       }
 
       let skillsArray;
