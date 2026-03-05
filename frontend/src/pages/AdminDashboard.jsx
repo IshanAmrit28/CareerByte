@@ -19,10 +19,10 @@ import {
   CheckCircle2,
   XCircle,
   ArrowLeft,
-  LogOut,
   FolderOpen
 } from "lucide-react";
 import AnimatedBackground from "../components/AnimatedBackground";
+import AdminNavbar from "../components/AdminNavbar";
 
 const CATEGORIES = ["DBMS", "OS", "CN", "OOP", "RESUME", "ALGORITHM"];
 
@@ -111,37 +111,12 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020817] text-white pt-24 px-8 pb-12 font-sans relative">
+    <div className="min-h-screen bg-[#020817] text-white font-sans relative">
+      <AdminNavbar />
       <AnimatedBackground />
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Header Block */}
-        <div className="flex flex-col md:flex-row justify-between items-center bg-gray-900/40 p-8 rounded-3xl border border-red-500/20 shadow-2xl backdrop-blur-md mb-10">
-          <div className="flex items-center gap-5">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-600 to-red-900 rounded-2xl flex items-center justify-center shadow-lg shadow-red-900/50">
-              <Shield size={32} className="text-white" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-red-600 mb-1">
-                Admin Control Center
-              </h1>
-              <p className="text-gray-400 text-lg">
-                Super Admin: <span className="text-gray-200">{user?.userName}</span>
-              </p>
-            </div>
-          </div>
+      <div className="max-w-6xl mx-auto relative z-10 pt-28 px-8 pb-12">
 
-          <button
-            onClick={() => {
-              logoutUser();
-              navigate("/admin/login");
-            }}
-            className="flex items-center gap-2 bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white px-6 py-3 rounded-xl font-bold border border-red-500/20 transition-all shadow-lg hover:shadow-red-600/30"
-          >
-            <LogOut size={20} />
-            Logout Session
-          </button>
-        </div>
 
         {/* Global Notifications */}
         {error && (

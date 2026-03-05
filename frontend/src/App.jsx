@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import { useEffect } from "react";
 
-import Navbar from "./components/Navbar";
 import AnimatedBackground from "./components/AnimatedBackground";
 
 import { AuthProvider } from "./context/AuthContext";
@@ -88,25 +87,25 @@ function AppContent() {
         }}
       >
         <Routes>
-          {/* Public / Auth */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/signup" element={<AdminSignup />} />
-
           {/* Candidate Layout - Restrict access to candidates only */}
           <Route element={<CandidateLayout />}>
+            {/* Public / Auth (Candidate layout handles hiding the navbar for these natively) */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/signup" element={<AdminSignup />} />
             <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["candidate"]}><Home /></ProtectedRoute>} />
             <Route path="/notes" element={<ProtectedRoute allowedRoles={["candidate"]}><Notes /></ProtectedRoute>} />
             <Route path="/chat" element={<ProtectedRoute allowedRoles={["candidate"]}><Chat /></ProtectedRoute>} />
             <Route path="/quiz" element={<ProtectedRoute allowedRoles={["candidate"]}><Quiz /></ProtectedRoute>} />
             <Route path="/study-plan" element={<ProtectedRoute allowedRoles={["candidate"]}><StudyPlan /></ProtectedRoute>} />
-            <Route path="/topic/:topicId" element={<ProtectedRoute><TopicDetail /></ProtectedRoute>} />
-            <Route path="/practice" element={<ProtectedRoute><InterviewDashboard /></ProtectedRoute>} />
-            <Route path="/practice-setup" element={<ProtectedRoute><PracticeSetup /></ProtectedRoute>} />
-            <Route path="/interview" element={<ProtectedRoute><InterviewRoom /></ProtectedRoute>} />
-            <Route path="/report/:reportId" element={<ProtectedRoute><Report /></ProtectedRoute>} />
+            <Route path="/topic/:topicId" element={<ProtectedRoute allowedRoles={["candidate"]}><TopicDetail /></ProtectedRoute>} />
+            <Route path="/practice" element={<ProtectedRoute allowedRoles={["candidate"]}><InterviewDashboard /></ProtectedRoute>} />
+            <Route path="/practice-setup" element={<ProtectedRoute allowedRoles={["candidate"]}><PracticeSetup /></ProtectedRoute>} />
+            <Route path="/interview" element={<ProtectedRoute allowedRoles={["candidate"]}><InterviewRoom /></ProtectedRoute>} />
+            <Route path="/report/:reportId" element={<ProtectedRoute allowedRoles={["candidate"]}><Report /></ProtectedRoute>} />
             <Route path="/roadmap" element={<ProtectedRoute allowedRoles={["candidate"]}><Roadmap /></ProtectedRoute>} />
             <Route path="/resume-analyzer" element={<ProtectedRoute allowedRoles={["candidate"]}><ResumeAnalyzer /></ProtectedRoute>} />
             <Route path="/job-tracker" element={<ProtectedRoute allowedRoles={["candidate"]}><JobTracker /></ProtectedRoute>} />
@@ -117,8 +116,8 @@ function AppContent() {
             <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["candidate"]}><PublicProfile /></ProtectedRoute>} />
             <Route path="/applied-jobs" element={<ProtectedRoute allowedRoles={["candidate"]}><AppliedJobsPage /></ProtectedRoute>} />
             <Route path="/leaderboard" element={<ProtectedRoute allowedRoles={["candidate"]}><Leaderboard /></ProtectedRoute>} />
-            <Route path="/jobs" element={<Jobs />} />
-            <Route path="/description/:id" element={<JobDescription />} />
+            <Route path="/jobs" element={<ProtectedRoute allowedRoles={["candidate"]}><Jobs /></ProtectedRoute>} />
+            <Route path="/description/:id" element={<ProtectedRoute allowedRoles={["candidate"]}><JobDescription /></ProtectedRoute>} />
           </Route>
 
           {/* Recruiter Layout */}

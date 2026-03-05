@@ -21,9 +21,12 @@ const Login = () => {
 
     try {
       const response = await login(formData);
-      // loginUser receives the user object returned by the backend
       loginUser(response.user);
-      navigate("/dashboard");
+      if (response.user.role === 'recruiter' || response.user.userType === 'recruiter') {
+        navigate("/recruiter/companies");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       console.error("Login error:", err);
       setError(
