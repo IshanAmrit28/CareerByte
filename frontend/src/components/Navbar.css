@@ -82,6 +82,12 @@
   align-items: center;
   margin-left: auto; /* Push to the right if space exists */
 }
+.nav-link.active, 
+.navbar-actions .active {
+  background-color: #4f46e5; /* indigo-600 */
+  color: white;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+}
 
 .relative {
   position: relative;
@@ -115,7 +121,7 @@
   top: calc(100% + 12px);
   right: 0;
   width: 220px;
-  background: rgba(17, 24, 39, 0.95);
+  background: rgba(17, 27, 39, 0.98); /* Match Dark Navy theme */
   border: 1px solid rgba(75, 85, 99, 0.4);
   border-radius: 12px;
   padding: 8px 0;

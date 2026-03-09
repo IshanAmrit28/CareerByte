@@ -25,8 +25,10 @@ function RecruiterNavbar() {
   const isActive = (path) => (location.pathname === path ? "active" : "");
 
   const navItems = [
-    { name: "Companies", path: "/recruiter/companies" },
-    { name: "Manage Jobs", path: "/recruiter/jobs" }
+    { name: "Dashboard", path: "/recruiter/companies" },
+    { name: "Post Job", path: "/recruiter/jobs/create" },
+    { name: "My Jobs", path: "/recruiter/jobs" },
+    { name: "Applicants", path: "/recruiter/applicants" } // Routes to standalone applicants viewer
   ];
 
   return (

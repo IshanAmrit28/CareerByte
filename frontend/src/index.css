@@ -35,7 +35,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 240 10% 3.9%; /* #09090b equivalent in HSL */
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -67,7 +67,7 @@
   }
  
   .dark, [data-theme="dark"] {
-    --background: 222.2 84% 4.9%;
+    --background: 240 10% 3.9%;
     --foreground: 210 40% 98%;
  
     --card: 222.2 84% 4.9%;
@@ -140,17 +140,17 @@
 /* Deep Dark Theme (Default) */
 :root {
   /* Backgrounds */
-  --bg-main: #09090b; /* zinc-950 - Sleeker main background */
-  --bg-surface: #18181b; /* zinc-900 - Card backgrounds */
-  --bg-secondary: #27272a; /* zinc-800 - Subtle backgrounds */
-  --bg-subtle: #27272a; /* zinc-800 */
-  --bg-inset: #3f3f46; /* zinc-700 */
+  --bg-main: #09090b; /* Updated to requested color */
+  --bg-surface: #111b27; /* Dark Navy - Main card surfaces */
+  --bg-secondary: #1e293b; /* Slate-800 - Subtle backgrounds */
+  --bg-subtle: #1e293b; /* Slate-800 */
+  --bg-inset: #334155; /* Slate-700 */
 
   /* Borders */
-  --border-main: #27272a; /* zinc-800 */
-  --border-subtle: #18181b; /* zinc-900 */
-  --border-color: #27272a; /* zinc-800 */
-  --border-glow: rgba(255, 255, 255, 0.1);
+  --border-main: #1e293b; /* Slate-800 */
+  --border-subtle: #0f172a; /* Slate-900 */
+  --border-color: #1e293b; /* Slate-800 */
+  --border-glow: rgba(255, 255, 255, 0.05);
 
   /* Text */
   --text-main: #f4f4f5; /* zinc-50 - Primary text */
@@ -178,7 +178,7 @@
     0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
 
   /* Legacy support */
-  --card-bg: #111827; /* gray-900 */
+  --card-bg: #111b27; 
 }
 
 html,
@@ -243,13 +243,13 @@ body {
 
 /* Dense Card */
 .dense-card {
-  background: rgba(24, 24, 27, 0.65);
+  background: rgba(17, 27, 39, 0.7); /* Dark Navy Glassmorphism */
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: var(--sp-6);
-  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.03);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   color: #f4f4f5;
   position: relative;

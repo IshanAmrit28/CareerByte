@@ -7,18 +7,18 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 const AdminJobsTable = () => { 
-    const {allAdminJobs, searchJobByText} = useSelector(store=>store.job);
+    const {allAdminJobs, searchJobByText} = useSelector(/** @type {any} */ (store) => store.job || {});
 
     const [filterJobs, setFilterJobs] = useState(allAdminJobs);
     const navigate = useNavigate();
 
     useEffect(()=>{ 
         console.log('called');
-        const filteredJobs = allAdminJobs.filter((job)=>{
+        const filteredJobs = (allAdminJobs || []).filter((job)=>{
             if(!searchJobByText){
                 return true;
             };
-            return job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) || job?.company?.name.toLowerCase().includes(searchJobByText.toLowerCase());
+            return job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) || job?.company?.name?.toLowerCase().includes(searchJobByText.toLowerCase());
 
         });
         setFilterJobs(filteredJobs);
@@ -37,29 +37,37 @@ const AdminJobsTable = () => {
                 </TableHeader>
                 <TableBody>
                     {
-                        filterJobs?.map((job) => (
-                            <TableRow key={job._id} className="border-gray-800 hover:bg-gray-800/50 text-gray-200">
-                                <TableCell>{job?.company?.name}</TableCell>
-                                <TableCell>{job?.title}</TableCell>
-                                <TableCell>{job?.createdAt.split("T")[0]}</TableCell>
-                                <TableCell className="text-right cursor-pointer">
-                                    <Popover>
-                                        <PopoverTrigger><MoreHorizontal className="text-gray-400 hover:text-white transition-colors" /></PopoverTrigger>
-                                        <PopoverContent className="w-32 bg-gray-900 border-gray-800 text-gray-200 shadow-xl">
-                                            <div onClick={()=> navigate(`/admin/companies/${job._id}`)} className='flex items-center gap-2 w-full cursor-pointer hover:bg-gray-800 p-2 rounded-md transition-colors'>
-                                                <Edit2 className='w-4 text-indigo-400' />
-                                                <span>Edit</span>
-                                            </div>
-                                            <div onClick={()=> navigate(`/admin/jobs/${job._id}/applicants`)} className='flex items-center w-full gap-2 cursor-pointer mt-1 hover:bg-gray-800 p-2 rounded-md transition-colors'>
-                                                <Eye className='w-4 text-indigo-400'/>
-                                                <span>Applicants</span>
-                                            </div>
-                                        </PopoverContent>
-                                    </Popover>
+                        (!filterJobs || filterJobs.length === 0) ? (
+                            <TableRow>
+                                <TableCell colSpan={4} className="h-24 text-center text-gray-500">
+                                    No jobs posted yet.
                                 </TableCell>
                             </TableRow>
+                        ) : (
+                            filterJobs?.map((job) => (
+                                <TableRow key={job._id} className="border-gray-800 hover:bg-gray-800/50 text-gray-200">
+                                    <TableCell>{job?.company?.name}</TableCell>
+                                    <TableCell>{job?.title}</TableCell>
+                                    <TableCell>{job?.createdAt?.split("T")[0] || "N/A"}</TableCell>
+                                    <TableCell className="text-right cursor-pointer">
+                                        <Popover>
+                                            <PopoverTrigger><MoreHorizontal className="text-gray-400 hover:text-white transition-colors" /></PopoverTrigger>
+                                            <PopoverContent className="w-32 bg-gray-900 border-gray-800 text-gray-200 shadow-xl">
+                                                <div onClick={()=> navigate(`/recruiter/companies/${job._id}`)} className='flex items-center gap-2 w-full cursor-pointer hover:bg-gray-800 p-2 rounded-md transition-colors'>
+                                                    <Edit2 className='w-4 text-indigo-400' />
+                                                    <span>Edit</span>
+                                                </div>
+                                                <div onClick={()=> navigate(`/recruiter/jobs/${job._id}/applicants`)} className='flex items-center w-full gap-2 cursor-pointer mt-1 hover:bg-gray-800 p-2 rounded-md transition-colors'>
+                                                    <Eye className='w-4 text-indigo-400'/>
+                                                    <span>Applicants</span>
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </TableCell>
+                                </TableRow>
 
-                        ))
+                            ))
+                        )
                     }
                 </TableBody>
             </Table>

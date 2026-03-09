@@ -14,7 +14,7 @@ const CustomTooltip = (props) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
-      <div className="bg-gray-800 border border-gray-700 p-4 rounded-xl shadow-xl backdrop-blur-sm">
+      <div className="bg-[#09090b] border border-slate-800 p-4 rounded-xl shadow-xl backdrop-blur-sm">
         <p className="text-gray-300 text-sm mb-1">{data.fullDateStr}</p>
         <p className="text-indigo-400 font-bold text-lg mb-1">
           Score: {payload[0].value}%
@@ -58,7 +58,7 @@ const ProgressGraph = ({ reports }) => {
   }
 
   return (
-    <div className="bg-gray-900/40 border border-gray-800/80 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl backdrop-blur-md transition-all hover:bg-gray-900/50">
+    <div className="bg-[#111b27]/40 border border-slate-800 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl backdrop-blur-md transition-all hover:bg-[#111b27]/60">
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end">
         <div>
           <h2 className="text-2xl font-bold text-gray-100 flex items-center gap-2">

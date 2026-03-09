@@ -18,11 +18,13 @@ const cors = require("cors");
 const questionRouter = require("./routes/questionRoutes");
 const errorsController = require("./controllers/errors");
 
+const authRoutes = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
 const reportRouter = require("./routes/reportRoutes");
 const youtubeRouter = require("./routes/youtubeRoutes");
 const adminRouter = require("./routes/adminRoutes");
 const dashboardRouter = require("./routes/dashboardRoutes");
+const chatRouter = require("./routes/chatRoutes");
 const leaderboardRoutes = require("./routes/leaderboardRoutes");
 const resumeAnalyzerRoutes = require("./routes/resumeAnalyzerRoutes");
 const jobTrackerRoutes = require("./routes/jobTrackerRoutes");
@@ -37,34 +39,49 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://inter-view-swart.vercel.app"], // Allow specific origins
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://inter-view-swart.vercel.app"], // Allow specific origins
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   }),
 ); // CORS should also run before the routers
 
+app.use((req, res, next) => {
+  console.log("[GLOBAL LOG]", req.method, req.originalUrl || req.url);
+  next();
+});
+
 const companyRouter = require("./routes/company.route");
 const jobBoardRouter = require("./routes/job.route");
 const applicationRouter = require("./routes/application.route");
 
-app.use("/api/v1/questions", questionRouter);
-app.use("/api/v1/interview", reportRouter);
-app.use("/api/v1/auth", userRouter);
-app.use("/api/v1/youtube", youtubeRouter);
-app.use("/api/v1/admin", adminRouter);
-app.use("/api/v1/dashboard", dashboardRouter);
-app.use("/api/v1/leaderboard", leaderboardRoutes);
-app.use("/api/v1/resume", resumeAnalyzerRoutes);
-app.use("/api/v1/job-tracker", jobTrackerRoutes);
+app.use("/questions", questionRouter);
+app.use("/interview", reportRouter);
+app.use("/auth", (req, res, next) => { console.log("HIT API V1 AUTH", req.method, req.url); next(); }, authRoutes);
+app.use("/youtube", youtubeRouter);
+app.use("/admin", adminRouter);
+app.use("/dashboard", dashboardRouter);
+app.use("/leaderboard", leaderboardRoutes);
+app.use("/resume", resumeAnalyzerRoutes);
+app.use("/job-tracker", jobTrackerRoutes);
+app.use("/chat", chatRouter);
 
 // Job Board Routes
-app.use("/api/v1/user", userRouter); // Alias for Job Board Auth
-app.use("/api/v1/company", companyRouter);
-app.use("/api/v1/job", jobBoardRouter);
-app.use("/api/v1/application", applicationRouter);
+app.use("/user", userRouter); // Alias for Job Board Auth
+app.use("/company", companyRouter);
+app.use("/job", jobBoardRouter);
+app.use("/application", applicationRouter);
 
 app.use(errorsController.pageNotFound);
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("Global Error:", err.stack);
+  res.status(500).json({
+    success: false,
+    message: err.message || "Internal Server Error"
+  });
+});
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL;

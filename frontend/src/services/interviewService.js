@@ -1,9 +1,9 @@
 // frontend/src/services/interviewService.js
-import { BACKEND_API_BASE_URL, API_ENDPOINTS } from "../constants";
+import { API_BASE_URL, API_ENDPOINTS } from "../constants";
 
 // Helper function to send multipart form data (required for file upload)
 export async function startInterview(formData) {
-  const url = `${BACKEND_API_BASE_URL}${API_ENDPOINTS.INTERVIEW.START}`;
+  const url = `${API_BASE_URL}${API_ENDPOINTS.INTERVIEW.START}`;
 
   // Note: We use raw fetch here and DON'T set Content-Type for FormData
   const response = await fetch(url, {
@@ -26,7 +26,7 @@ export async function startInterview(formData) {
 
 // Sends the final report structure (questions + answers) for grading
 export async function endInterview(reportPayload) {
-  const url = `${BACKEND_API_BASE_URL}${API_ENDPOINTS.INTERVIEW.END}`;
+  const url = `${API_BASE_URL}${API_ENDPOINTS.INTERVIEW.END}`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -49,7 +49,7 @@ export async function endInterview(reportPayload) {
 
 // Fetches the final graded report
 export async function fetchReport(reportId) {
-  const url = `${BACKEND_API_BASE_URL}${API_ENDPOINTS.INTERVIEW.GET_REPORT}/${reportId}`;
+  const url = `${API_BASE_URL}${API_ENDPOINTS.INTERVIEW.GET_REPORT}/${reportId}`;
 
   const response = await fetch(url, {
     method: "GET",
@@ -68,7 +68,7 @@ export async function fetchReport(reportId) {
 
 // Fetches all reports for the logged-in user
 export async function getUserReports() {
-  const url = `${BACKEND_API_BASE_URL}/api/v1/interview/user`;
+  const url = `${API_BASE_URL}/interview/user`;
 
   const response = await fetch(url, {
     method: "GET",

@@ -4,19 +4,17 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { MoreHorizontal } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { toast } from 'sonner';
-import { APPLICATION_API_END_POINT } from '@/utils/constant';
-import axios from 'axios';
+import { updateStatus } from '../../services/applicationServices';
 
 const shortlistingStatus = ["Accepted", "Rejected"];
 
 const ApplicantsTable = () => {
-    const { applicants } = useSelector(store => store.application);
+    const { applicants } = useSelector(/** @type {any} */ (store) => store.application || {});
 
     const statusHandler = async (status, id) => {
         console.log('called');
         try {
-            axios.defaults.withCredentials = true;
-            const res = await axios.post(`${APPLICATION_API_END_POINT}/status/${id}/update`, { status });
+            const res = await updateStatus(id, status);
             console.log(res);
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -62,7 +60,7 @@ const ApplicantsTable = () => {
                                             {
                                                 shortlistingStatus.map((status, index) => {
                                                     return (
-                                                        <div onClick={() => statusHandler(status, item?._id)} key={index} className='flex w-full items-center my-1 p-2 hover:bg-gray-800 rounded-md transition-colors cursor-pointer'>
+                                                        <div onClick={() => statusHandler(status, item?._id)} key={status} className='flex w-full items-center my-1 p-2 hover:bg-gray-800 rounded-md transition-colors cursor-pointer'>
                                                             <span>{status}</span>
                                                         </div>
                                                     )

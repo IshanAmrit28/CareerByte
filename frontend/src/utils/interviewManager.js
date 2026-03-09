@@ -3,7 +3,7 @@
  * Ported from TalentScout-Hiring-Assistant Python implementation
  */
 
-import axios from 'axios';
+import api from '../services/api';
 import { API_BASE_URL } from '../constants';
 
 // Conversation States
@@ -95,7 +95,7 @@ export class CandidateInfo {
 // Interview Manager Class
 export class InterviewManager {
     constructor() {
-        this.apiUrl = `${API_BASE_URL}/api/v1/interview/generate-content`;
+        this.apiUrl = `${API_BASE_URL}/interview/generate-content`;
         this.state = ConversationState.GREETING
         this.candidate = new CandidateInfo()
         this.conversationHistory = []
@@ -119,11 +119,9 @@ export class InterviewManager {
 
     async generateContent(prompt) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.post(
+            const response = await api.post(
                 this.apiUrl, 
-                { prompt }, 
-                { headers: { Authorization: `Bearer ${token}` } }
+                { prompt }
             );
             return response.data.text;
         } catch (error) {

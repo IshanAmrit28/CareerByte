@@ -10,7 +10,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
-// POST /api/v1/resume/analyze
+// POST /resume/analyze
 // Protected route: user must be logged in
 router.post("/analyze", protect, upload.single("resume"), analyzeResumeContent);
 

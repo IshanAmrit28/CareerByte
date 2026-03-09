@@ -7,52 +7,30 @@ import {
 import { useEffect } from "react";
 
 import AnimatedBackground from "./components/AnimatedBackground";
-
 import { AuthProvider } from "./context/AuthContext";
+
+import Forbidden from "./pages/Forbidden";
+
+import CandidateLayout from "./layouts/CandidateLayout";
+import RecruiterLayout from "./layouts/RecruiterLayout";
+import AdminLayout from "./layouts/AdminLayout";
+
+import CandidateRoutes from "./routes/CandidateRoutes";
+import RecruiterRoutes from "./routes/RecruiterRoutes";
+import AdminRoutes from "./routes/AdminRoutes";
+
+import Landing from "./pages/candidate/Landing";
+import Login from "./pages/candidate/Login";
+import Signup from "./pages/candidate/Signup";
+
+import Dashboard from "./pages/candidate/Home";
+import Profile from "./pages/candidate/UserDashboard";
+import Jobs from "./pages/candidate/Jobs";
+import Roadmap from "./pages/candidate/Roadmap";
 import ProtectedRoute from "./components/ProtectedRoute";
-
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Home from "./pages/Home";
-import Notes from "./pages/Notes";
-import Chat from "./pages/Chat";
-import Quiz from "./pages/Quiz";
-import StudyPlan from "./pages/StudyPlan";
-import TopicDetail from "./pages/TopicDetail";
-import Roadmap from "./pages/Roadmap";
-import ResumeAnalyzer from "./pages/ResumeAnalyzer";
-import JobTracker from "./pages/JobTracker";
-import CodingPractice from "./pages/CodingPractice";
-import VideoFeed from "./pages/VideoFeed";
-import PracticeSetup from "./components/PracticeSetup";
-import InterviewDashboard from "./pages/InterviewDashboard";
-import InterviewRoom from "./pages/Interview";
-import Report from "./pages/Report";
-import UserDashboard from "./pages/UserDashboard";
-import PublicProfile from "./pages/PublicProfile";
-import ProfileEdit from "./pages/ProfileEdit";
-import Leaderboard from "./pages/Leaderboard";
-import AdminLogin from "./pages/AdminLogin";
-import AdminSignup from "./pages/AdminSignup";
-import AdminDashboard from "./pages/AdminDashboard";
-import AppliedJobsPage from "./pages/AppliedJobsPage";
-
-// Job Board Imports
-import Jobs from './components/Jobs';
-import JobDescription from './components/JobDescription';
-import Companies from './components/recruiter/Companies';
-import CompanyCreate from './components/recruiter/CompanyCreate';
-import CompanySetup from './components/recruiter/CompanySetup';
-import AdminJobs from "./components/recruiter/RecruiterJobs";
-import PostJob from './components/recruiter/PostJob';
-import Applicants from './components/recruiter/Applicants';
-import JobboardProtectedRoute from './components/recruiter/ProtectedRoute';
+import NotFound from "./components/NotFound";
 
 import "./Appmain.css";
-
-import CandidateLayout from "./components/CandidateLayout";
-import RecruiterLayout from "./components/recruiter/RecruiterLayout";
 
 function AppContent() {
   const location = useLocation();
@@ -87,51 +65,38 @@ function AppContent() {
         }}
       >
         <Routes>
-          {/* Candidate Layout - Restrict access to candidates only */}
+          {/* Public Auth & Landing Routes (In Candidate Layout natively but outside /candidate path) */}
           <Route element={<CandidateLayout />}>
-            {/* Public / Auth (Candidate layout handles hiding the navbar for these natively) */}
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/signup" element={<AdminSignup />} />
-            <Route path="/dashboard" element={<ProtectedRoute allowedRoles={["candidate"]}><Home /></ProtectedRoute>} />
-            <Route path="/notes" element={<ProtectedRoute allowedRoles={["candidate"]}><Notes /></ProtectedRoute>} />
-            <Route path="/chat" element={<ProtectedRoute allowedRoles={["candidate"]}><Chat /></ProtectedRoute>} />
-            <Route path="/quiz" element={<ProtectedRoute allowedRoles={["candidate"]}><Quiz /></ProtectedRoute>} />
-            <Route path="/study-plan" element={<ProtectedRoute allowedRoles={["candidate"]}><StudyPlan /></ProtectedRoute>} />
-            <Route path="/topic/:topicId" element={<ProtectedRoute allowedRoles={["candidate"]}><TopicDetail /></ProtectedRoute>} />
-            <Route path="/practice" element={<ProtectedRoute allowedRoles={["candidate"]}><InterviewDashboard /></ProtectedRoute>} />
-            <Route path="/practice-setup" element={<ProtectedRoute allowedRoles={["candidate"]}><PracticeSetup /></ProtectedRoute>} />
-            <Route path="/interview" element={<ProtectedRoute allowedRoles={["candidate"]}><InterviewRoom /></ProtectedRoute>} />
-            <Route path="/report/:reportId" element={<ProtectedRoute allowedRoles={["candidate"]}><Report /></ProtectedRoute>} />
-            <Route path="/roadmap" element={<ProtectedRoute allowedRoles={["candidate"]}><Roadmap /></ProtectedRoute>} />
-            <Route path="/resume-analyzer" element={<ProtectedRoute allowedRoles={["candidate"]}><ResumeAnalyzer /></ProtectedRoute>} />
-            <Route path="/job-tracker" element={<ProtectedRoute allowedRoles={["candidate"]}><JobTracker /></ProtectedRoute>} />
-            <Route path="/coding-practice" element={<ProtectedRoute allowedRoles={["candidate"]}><CodingPractice /></ProtectedRoute>} />
-            <Route path="/video-feed" element={<ProtectedRoute allowedRoles={["candidate"]}><VideoFeed /></ProtectedRoute>} />
-            <Route path="/profile" element={<ProtectedRoute allowedRoles={["candidate"]}><UserDashboard /></ProtectedRoute>} />
-            <Route path="/profile/edit" element={<ProtectedRoute allowedRoles={["candidate"]}><ProfileEdit /></ProtectedRoute>} />
-            <Route path="/profile/:id" element={<ProtectedRoute allowedRoles={["candidate"]}><PublicProfile /></ProtectedRoute>} />
-            <Route path="/applied-jobs" element={<ProtectedRoute allowedRoles={["candidate"]}><AppliedJobsPage /></ProtectedRoute>} />
-            <Route path="/leaderboard" element={<ProtectedRoute allowedRoles={["candidate"]}><Leaderboard /></ProtectedRoute>} />
-            <Route path="/jobs" element={<ProtectedRoute allowedRoles={["candidate"]}><Jobs /></ProtectedRoute>} />
-            <Route path="/description/:id" element={<ProtectedRoute allowedRoles={["candidate"]}><JobDescription /></ProtectedRoute>} />
+            {/* Candidate Role Protected Routes */}
+            <Route path="/candidate/*" element={<CandidateRoutes />} />
+            
+            {/* Explicit core roots as requested */}
+            <Route element={<ProtectedRoute allowedRoles={["candidate"]} />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/jobs" element={<Jobs />} />
+              <Route path="/roadmap" element={<Roadmap />} />
+            </Route>
+
           </Route>
 
-          {/* Recruiter Layout */}
+          {/* Fallback & Forbidden */}
+          <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="*" element={<NotFound />} />
+
+          {/* Recruiter Role Nested Routes */}
           <Route path="/recruiter" element={<RecruiterLayout />}>
-            <Route path="companies" element={<JobboardProtectedRoute><Companies/></JobboardProtectedRoute>} />
-            <Route path="companies/create" element={<JobboardProtectedRoute><CompanyCreate/></JobboardProtectedRoute>} />
-            <Route path="companies/:id" element={<JobboardProtectedRoute><CompanySetup/></JobboardProtectedRoute>} />
-            <Route path="jobs" element={<JobboardProtectedRoute><AdminJobs/></JobboardProtectedRoute>} />
-            <Route path="jobs/create" element={<JobboardProtectedRoute><PostJob/></JobboardProtectedRoute>} />
-            <Route path="jobs/:id/applicants" element={<JobboardProtectedRoute><Applicants/></JobboardProtectedRoute>} />
+            <Route path="*" element={<RecruiterRoutes />} />
           </Route>
 
-          {/* Admin Routes - Left untouched aside from keeping them accessible */}
-          <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
+          {/* Admin Role Nested Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="*" element={<AdminRoutes />} />
+          </Route>
         </Routes>
       </div>
     </div>
