@@ -29,7 +29,7 @@ function Navbar() {
     { name: "Jobs", path: "/candidate/jobs" },
     { name: "AI Chat", path: "/candidate/chat" },
     { name: "Interview", path: "/candidate/practice" },
-    { name: "Roadmap", path: "/candidate/roadmap" },
+    { name: "Coding", path: "/candidate/coding-problems" },
     { name: "Video Feed", path: "/candidate/video-feed" },
     { name: "Notes", path: "/candidate/notes" },
     { name: "Quiz", path: "/candidate/quiz" },

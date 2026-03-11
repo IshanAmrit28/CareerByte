@@ -50,10 +50,10 @@ function Home() {
       gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
     },
     {
-      title: 'Learning Roadmap',
-      desc: 'Follow structured paths designed for your role',
+      title: 'Coding Challenges',
+      desc: 'Solve high-impact DSA problems in our browser editor',
       icon: <Target size={28} />,
-      link: '/candidate/roadmap',
+      link: '/candidate/coding-problems',
       color: 'orange',
       gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
     }

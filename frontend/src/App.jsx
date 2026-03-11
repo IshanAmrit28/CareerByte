@@ -26,7 +26,6 @@ import Signup from "./pages/candidate/Signup";
 import Dashboard from "./pages/candidate/Home";
 import Profile from "./pages/candidate/UserDashboard";
 import Jobs from "./pages/candidate/Jobs";
-import Roadmap from "./pages/candidate/Roadmap";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
 
@@ -79,7 +78,6 @@ function AppContent() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/jobs" element={<Jobs />} />
-              <Route path="/roadmap" element={<Roadmap />} />
             </Route>
           </Route>
 

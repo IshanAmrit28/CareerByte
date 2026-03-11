@@ -20,6 +20,8 @@ const jobTrackerRoutes = require("./routes/jobTrackerRoutes");
 const companyRouter = require("./routes/company.route");
 const jobBoardRouter = require("./routes/job.route");
 const applicationRouter = require("./routes/application.route");
+const codingProblemRouter = require("./routes/codingProblem.route");
+const executionRouter = require("./routes/execution.route");
 const errorsController = require("./controllers/errors");
 
 // FATAL STARTUP VALIDATION
@@ -70,6 +72,8 @@ app.use("/leaderboard", leaderboardRoutes);
 app.use("/resume", resumeAnalyzerRoutes);
 app.use("/job-tracker", jobTrackerRoutes);
 app.use("/chat", chatRouter);
+app.use("/coding-problems", codingProblemRouter);
+app.use("/execute", executionRouter);
 
 // ERROR HANDLING
 app.use(errorsController.pageNotFound);

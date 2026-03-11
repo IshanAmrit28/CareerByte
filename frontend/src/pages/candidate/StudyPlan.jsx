@@ -91,7 +91,7 @@ function StudyPlan() {
                         />
 
                         <Button variant="primary" size="large" onClick={handleGenerate} disabled={!role}>
-                            Generate Roadmap <ArrowRight size={18} />
+                            Generate Study Plan <ArrowRight size={18} />
                         </Button>
                     </div>
                 </div>
@@ -149,7 +149,7 @@ function StudyPlan() {
                                 Need a different plan?
                             </p>
                             <Button variant="ghost" onClick={() => setGenerated(false)}>
-                                Regenerate Roadmap
+                                Regenerate Study Plan
                             </Button>
                         </div>
                     </div>

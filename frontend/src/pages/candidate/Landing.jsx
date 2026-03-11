@@ -45,7 +45,7 @@ function Landing() {
                     </h1>
 
                     <p className="hero-description-modern">
-                        Stop guessing what they'll ask. InterVerse provides AI-driven mock interviews, role-specific roadmaps, and curated coding challenges to land your dream role in tech.
+                        Stop guessing what they'll ask. InterVerse provides AI-driven mock interviews, interactive coding challenges, and a smart study system to land your dream role in tech.
                     </p>
 
                     <div className="hero-actions">
@@ -53,9 +53,9 @@ function Landing() {
                             Start Practicing Free
                             <ArrowRight size={20} className="btn-icon-right" />
                         </button>
-                        <Link to="/candidate/roadmap" className="btn-modern btn-outline-glass">
-                            <Target size={20} className="btn-icon-left" />
-                            Explore Roadmaps
+                        <Link to="/candidate/coding-problems" className="btn-modern btn-outline-glass">
+                            <Code size={20} className="btn-icon-left" />
+                            Solve Problems
                         </Link>
                     </div>
 
@@ -116,8 +116,8 @@ function Landing() {
                                 <div className="bento-icon-wrapper" style={{background: 'var(--bento-path-color)'}}>
                                     <Target size={24} />
                                 </div>
-                                <h3>Role Roadmaps</h3>
-                                <p>Step-by-step guides from beginner to expert.</p>
+                                <h3>Dynamic Study Plans</h3>
+                                <p>Custom learning paths based on your performance.</p>
                             </div>
                             <div className="bento-visual visual-path"></div>
                         </div>
