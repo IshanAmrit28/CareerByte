@@ -3,11 +3,11 @@ const mongoose = require("mongoose");
 const testCaseSchema = new mongoose.Schema({
     input: {
         type: String,
-        required: true
+        default: ""
     },
     expectedOutput: {
         type: String,
-        required: true
+        required: [true, 'Expected output is required']
     },
     isHidden: {
         type: Boolean,
@@ -38,6 +38,7 @@ const codingProblemSchema = new mongoose.Schema({
         type: Number,
         default: 256 // in MB
     },
+    tags: [String],
     templates: {
         cpp: {
             type: String,

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, Play, Send, Settings, Book, Terminal, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 import ProblemPanel from '../../components/coding/ProblemPanel';
 import CodeEditor from '../../components/coding/CodeEditor';
@@ -19,6 +20,8 @@ const CodingInterface = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [error, setError] = useState(null);
     const [theme, setTheme] = useState('vs-dark');
+    const [customInput, setCustomInput] = useState('');
+    const [useCustomInput, setUseCustomInput] = useState(false);
 
     // Load problem and initial code
     useEffect(() => {
@@ -61,7 +64,7 @@ const CodingInterface = () => {
         setResults(null);
         setError(null);
         try {
-            const data = await codingService.runCode(problemId, language, code);
+            const data = await codingService.runCode(problemId, language, code, useCustomInput ? customInput : null);
             setResults(data.results);
             if (data.results.every(r => r.status === 'Accepted')) {
                 toast.success("Sample test cases passed!");
@@ -156,31 +159,68 @@ const CodingInterface = () => {
             </header>
 
             {/* Main Content Area */}
-            <main className="flex-1 flex overflow-hidden">
-                {/* Left: Problem Panel */}
-                <div className="w-[40%] h-full shrink-0">
-                    <ProblemPanel problem={problem} />
-                </div>
+            <main className="flex-1 overflow-hidden">
+                <PanelGroup direction="horizontal" className="h-full w-full">
+                    {/* Left: Problem Panel */}
+                    <Panel defaultSize={40} minSize={20} className="h-full flex flex-col min-h-0">
+                        <ProblemPanel problem={problem} />
+                    </Panel>
 
-                {/* Right: Editor and Console */}
-                <div className="flex-1 flex flex-col min-w-0 bg-[#1e1e1e]">
-                    <div className="flex-1 overflow-hidden">
-                        <CodeEditor 
-                            language={language}
-                            value={code}
-                            onChange={setCode}
-                            theme={theme}
-                        />
-                    </div>
-                    
-                    <div className="h-[30%] shrink-0">
-                        <ConsolePanel 
-                            results={results}
-                            isRunning={isRunning}
-                            error={error}
-                        />
-                    </div>
-                </div>
+                    <PanelResizeHandle className="w-1.5 bg-gray-200 dark:bg-gray-800 hover:bg-blue-500 transition-colors cursor-col-resize relative flex flex-col justify-center items-center z-10 group">
+                        <div className="w-0.5 h-8 bg-gray-400 dark:bg-gray-500 rounded group-hover:bg-white transition-colors"></div>
+                    </PanelResizeHandle>
+
+                    {/* Right: Editor and Console */}
+                    <Panel defaultSize={60} minSize={30} className="h-full flex flex-col min-w-0 bg-[#1e1e1e]">
+                        <PanelGroup direction="vertical" className="h-full w-full">
+                            
+                            {/* Top Right: Code Editor */}
+                            <Panel defaultSize={70} minSize={20} className="flex flex-col min-h-0">
+                                <CodeEditor 
+                                    language={language}
+                                    value={code}
+                                    onChange={setCode}
+                                    theme={theme}
+                                />
+                            </Panel>
+
+                            <PanelResizeHandle className="h-1.5 bg-gray-200 dark:bg-gray-800 hover:bg-blue-500 transition-colors cursor-row-resize relative flex justify-center items-center z-10 group">
+                                <div className="h-0.5 w-8 bg-gray-400 dark:bg-gray-500 rounded group-hover:bg-white transition-colors"></div>
+                            </PanelResizeHandle>
+
+                            {/* Bottom Right: Console Panel */}
+                            <Panel defaultSize={30} minSize={10} className="flex flex-col min-h-0">
+                                <div className="px-4 py-1.5 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-800 flex items-center gap-4 shrink-0">
+                                    <label className="flex items-center gap-2 text-xs font-semibold text-gray-600 dark:text-gray-400 cursor-pointer">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={useCustomInput} 
+                                            onChange={(e) => setUseCustomInput(e.target.checked)}
+                                            className="rounded border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-blue-600 focus:ring-blue-500"
+                                        />
+                                        Custom Input
+                                    </label>
+                                    {useCustomInput && (
+                                        <textarea 
+                                            value={customInput}
+                                            onChange={(e) => setCustomInput(e.target.value)}
+                                            placeholder="Enter your custom input here..."
+                                            className="flex-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded px-2 py-1 text-xs font-mono outline-none focus:ring-1 focus:ring-blue-500 min-h-[24px] max-h-[100px]"
+                                            rows={1}
+                                        />
+                                    )}
+                                </div>
+                                <div className="flex-1 min-h-0 overflow-hidden">
+                                    <ConsolePanel 
+                                        results={results}
+                                        isRunning={isRunning}
+                                        error={error}
+                                    />
+                                </div>
+                            </Panel>
+                        </PanelGroup>
+                    </Panel>
+                </PanelGroup>
             </main>
             
             {/* Footer / Status Bar */}

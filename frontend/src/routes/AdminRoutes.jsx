@@ -9,6 +9,7 @@ import AdminCompanyCreate from "../pages/admin/AdminCompanyCreate";
 import AdminCompanySetup from "../pages/admin/AdminCompanySetup";
 import AdminUsers from "../pages/admin/AdminUsers";
 import AdminQuestions from "../pages/admin/AdminQuestions";
+import AdminCodingProblems from "../pages/admin/AdminCodingProblems";
 
 const AdminRoutes = () => {
   return (
@@ -34,11 +35,13 @@ const AdminRoutes = () => {
         <Route path="users" element={<AdminUsers />} />
         <Route path="questions" element={<AdminQuestions />} />
         <Route path="companies" element={<AdminCompanies />} />
+        <Route path="coding-problems" element={<AdminCodingProblems />} />
         
         {/* Support paths WITH 'dashboard' prefix as requested in point 2 */}
         <Route path="dashboard/users" element={<AdminUsers />} />
         <Route path="dashboard/questions" element={<AdminQuestions />} />
         <Route path="dashboard/companies" element={<AdminCompanies />} />
+        <Route path="dashboard/coding-problems" element={<AdminCodingProblems />} />
 
         {/* Action Routes */}
         <Route path="companies/create" element={<AdminCompanyCreate />} />

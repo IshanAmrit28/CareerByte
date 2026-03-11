@@ -5,7 +5,7 @@ const CodingProblem = require("../models/codingProblem");
  */
 const createProblem = async (req, res) => {
     try {
-        const { title, description, difficulty, timeLimit, memoryLimit, templates, testCases } = req.body;
+        const { title, description, difficulty, timeLimit, memoryLimit, tags, templates, testCases } = req.body;
         
         const problem = await CodingProblem.create({
             title,
@@ -13,6 +13,7 @@ const createProblem = async (req, res) => {
             difficulty,
             timeLimit,
             memoryLimit,
+            tags,
             templates,
             testCases,
             created_by: req.user._id

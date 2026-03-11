@@ -111,3 +111,40 @@ export const fetchAllQuestions = async () => {
     const data = await response.json();
     return { questions: data.data || [] };
 };
+
+// ==================== CODING PROBLEMS ====================
+
+export const fetchAllCodingProblems = async () => {
+  const response = await fetch(`${API_BASE_URL}/coding-problems`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to load coding problems");
+  }
+  return response.json();
+};
+
+export const createCodingProblem = async (problemData) => {
+  const response = await fetch(`${API_BASE_URL}/coding-problems`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(problemData),
+  });
+  if (!response.ok) {
+    const err = await response.json();
+    throw new Error(err.message || "Failed to create coding problem");
+  }
+  return response.json();
+};
+
+export const deleteCodingProblem = async (id) => {
+  const response = await fetch(`${API_BASE_URL}/coding-problems/${id}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete coding problem");
+  }
+  return response.json();
+};

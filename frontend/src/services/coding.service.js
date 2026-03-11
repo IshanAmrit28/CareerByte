@@ -9,8 +9,8 @@ const codingService = {
         const response = await api.get(`/coding-problems/${problemId}`);
         return response.data;
     },
-    runCode: async (problemId, language, code) => {
-        const response = await api.post("/execute/run", { problemId, language, code });
+    runCode: async (problemId, language, code, customInput) => {
+        const response = await api.post("/execute/run", { problemId, language, code, customInput });
         return response.data;
     },
     submitCode: async (problemId, language, code) => {
