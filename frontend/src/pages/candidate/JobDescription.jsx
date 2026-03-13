@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Badge } from '../../components/ui/badge'
 import { Button } from '../../components/ui/button'
 import { useNavigate, useParams } from 'react-router-dom';
-import { Play, ClipboardCheck, Briefcase } from 'lucide-react';
+import { Play, ClipboardCheck, Briefcase, ArrowLeft } from 'lucide-react';
 import { applyJob } from '../../services/applicationServices';
 import { getJobById } from '../../services/jobServices';
 import { setSingleJob } from '../../redux/jobSlice';
@@ -62,7 +62,20 @@ const JobDescription = ({ jobId: propJobId }) => {
     }
 
     return (
-        <div className='max-w-7xl mx-auto my-4 px-6 pb-20'>
+        <div className='min-h-screen bg-[#09090b] text-white pt-24 pb-20 px-4 md:px-8 font-sans overflow-x-hidden relative'>
+            <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 pointer-events-none" />
+
+            <div className='max-w-7xl mx-auto relative z-10'>
+            <Button 
+                onClick={() => navigate('/candidate/jobs')} 
+                variant="ghost" 
+                className="flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/50 mb-6 transition-all duration-300"
+            >
+                <ArrowLeft className="w-5 h-5" />
+                Back to Jobs
+            </Button>
+
             {/* Hero Section */}
             <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-8'>
                 <div>
@@ -174,6 +187,7 @@ const JobDescription = ({ jobId: propJobId }) => {
                 </div>
             </div>
         </div>
+    </div>
     )
 }
 

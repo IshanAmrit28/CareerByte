@@ -212,16 +212,26 @@ const DocumentViewer = ({ isOpen, onClose, fileUrl, fileName, fileType }) => {
                         )}
                     </div>
                     
-                    {/* Mobile Pagination */}
+                    {/* Pagination Floating Bar - Visible on all screens for convenience */}
                     {isPdf && !loading && !error && (
-                        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-6 py-3 flex items-center gap-6 shadow-2xl">
-                            <button onClick={() => changePage(-1)} disabled={pageNumber <= 1} className="disabled:opacity-20 text-white">
+                        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-md border border-white/10 rounded-full px-6 py-3 flex items-center gap-8 shadow-2xl z-[110] transition-all hover:bg-black/90 hover:border-white/20">
+                            <button 
+                                onClick={() => changePage(-1)} 
+                                disabled={pageNumber <= 1} 
+                                className="p-2 hover:bg-white/10 rounded-full disabled:opacity-20 text-white transition-colors cursor-pointer"
+                                title="Previous Page"
+                            >
                                 <ChevronLeft className="w-5 h-5" />
                             </button>
-                            <span className="text-white text-xs font-bold tabular-nums">
-                                {pageNumber} / {numPages}
+                            <span className="text-white text-xs font-bold tabular-nums min-w-[60px] text-center tracking-widest">
+                                {pageNumber} <span className="text-gray-500 mx-1">/</span> {numPages}
                             </span>
-                            <button onClick={() => changePage(1)} disabled={pageNumber >= numPages} className="disabled:opacity-20 text-white">
+                            <button 
+                                onClick={() => changePage(1)} 
+                                disabled={pageNumber >= numPages} 
+                                className="p-2 hover:bg-white/10 rounded-full disabled:opacity-20 text-white transition-colors cursor-pointer"
+                                title="Next Page"
+                            >
                                 <ChevronRight className="w-5 h-5" />
                             </button>
                         </div>

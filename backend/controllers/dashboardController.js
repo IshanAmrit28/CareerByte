@@ -222,68 +222,89 @@ exports.getDashboardData = async (req, res) => {
 // @desc    Get public profile data by User ID
 // @access  Private (Authenticated users can view others' profiles)
 exports.getPublicProfile = async (req, res) => {
+  console.log(`[DEBUG] getPublicProfile entered for userId: ${req.params.id}`);
   try {
     const userId = req.params.id;
+    if (!userId) {
+        return res.status(400).json({ success: false, message: "User ID is required" });
+    }
     
+    // Check if models are loaded
+    if (!User || !Report || !Submission || !CodingAssessmentReport || !UserContestRating) {
+        console.error("[DEBUG] One or more models are not defined!", {
+            User: !!User,
+            Report: !!Report,
+            Submission: !!Submission,
+            CodingAssessmentReport: !!CodingAssessmentReport,
+            UserContestRating: !!UserContestRating
+        });
+        throw new Error("One or more required models are missing in dashboardController");
+    }
+
     // Check if user exists and is a candidate
     const user = await User.findById(userId);
-    if (!user || user.userType !== 'candidate') {
+    if (!user) {
+      console.log(`[DEBUG] User not found for ID: ${userId}`);
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    if (user.userType !== 'candidate') {
+      console.log(`[DEBUG] User is not a candidate: ${user.userType}`);
       return res.status(404).json({ success: false, message: "Candidate profile not found" });
     }
 
-    // Fetch all reports for the user
-    const reports = await Report.find({ candidateId: userId }).sort({ createdAt: 1 });
-
-    // Fetch contest rating history
-    const contestHistory = await UserContestRating.find({ user: userId })
-        .populate('contest', 'title')
-        .sort({ createdAt: 1 });
+    // Fetch all required data
+    console.log("[DEBUG] Fetching dashboard data components...");
+    const [reports, contestHistory, acceptedSubmissions, assessments] = await Promise.all([
+        Report.find({ candidateId: userId }).sort({ createdAt: 1 }),
+        UserContestRating.find({ user: userId }).populate('contest', 'title').sort({ createdAt: 1 }),
+        Submission.find({ user: userId, status: "Accepted" }),
+        CodingAssessmentReport.find({ candidate: userId, status: "completed" })
+    ]);
+    console.log(`[DEBUG] Data fetched: reports(${reports.length}), contests(${contestHistory.length}), subs(${acceptedSubmissions.length}), assessments(${assessments.length})`);
     
     // Calculate global rankings
     const allRankings = await getGlobalRankings();
     const totalRankedUsers = allRankings.length;
     
-    // Find current user's rank
-    const userRankIndex = allRankings.findIndex(r => r.userId.toString() === userId.toString());
+    const userRankIndex = allRankings.findIndex(r => r.userId && r.userId.toString() === userId.toString());
     const rank = userRankIndex !== -1 ? userRankIndex + 1 : 0;
     const rating = userRankIndex !== -1 ? allRankings[userRankIndex].rating : 0;
     const percentile = totalRankedUsers > 1 && rank > 0
         ? Math.round(((totalRankedUsers - rank) / (totalRankedUsers - 1)) * 100) 
         : (rank === 1 ? 100 : 0);
 
-    // Format Heatmap Data (Aggregate activity from multiple sources)
+    // Format Heatmap Data
     const heatmapDataMap = {};
-    
-    // 1. Interview Reports
-    reports.forEach(report => {
-        const dateStr = formatDateYMD(report.createdAt);
+    reports.forEach(r => {
+        const dateStr = formatDateYMD(r.createdAt);
         if (dateStr) heatmapDataMap[dateStr] = (heatmapDataMap[dateStr] || 0) + 1;
     });
-
-    // 2. Normal Coding & Contest Submissions (Status: Accepted)
-    const acceptedSubmissions = await Submission.find({ user: userId, status: "Accepted" });
-    acceptedSubmissions.forEach(sub => {
-        const dateStr = formatDateYMD(sub.createdAt);
+    acceptedSubmissions.forEach(s => {
+        const dateStr = formatDateYMD(s.createdAt);
         if (dateStr) heatmapDataMap[dateStr] = (heatmapDataMap[dateStr] || 0) + 1;
     });
-
-    // 3. Coding Assessments
-    const assessments = await CodingAssessmentReport.find({ candidate: userId, status: "completed" });
-    assessments.forEach(ass => {
-        const dateStr = formatDateYMD(ass.submitTime || ass.createdAt);
+    assessments.forEach(a => {
+        const dateStr = formatDateYMD(a.submitTime || a.createdAt);
         if (dateStr) heatmapDataMap[dateStr] = (heatmapDataMap[dateStr] || 0) + 1;
     });
     
     const heatmapMapList = Object.keys(heatmapDataMap).map(date => ({
-        date: date,
+        date,
         count: heatmapDataMap[date]
     }));
+
+    // Collect activity dates
+    const activityDates = [
+        ...reports.map(r => r.createdAt),
+        ...acceptedSubmissions.map(s => s.createdAt),
+        ...assessments.map(a => a.submitTime || a.createdAt)
+    ].filter(Boolean); // Filter out any null/undefined dates
 
     // Aggregate Sector Scores
     let totalCoding = 0;
     let totalTechnical = 0;
     let totalHR = 0;
-    let reportCount = reports.length;
+    const reportCount = reports.length;
     let sectorScores = [];
 
     if (reportCount > 0) {
@@ -319,9 +340,7 @@ exports.getPublicProfile = async (req, res) => {
         });
     }
 
-    res.status(200).json({
-      success: true,
-      data: {
+    const responseData = {
         userName: user.userName,
         profilePhoto: user.profile ? user.profile.profilePhoto : "",
         bio: user.profile?.bio || "",
@@ -344,12 +363,22 @@ exports.getPublicProfile = async (req, res) => {
         })),
         isUnrated: (rating || 0) === 0,
         sectorScores: sectorScores
-        // Explicitly omitting `reports` to hide private interview details on the public profile
-      }
+    };
+
+    console.log("[DEBUG] Sending successful response for public profile");
+    res.status(200).json({
+      success: true,
+      data: responseData
     });
   } catch (error) {
-    console.error("Public Profile error:", error);
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    console.error("Public Profile error stack:", error.stack);
+    console.error("Public Profile error message:", error.message);
+    res.status(500).json({ 
+        success: false, 
+        message: "Server error", 
+        error: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
+    });
   }
 };
 

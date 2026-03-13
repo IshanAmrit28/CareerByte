@@ -13,8 +13,11 @@ const Jobs = () => {
     const { allJobs = [] } = useSelector(store => store.job || {});
 
     return (
-        <div className="min-h-screen bg-[#05080b]">
-            <div className='max-w-[1400px] mx-auto pt-8 pb-10 px-6'>
+        <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
+            <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            
+            <div className='max-w-[1400px] mx-auto relative z-10'>
                 <div className='flex flex-row gap-8'>
                     {/* Left Column: Filter (30%) */}
                     <div className='w-[30%] min-w-[280px] max-w-[350px] flex-shrink-0'>
@@ -55,4 +58,4 @@ const Jobs = () => {
     )
 }
 
-export default Jobs
+export default Jobs

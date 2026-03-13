@@ -23,7 +23,7 @@ export async function searchVideos(query, maxResults = 20) {
             });
 
             // Call the secure backend which houses the actual YOUTUBE_API_KEY
-            const response = await fetch(`${API_BASE_URL}/api/youtube/search?${searchParams.toString()}`, {
+            const response = await fetch(`${API_BASE_URL}/youtube/search?${searchParams.toString()}`, {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem('token')}`,
                 },
