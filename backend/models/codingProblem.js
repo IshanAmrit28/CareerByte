@@ -71,6 +71,10 @@ const codingProblemSchema = new mongoose.Schema({
         golang: {
             type: String,
             default: "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // solve here\n}"
+        },
+        c: {
+            type: String,
+            default: "#include <stdio.h>\n\nint main() {\n    // solve here\n    return 0;\n}"
         }
     },
     testCases: [testCaseSchema],

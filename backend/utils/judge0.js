@@ -10,7 +10,8 @@ const LANGUAGE_MAP = {
     "kotlin": 78,    // Kotlin (1.3.70)
     "php": 68,       // PHP (7.4.1)
     "perl": 72,      // Perl (5.28.1)
-    "golang": 60     // Go (1.13.5)
+    "golang": 60,    // Go (1.13.5)
+    "c": 50          // C (GCC 9.2.0)
 };
 
 /**

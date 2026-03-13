@@ -17,7 +17,8 @@ const defaultTemplates = {
     kotlin: "import java.util.*\n\nfun main(args: Array<String>) {\n    val sc = Scanner(System.`in`)\n    // solve here\n}",
     php: "<?php\n\n// solve here\n\n?>",
     perl: "use strict;\nuse warnings;\n\n# solve here\n",
-    golang: "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // solve here\n}"
+    golang: "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // solve here\n}",
+    c: "#include <stdio.h>\n\nint main() {\n    // solve here\n    return 0;\n}"
 };
 
 const CodingInterface = () => {
@@ -169,6 +170,7 @@ const CodingInterface = () => {
                         <option value="php">PHP</option>
                         <option value="perl">Perl</option>
                         <option value="golang">Go</option>
+                        <option value="c">C</option>
                     </select>
 
                     <select 
