@@ -193,7 +193,7 @@ const RecruiterAssessments = () => {
                             <div>
                                 <label className="block text-sm font-medium text-gray-400 mb-2">Select Questions</label>
                                 <QuestionSelector 
-                                    allProblems={allProblems.filter(p => p.visibilityStatus !== 'contest')}
+                                    allProblems={allProblems.filter(p => p.visibilityStatus === 'private')}
                                     selectedIds={newAssessment.questions}
                                     onSelect={(id) => setNewAssessment({
                                         ...newAssessment, 
