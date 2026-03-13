@@ -51,6 +51,26 @@ const codingProblemSchema = new mongoose.Schema({
         python: {
             type: String,
             default: "def solve():\n    # solve here\n    pass\n\nif __name__ == \"__main__\":\n    solve()"
+        },
+        javascript: {
+            type: String,
+            default: "function solve() {\n    // solve here\n}\n\nsolve();"
+        },
+        kotlin: {
+            type: String,
+            default: "import java.util.*\n\nfun main(args: Array<String>) {\n    val sc = Scanner(System.`in`)\n    // solve here\n}"
+        },
+        php: {
+            type: String,
+            default: "<?php\n\n// solve here\n\n?>"
+        },
+        perl: {
+            type: String,
+            default: "use strict;\nuse warnings;\n\n# solve here\n"
+        },
+        golang: {
+            type: String,
+            default: "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // solve here\n}"
         }
     },
     testCases: [testCaseSchema],

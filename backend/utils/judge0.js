@@ -5,7 +5,12 @@ const JUDGE0_URL = (process.env.JUDGE0_URL).trim().replace(/\/$/, "");
 const LANGUAGE_MAP = {
     "cpp": 54,    // C++ (GCC 9.2.0)
     "java": 62,   // Java (OpenJDK 13.0.1)
-    "python": 71  // Python (3.8.1)
+    "python": 71, // Python (3.8.1)
+    "javascript": 63, // JavaScript (Node.js 12.14.1)
+    "kotlin": 78,    // Kotlin (1.3.70)
+    "php": 68,       // PHP (7.4.1)
+    "perl": 72,      // Perl (5.28.1)
+    "golang": 60     // Go (1.13.5)
 };
 
 /**

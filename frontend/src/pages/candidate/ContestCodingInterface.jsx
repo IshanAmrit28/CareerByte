@@ -13,7 +13,12 @@ import api from '../../services/api';
 const defaultTemplates = {
     cpp: "#include <iostream>\n\nint main() {\n    // solve here\n    return 0;\n}",
     java: "import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // solve here\n    }\n}",
-    python: "def solve():\n    # solve here\n    pass\n\nif __name__ == \"__main__\":\n    solve()"
+    python: "def solve():\n    # solve here\n    pass\n\nif __name__ == \"__main__\":\n    solve()",
+    javascript: "function solve() {\n    // solve here\n}\n\nsolve();",
+    kotlin: "import java.util.*\n\nfun main(args: Array<String>) {\n    val sc = Scanner(System.`in`)\n    // solve here\n}",
+    php: "<?php\n\n// solve here\n\n?>" ,
+    perl: "use strict;\nuse warnings;\n\n# solve here\n",
+    golang: "package main\n\nimport \"fmt\"\n\nfunc main() {\n    // solve here\n}"
 };
 
 const ContestCodingInterface = () => {
@@ -96,6 +101,13 @@ const ContestCodingInterface = () => {
         };
         if (problemId) fetchProblem();
     }, [problemId, contestId, language]);
+
+    // Reset state when problem changes to prevent leakage
+    useEffect(() => {
+        setCode('');
+        setResults(null);
+        setError(null);
+    }, [problemId]);
 
     // Timer effect
     useEffect(() => {
@@ -299,6 +311,11 @@ const ContestCodingInterface = () => {
                         <option value="cpp">C++</option>
                         <option value="java">Java</option>
                         <option value="python">Python</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="kotlin">Kotlin</option>
+                        <option value="php">PHP</option>
+                        <option value="perl">Perl</option>
+                        <option value="golang">Go</option>
                     </select>
 
                     <div className="h-8 w-px bg-gray-800 mx-1" />
@@ -340,6 +357,7 @@ const ContestCodingInterface = () => {
                                 <PanelGroup direction="vertical" className="h-full w-full">
                                     <Panel defaultSize={70} className="h-full flex flex-col min-h-0">
                                         <CodeEditor 
+                                            key={`${problemId}-${language}`} // Force refresh to prevent sticky editor
                                             language={language}
                                             value={code}
                                             onChange={setCode}

@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Briefcase } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import AppliedJobTable from '../../components/AppliedJobTable';
+import useGetAppliedJobs from '../../hooks/useGetAppliedJobs';
 
 const AppliedJobsPage = () => {
+    useGetAppliedJobs();
     const navigate = useNavigate();
 
     return (

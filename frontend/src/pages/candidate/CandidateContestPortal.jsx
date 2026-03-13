@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { toast } from 'react-hot-toast';
-import { Clock, Trophy, AlertCircle, ArrowRight } from 'lucide-react';
+import { Clock, Trophy, AlertCircle, ArrowRight, X } from 'lucide-react';
 
 const CandidateContestPortal = () => {
     const { contestId } = useParams();
@@ -68,13 +68,22 @@ const CandidateContestPortal = () => {
 
     return (
         <div className="min-h-screen bg-[#09090b] text-white flex items-center justify-center p-6 pt-24">
-            <div className="max-w-3xl w-full bg-gray-900/60 border border-gray-800 rounded-3xl p-10 backdrop-blur-md shadow-2xl">
-                <div className="flex justify-between items-start mb-8">
+            <div className="relative max-w-3xl w-full bg-gray-900/60 border border-gray-800 rounded-3xl p-10 backdrop-blur-md shadow-2xl">
+                {/* Close Button */}
+                <button 
+                    onClick={() => navigate('/candidate/contests')}
+                    className="absolute top-6 left-6 p-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-gray-700"
+                    title="Back to contests"
+                >
+                    <X size={20} />
+                </button>
+
+                <div className="flex justify-between items-start mb-8 pl-12">
                     <div>
                         <h1 className="text-4xl font-extrabold mb-2">{contest?.title}</h1>
                         <p className="text-gray-400">{contest?.description}</p>
                     </div>
-                    <div className="p-4 bg-indigo-500/10 rounded-2xl">
+                    <div className="p-4 bg-indigo-500/10 rounded-2xl shrink-0">
                         <Trophy className="text-indigo-500 w-8 h-8" />
                     </div>
                 </div>
