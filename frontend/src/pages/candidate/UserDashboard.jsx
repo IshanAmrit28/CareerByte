@@ -342,11 +342,11 @@ const UserDashboard = () => {
                  </button>
               </div>
 
-              <div className="flex-grow overflow-y-auto custom-scrollbar p-3 space-y-1">
+              <div className="flex-grow overflow-y-auto custom-scrollbar p-3 space-y-1 max-h-[420px]">
                   {leaderboardError ? (
                      <div className="text-red-400 p-6 text-center text-xs">{leaderboardError}</div>
                   ) : (
-                     leaderboardData.leaderboard.slice(0, 5).map((u) => {
+                     leaderboardData.leaderboard.slice(0, 10).map((u) => {
                         const isCurrentUser = user && u.email === user.email;
                         return (
                           <div 
@@ -446,8 +446,8 @@ const UserDashboard = () => {
         </div>
 
         {/* --- BOTTOM SECTION: FULL WIDTH ACTIVITY GRID --- */}
-        <div className="bg-[#111b27]/40 border border-slate-800 rounded-3xl p-6 md:p-8 backdrop-blur-md shadow-xl overflow-hidden">
-           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 border-b border-white/5 pb-6">
+        <div className="bg-[#111b27]/40 border border-slate-800 rounded-3xl p-4 md:p-6 lg:p-8 backdrop-blur-md shadow-xl overflow-hidden overflow-x-auto">
+           <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4 border-b border-white/5 pb-6 min-w-max">
               <div className="flex items-center gap-3">
                  <CalendarIcon className="w-5 h-5 text-pink-400" />
                  <div>
@@ -457,7 +457,7 @@ const UserDashboard = () => {
               </div>
            </div>
 
-           <div className="w-full flex justify-center py-4">
+           <div className="w-full flex justify-start md:justify-center py-4 min-w-[600px] overflow-x-auto">
               <div className="w-full max-w-[1240px] heatmap-stretched-wrapper">
                  <div className="text-xs">
                     <CalendarHeatmap

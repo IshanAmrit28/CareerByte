@@ -48,8 +48,8 @@ const RecruiterLogin = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white px-4 font-sans relative overflow-hidden">
       <AnimatedBackground />
-      <div className="flex flex-row items-center bg-black/60 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl max-w-6xl w-full border border-blue-500/30 relative z-10">
-        <div className="w-1/2 flex flex-col justify-center px-16 py-16 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 bg-black/60 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl max-w-6xl w-full border border-blue-500/30 relative z-10">
+        <div className="flex flex-col justify-center px-6 md:px-16 py-12 md:py-16 items-center">
           <div className="mb-6 bg-blue-600 p-4 rounded-2xl shadow-lg shadow-blue-900/40">
             <Briefcase size={40} className="text-white" />
           </div>
@@ -118,18 +118,20 @@ const RecruiterLogin = () => {
           </div>
         </div>
 
-        <div className="w-1/2 bg-blue-900/20 rounded-3xl overflow-hidden h-[600px] relative flex items-center justify-center m-4 ml-0 border border-blue-500/10">
-          <img
-            src="https://images.unsplash.com/photo-1521737706645-51cbd6612014?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
-            alt="Recruitment Team"
-            className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-          <div className="absolute bottom-8 left-8 right-8 bg-black/60 backdrop-blur-md rounded-2xl p-6 border border-white/10">
-            <h2 className="text-xl font-bold mb-2 text-blue-400">Streamline Hiring</h2>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Access centralized recruitment tools, manage team applications, and find the perfect fit for your company with our multi-tenant recruiter dashboard.
-            </p>
+        <div className="hidden md:flex p-4">
+          <div className="w-full h-full bg-blue-900/20 rounded-2xl overflow-hidden relative flex items-center justify-center border border-blue-500/10 text-white min-h-[500px]">
+            <img
+              src="https://images.unsplash.com/photo-1521737706645-51cbd6612014?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+              alt="Recruitment Team"
+              className="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            <div className="absolute bottom-8 left-8 right-8 bg-black/60 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+              <h2 className="text-xl font-bold mb-2 text-blue-400">Streamline Hiring</h2>
+              <p className="text-sm text-gray-300 leading-relaxed">
+                Access centralized recruitment tools, manage team applications, and find the perfect fit for your company with our multi-tenant recruiter dashboard.
+              </p>
+            </div>
           </div>
         </div>
       </div>

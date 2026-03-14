@@ -5,6 +5,8 @@ const UserContestRating = require("../models/userContestRating.model");
 const User = require("../models/user");
 const Submission = require("../models/submission");
 
+const { performVisibilityCleanup } = require("../utils/cleanupTask");
+
 exports.createContest = async (req, res) => {
     try {
         const { title, description, startTime, endTime, questions } = req.body;
@@ -51,6 +53,7 @@ exports.createContest = async (req, res) => {
 
 exports.getAllContests = async (req, res) => {
     try {
+        await performVisibilityCleanup();
         const contests = await Contest.find().populate('questions', 'title difficulty tags');
         res.status(200).json({
             success: true,
@@ -67,6 +70,7 @@ exports.getAllContests = async (req, res) => {
 
 exports.getVisibleContests = async (req, res) => {
     try {
+        await performVisibilityCleanup();
         // Only return contests that have started or are upcoming
         // For candidates, we might want to hide questions until start time
         const now = new Date();
@@ -213,28 +217,21 @@ exports.getMyContestSubmissions = async (req, res) => {
     }
 };
 
-exports.finalizeContest = async (req, res) => {
-    try {
-        const contest = await Contest.findById(req.params.id);
-        if (!contest) {
-            return res.status(404).json({ success: false, message: "Contest not found" });
-        }
+exports.internalFinalizeContest = async (contestId, alpha = 1) => {
+    const contest = await Contest.findById(contestId);
+    if (!contest) throw new Error("Contest not found");
+    if (contest.isFinalized) return { success: true, message: "Contest already finalized" };
 
-        // Get all rankings for this contest
-        const rankings = await ContestRanking.find({ contest: contest._id })
-            .sort({ totalPoints: -1, totalTime: 1 });
+    // Get all rankings for this contest
+    const rankings = await ContestRanking.find({ contest: contest._id })
+        .sort({ totalPoints: -1, totalTime: 1 });
 
-        if (rankings.length === 0) {
-            return res.status(200).json({ success: true, message: "No participants to rank" });
-        }
-
+    if (rankings.length > 0) {
         const totalParticipants = rankings.length;
-        const alpha = req.body.alpha || 1;
 
         // Calculate and save ratings for each participant
         const ratingPromises = rankings.map(async (rankData, index) => {
             const rank = index + 1;
-            // rating = 1000 * Math.pow((totalParticipants - rank + 1) / totalParticipants, alpha);
             const rating = 1000 * Math.pow((totalParticipants - rank + 1) / totalParticipants, alpha);
 
             // Save per-contest rating
@@ -245,7 +242,6 @@ exports.finalizeContest = async (req, res) => {
             );
 
             // Update user's global rating
-            // Here we use the average of all their contest ratings
             const userRatings = await UserContestRating.find({ user: rankData.user });
             const totalRatingSum = userRatings.reduce((sum, r) => sum + r.rating, 0);
             const averageRating = totalRatingSum / userRatings.length;
@@ -254,13 +250,30 @@ exports.finalizeContest = async (req, res) => {
         });
 
         await Promise.all(ratingPromises);
+    }
 
-        res.status(200).json({
-            success: true,
-            message: "Contest finalized and ratings updated"
-        });
+    // Make all questions public
+    if (contest.questions && contest.questions.length > 0) {
+        await CodingProblem.updateMany(
+            { _id: { $in: contest.questions }, visibilityStatus: 'contest' },
+            { visibilityStatus: 'public' }
+        );
+        console.log(`[CONTEST] Questions from contest "${contest.title}" are now public.`);
+    }
+
+    // Mark contest as finalized
+    contest.isFinalized = true;
+    await contest.save();
+
+    return { success: true, message: "Contest finalized and ratings updated" };
+};
+
+exports.finalizeContest = async (req, res) => {
+    try {
+        const result = await exports.internalFinalizeContest(req.params.id, req.body.alpha);
+        res.status(200).json(result);
     } catch (error) {
         console.error("FINALIZE_CONTEST_ERROR:", error);
-        res.status(500).json({ success: false, message: "Internal server error" });
+        res.status(500).json({ success: false, message: error.message || "Internal server error" });
     }
 };

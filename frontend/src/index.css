@@ -218,9 +218,23 @@ body {
 
 /* Layout Utilities included in index for global use */
 .app-container {
-  max-width: var(--max-width);
+  max-width: 1280px; /* max-w-7xl approx */
   margin: 0 auto;
-  padding: var(--sp-8) var(--sp-6) 0 var(--sp-6);
+  padding: var(--sp-8) 1rem 0 1rem; /* px-4 */
+}
+
+@media (min-width: 640px) {
+  .app-container {
+    padding-left: 1.5rem; /* sm:px-6 */
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    padding-left: 2rem; /* lg:px-8 */
+    padding-right: 2rem;
+  }
 }
 
 .page-header {
@@ -335,6 +349,11 @@ button {
 }
 
 /* Enhanced Responsive Utilities */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
 @media (max-width: 1200px) {
   :root {
     --max-width: 100%;
@@ -342,9 +361,11 @@ button {
     --sp-10: 32px;
     --sp-12: 40px;
   }
+}
 
-  .app-container {
-    padding: 0 var(--sp-4);
+@media (max-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -356,26 +377,25 @@ button {
   }
 
   body {
-    font-size: 13px;
-  }
-
-  .app-container {
-    padding: 0 var(--sp-3);
+    font-size: 14px; /* text-sm equivalent */
   }
 
   .page-header {
     padding: var(--sp-6) 0 var(--sp-4) 0;
   }
 
-  .page-title {
-    font-size: 20px;
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .grid-2,
-  .grid-3,
-  .grid-4 {
+  .grid-2 {
     grid-template-columns: 1fr;
-    gap: var(--sp-3);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -385,20 +405,8 @@ button {
     --sp-6: 16px;
   }
 
-  body {
-    font-size: 12px;
-  }
-
-  .app-container {
-    padding: 0 12px;
-  }
-
-  .page-title {
-    font-size: 18px;
-  }
-
   .dense-card {
-    padding: 12px;
+    padding: 16px;
   }
 }
 

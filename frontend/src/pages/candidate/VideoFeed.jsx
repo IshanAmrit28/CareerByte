@@ -43,10 +43,10 @@ function VideoFeed() {
     };
 
     return (
-        <div className="video-feed-page">
+        <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
             <AnimatedBackground />
 
-            <div className="video-feed-container">
+            <div className="max-w-7xl mx-auto relative z-10 w-full">
                 {/* Header Section */}
                 <div className="video-feed-header">
                     <div className="header-content">

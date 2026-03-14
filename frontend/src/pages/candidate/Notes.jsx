@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Folder, Search, FileText, Download, ExternalLink } from 'lucide-react'
-import { pdfNotes, categories, searchNotes, getNotesByCategory } from '../../data/notesData'
+import { Search, FileText, Download, ExternalLink } from 'lucide-react'
+import { pdfNotes, searchNotes } from '../../data/notesData'
 import DocumentViewer from '../../components/shared/DocumentViewer'
 
 import './Notes.css'
 
 function Notes() {
-    const [activeCategory, setActiveCategory] = useState('All')
     const [searchQuery, setSearchQuery] = useState('')
     const [viewerOpen, setViewerOpen] = useState(false);
     const [selectedNote, setSelectedNote] = useState(null);
@@ -19,33 +18,15 @@ function Notes() {
 
     const displayedNotes = searchQuery
         ? searchNotes(searchQuery)
-        : getNotesByCategory(activeCategory)
+        : pdfNotes
 
     return (
-        <div className="app-container">
-
-            <div className="notes-layout">
-
-                {/* Sidebar */}
-                <div className="notes-sidebar">
-                    <div style={{ marginBottom: 16, padding: '0 8px', fontWeight: 600, fontSize: 11, color: 'var(--text-faint)', letterSpacing: '0.05em' }}>
-                        CATEGORIES
-                    </div>
-                    {categories.map(cat => (
-                        <button
-                            key={cat}
-                            className={`category-btn ${activeCategory === cat ? 'active' : ''}`}
-                            onClick={() => { setActiveCategory(cat); setSearchQuery('') }}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <Folder size={14} /> {cat}
-                            </div>
-                            <span className="count-badge">
-                                {cat === 'All' ? pdfNotes.length : pdfNotes.filter(n => n.category === cat).length}
-                            </span>
-                        </button>
-                    ))}
-                </div>
+        <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
+            <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            
+            <div className="max-w-[1440px] mx-auto relative z-10 w-full">
+                <div className="notes-layout">
 
                 {/* Main Content */}
                 <div className="notes-content">
@@ -55,7 +36,7 @@ function Notes() {
                         <Search size={16} color="var(--text-muted)" />
                         <input
                             type="text"
-                            placeholder="Search by title, category, or tags..."
+                            placeholder="Search by title or tags..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             style={{ border: 'none', background: 'transparent', width: '100%', fontSize: 14, outline: 'none', color: 'var(--text-main)' }}
@@ -65,7 +46,6 @@ function Notes() {
                     {/* Stats */}
                     <div style={{ marginBottom: 20, fontSize: 13, color: 'var(--text-muted)' }}>
                         Showing <strong>{displayedNotes.length}</strong> {displayedNotes.length === 1 ? 'resource' : 'resources'}
-                        {activeCategory !== 'All' && ` in ${activeCategory}`}
                     </div>
 
                     {/* Grid */}
@@ -90,7 +70,6 @@ function Notes() {
                                         <div style={{ flexGrow: 1, minWidth: 0 }}>
                                             <h3 style={{ margin: '0 0 4px 0', fontSize: 15, lineHeight: 1.3 }}>{note.title}</h3>
                                             <div className="note-meta">
-                                                <span className="badge badge-blue">{note.category}</span>
                                                 <span className={`badge badge-${note.difficulty === 'Hard' ? 'orange' : note.difficulty === 'Medium' ? 'purple' : 'green'}`}>
                                                     {note.difficulty}
                                                 </span>
@@ -138,6 +117,7 @@ function Notes() {
                 fileUrl={selectedNote ? encodeURI(`/PLACEMENT NOTES/${selectedNote.fileName}`) : ''}
                 fileName={selectedNote?.title}
             />
+        </div>
         </div>
     )
 }

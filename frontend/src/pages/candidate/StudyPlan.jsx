@@ -52,14 +52,17 @@ function StudyPlan() {
     const currentPlan = ROLE_PLANS[role] || ROLE_PLANS['SDE-1']
 
     return (
-        <div className="app-container">
-
+        <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
+            <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            
+            <div className="max-w-[1440px] mx-auto relative z-10 w-full">
 
             {/* Input Section */}
             {!generated ? (
-                <div style={{ maxWidth: 600, margin: '0 auto' }}>
-                    <div className="dense-card" style={{ padding: 40 }}>
-                        <h3 style={{ margin: '0 0 16px 0', fontSize: 16 }}>Select your target role</h3>
+                <div className="max-w-[600px] mx-auto w-full">
+                    <div className="dense-card p-6 md:p-10 w-full bg-[#111b27] border border-slate-800 rounded-3xl backdrop-blur-md shadow-xl">
+                        <h3 className="mb-4 text-lg font-bold">Select your target role</h3>
 
                         <div className="plan-selector">
                             {Object.keys(ROLE_PLANS).map(r => (
@@ -96,11 +99,11 @@ function StudyPlan() {
                     </div>
                 </div>
             ) : (
-                <div style={{ maxWidth: 900, margin: '0 auto' }}>
-                    <div className="dense-card" style={{ padding: 40 }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 32 }}>
+                <div className="max-w-4xl mx-auto w-full">
+                    <div className="dense-card p-6 md:p-10 bg-[#111b27] border border-slate-800 rounded-3xl backdrop-blur-md shadow-xl">
+                        <div className="flex flex-col md:flex-row justify-between items-start mb-8 gap-4">
                             <div>
-                                <h2 style={{ fontSize: 20, margin: '0 0 8px 0', color: 'var(--text-main)' }}>
+                                <h2 className="text-xl md:text-2xl font-bold mb-2">
                                     {role} Preparation Plan
                                 </h2>
                                 <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text-muted)' }}>
@@ -155,6 +158,7 @@ function StudyPlan() {
                     </div>
                 </div>
             )}
+        </div>
         </div>
     )
 }

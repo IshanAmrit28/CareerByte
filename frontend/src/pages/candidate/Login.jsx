@@ -43,10 +43,10 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white px-4 font-sans min-w-[1024px]">
-      <div className="flex flex-row items-center bg-black rounded-3xl overflow-hidden shadow-2xl max-w-6xl w-full border border-gray-800">
+    <div className="min-h-screen flex items-center justify-center text-white px-4 font-sans py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 bg-black rounded-3xl overflow-hidden shadow-2xl max-w-6xl w-full border border-gray-800">
         {/* Left Form Section */}
-        <div className="w-1/2 flex flex-col justify-center px-16 py-16 items-center">
+        <div className="flex flex-col justify-center px-6 md:px-16 py-12 md:py-16 items-center">
           <h1 className="text-4xl font-semibold mb-10 text-center">Login</h1>
 
           {error && (
@@ -175,7 +175,8 @@ const Login = () => {
         </div>
 
         {/* Right Image Section */}
-        <div className="w-1/2 bg-[#d3c5a6] rounded-3xl overflow-hidden h-[600px] relative flex items-center justify-center m-4 ml-0">
+        <div className="hidden md:flex p-4">
+          <div className="w-full h-full bg-[#d3c5a6] rounded-2xl overflow-hidden relative flex items-center justify-center min-h-[500px]">
           <div className="absolute inset-0 flex items-center justify-center">
             <img
               src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
@@ -194,7 +195,8 @@ const Login = () => {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default Login;

@@ -41,11 +41,16 @@ const createProblem = async (req, res) => {
     }
 };
 
+const { performVisibilityCleanup } = require("../utils/cleanupTask");
+
 /**
  * Get all coding problems
  */
 const getAllProblems = async (req, res) => {
     try {
+        // Just-In-Time visibility update for ended contests/assessments
+        await performVisibilityCleanup();
+
         const userType = (req.user.userType || "").toLowerCase().trim();
         let query = { visibilityStatus: "public" };
 

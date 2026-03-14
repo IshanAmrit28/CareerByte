@@ -67,12 +67,15 @@ function Quiz() {
     const currentQ = questions[currentQuestionIdx]
 
     return (
-        <div className="app-container">
-
+        <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
+            <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 pointer-events-none" />
+            
+            <div className="max-w-[1440px] mx-auto relative z-10 w-full">
 
             {/* Topic Selection */}
             {!activeTopic && (
-                <div className="grid-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {quizTopics.map(topic => (
                         <div key={topic.id} className="dense-card" style={{ cursor: 'pointer', transition: 'all 0.2s' }} onClick={() => handleStartQuiz(topic.id)}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
@@ -92,9 +95,9 @@ function Quiz() {
 
             {/* Quiz Interface */}
             {activeTopic && !quizFinished && currentQ && (
-                <div style={{ maxWidth: 800, margin: '0 auto' }}>
+                <div className="max-w-3xl mx-auto w-full">
                     {/* Progress Bar */}
-                    <div style={{ marginBottom: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div className="mb-6 flex items-center gap-3">
                         <Button variant="ghost" size="small" onClick={() => setActiveTopic(null)}>Exit</Button>
                         <div style={{ flexGrow: 1, height: 4, background: 'var(--border-main)', borderRadius: 2 }}>
                             <div style={{ width: `${((currentQuestionIdx) / questions.length) * 100}%`, height: '100%', background: 'var(--primary)', borderRadius: 2 }}></div>
@@ -104,9 +107,9 @@ function Quiz() {
                         </span>
                     </div>
 
-                    <div className="dense-card" style={{ padding: 40 }}>
-                        <span className="badge badge-blue" style={{ marginBottom: 16 }}>{quizTopics.find(t => t.id === activeTopic)?.name}</span>
-                        <h2 style={{ fontSize: 20, lineHeight: 1.5, marginBottom: 32, marginTop: 12 }}>{currentQ.question}</h2>
+                    <div className="dense-card p-6 md:p-10 bg-[#111b27] border border-slate-800 rounded-3xl backdrop-blur-md w-full">
+                        <span className="badge badge-blue mb-4">{quizTopics.find(t => t.id === activeTopic)?.name}</span>
+                        <h2 className="text-xl leading-relaxed mb-8 mt-3 font-bold">{currentQ.question}</h2>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                             {currentQ.options.map((opt, idx) => {
@@ -180,8 +183,8 @@ function Quiz() {
 
             {/* Results */}
             {quizFinished && (
-                <div style={{ maxWidth: 500, margin: '40px auto', textAlign: 'center' }}>
-                    <div className="dense-card" style={{ padding: 40 }}>
+                <div className="max-w-xl mx-auto mt-10 text-center w-full">
+                    <div className="dense-card p-6 md:p-10 bg-[#111b27] border border-slate-800 rounded-3xl backdrop-blur-md w-full">
                         <div style={{ width: 64, height: 64, background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px auto' }}>
                             <CheckCircle size={32} />
                         </div>
@@ -194,6 +197,7 @@ function Quiz() {
                 </div>
             )}
 
+        </div>
         </div>
     )
 }

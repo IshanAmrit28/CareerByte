@@ -65,11 +65,11 @@ const Leaderboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans relative">
+    <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
       <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none" />
       <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[120px] pointer-events-none" />
       
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-7xl mx-auto relative z-10 w-full">
          <button 
            onClick={() => navigate('/candidate/profile')} 
            className="flex items-center gap-2 text-gray-400 hover:text-indigo-400 transition-all group mb-8 w-fit bg-white/5 px-4 py-2 rounded-xl border border-white/10 hover:border-indigo-500/30 shadow-lg"

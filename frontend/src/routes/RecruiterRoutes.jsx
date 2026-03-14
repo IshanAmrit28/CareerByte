@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
+import DesktopOnlyRoute from "../components/DesktopOnlyRoute";
 
 import RecruiterDashboard from "../pages/recruiter/RecruiterDashboard";
 import AdminJobs from "../pages/recruiter/RecruiterJobs";
@@ -17,13 +18,16 @@ const RecruiterRoutes = () => {
     <Routes>
       <Route path="login" element={<RecruiterLogin />} />
       <Route path="signup" element={<RecruiterSignup />} />
-      <Route path="dashboard" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterDashboard /></ProtectedRoute>} />
-      <Route path="jobs" element={<ProtectedRoute allowedRoles={["recruiter"]}><AdminJobs /></ProtectedRoute>} />
-      <Route path="jobs/create" element={<ProtectedRoute allowedRoles={["recruiter"]}><PostJob /></ProtectedRoute>} />
-      <Route path="jobs/:id/applicants" element={<ProtectedRoute allowedRoles={["recruiter"]}><Applicants /></ProtectedRoute>} />
-      <Route path="assessments" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterAssessments /></ProtectedRoute>} />
-      <Route path="assessments/:assessmentId/reports" element={<ProtectedRoute allowedRoles={["recruiter"]}><AssessmentReports /></ProtectedRoute>} />
-      <Route path="questions" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterQuestions /></ProtectedRoute>} />
+      
+      <Route element={<DesktopOnlyRoute />}>
+        <Route path="dashboard" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterDashboard /></ProtectedRoute>} />
+        <Route path="jobs" element={<ProtectedRoute allowedRoles={["recruiter"]}><AdminJobs /></ProtectedRoute>} />
+        <Route path="jobs/create" element={<ProtectedRoute allowedRoles={["recruiter"]}><PostJob /></ProtectedRoute>} />
+        <Route path="jobs/:id/applicants" element={<ProtectedRoute allowedRoles={["recruiter"]}><Applicants /></ProtectedRoute>} />
+        <Route path="assessments" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterAssessments /></ProtectedRoute>} />
+        <Route path="assessments/:assessmentId/reports" element={<ProtectedRoute allowedRoles={["recruiter"]}><AssessmentReports /></ProtectedRoute>} />
+        <Route path="questions" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterQuestions /></ProtectedRoute>} />
+      </Route>
     </Routes>
   );
 };

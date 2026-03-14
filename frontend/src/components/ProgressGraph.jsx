@@ -35,9 +35,11 @@ const CustomTooltip = (props) => {
 
 const ProgressGraph = ({ reports, contestHistory, currentRating, variant = "card", hideHeader = false }) => {
   const data = useMemo(() => {
+    let history = [];
+
     // If contest history is available, prioritize it (overall rating)
     if (contestHistory && contestHistory.length > 0) {
-      return contestHistory.map(entry => {
+      history = contestHistory.map(entry => {
         const date = new Date(entry.date);
         return {
           dateStr: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
@@ -51,43 +53,76 @@ const ProgressGraph = ({ reports, contestHistory, currentRating, variant = "card
           score: entry.rating || 0,
           rank: entry.rank,
           contest: entry.contestTitle || "Contest",
-          type: "Contest"
+          type: "Contest",
+          timestamp: date.getTime()
         };
       });
+
+      // Sort by timestamp
+      history.sort((a, b) => a.timestamp - b.timestamp);
+
+      // Prepend a 0-rating start point
+      if (history.length > 0) {
+        const firstDate = new Date(history[0].timestamp);
+        const startDate = new Date(firstDate);
+        startDate.setDate(firstDate.getDate() - 7); // 1 week before first contest
+
+        history.unshift({
+          dateStr: "Start",
+          fullDateStr: "Beginning of Journey",
+          score: 0,
+          contest: "Initial Rating",
+          type: "Contest",
+          timestamp: startDate.getTime()
+        });
+      }
+    } else if (currentRating > 0) {
+        // Synthesize a starting point if no history but rating exists
+        history = [
+            {
+                dateStr: "Start",
+                fullDateStr: "Beginning of Journey",
+                score: 0,
+                type: "Contest"
+            },
+            {
+                dateStr: "Now",
+                fullDateStr: "Current Performance Rating",
+                score: currentRating,
+                contest: "Latest Assessment",
+                type: "Contest"
+            }
+        ];
+    } else if (reports && reports.length > 0) {
+        // Fallback to interview reports
+        const sorted = [...reports].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        history = sorted.map(report => {
+            const date = new Date(report.createdAt);
+            return {
+                dateStr: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+                fullDateStr: date.toLocaleDateString("en-US", { 
+                    year: "numeric", 
+                    month: "short", 
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }),
+                score: report.overallScore ?? report.reportStructure?.overallScore ?? 0,
+                role: report.role || "Interview",
+                type: "Interview"
+            };
+        });
+
+        // Prepend 0 for interviews too
+        history.unshift({
+            dateStr: "Start",
+            fullDateStr: "Initial Assessment",
+            score: 0,
+            type: "Interview"
+        });
     }
 
-    // Synthesize a starting point if no history but rating exists
-    if ((!contestHistory || contestHistory.length === 0) && currentRating > 0) {
-        return [{
-            dateStr: "Initial",
-            fullDateStr: "Base Performance Rating",
-            score: currentRating,
-            contest: "Initial Rating",
-            type: "Contest"
-        }];
-    }
-
-    if (!reports || reports.length === 0) return [];
-    
-    // Fallback to mock interview reports (only if explicitly passed in other views like InterviewDashboard)
-    const sorted = [...reports].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    
-    return sorted.map(report => {
-      const date = new Date(report.createdAt);
-      return {
-        dateStr: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-        fullDateStr: date.toLocaleDateString("en-US", { 
-          year: "numeric", 
-          month: "short", 
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit"
-        }),
-        score: report.overallScore ?? report.reportStructure?.overallScore ?? 0,
-        role: report.role || "Interview",
-        type: "Interview"
-      };
-    });
+    return history;
   }, [reports, contestHistory, currentRating]);
 
   if (!data || data.length === 0) {
@@ -98,16 +133,8 @@ const ProgressGraph = ({ reports, contestHistory, currentRating, variant = "card
     );
   }
 
-  const getTierColor = (score) => {
-    if (score >= 2000) return "#facc15"; // Gold
-    if (score >= 1800) return "#c084fc"; // Purple
-    if (score >= 1500) return "#60a5fa"; // Blue
-    if (score >= 1200) return "#34d399"; // Emerald
-    return "#818cf8"; // Indigo (Default)
-  };
-
   const latestScore = data[data.length - 1].score;
-  const tierColor = data[0].type === 'Contest' ? getTierColor(latestScore) : "#818cf8";
+  const themeColor = "#818cf8"; // Consistent Indigo theme
 
   return (
     <div className={variant === "card" ? "bg-[#111b27]/40 border border-slate-800 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl backdrop-blur-md transition-all hover:bg-[#111b27]/60" : "w-full h-full"}>
@@ -115,29 +142,15 @@ const ProgressGraph = ({ reports, contestHistory, currentRating, variant = "card
         <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
             <h2 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
-              Performance Journey
+              Rating History
             </h2>
             <p className="text-gray-400 text-sm mt-1">
-              {data[0]?.type === 'Contest' ? 'CareerByte Rating progress through contests' : 'Interview performance progression'}
+              Your performance progression over time
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex items-center gap-3">
-              <div className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest border transition-all duration-500`}
-                   style={{ 
-                      backgroundColor: `${tierColor}10`,
-                      borderColor: `${tierColor}30`,
-                      color: tierColor,
-                      boxShadow: `0 0 15px ${tierColor}15`
-                   }}>
-                  {data[0].type === 'Contest' ? (
-                      latestScore >= 2000 ? 'Master' :
-                      latestScore >= 1800 ? 'Expert' :
-                      latestScore >= 1500 ? 'Knight' :
-                      latestScore >= 1200 ? 'Specialist' : 'Newbie'
-                  ) : 'Progress'}
-              </div>
               <div className="px-4 py-1.5 bg-gray-800/40 rounded-full border border-gray-700 text-gray-100 text-sm font-bold">
-                  {data[0].type === 'Contest' ? latestScore.toFixed(1) : `${latestScore}%`}
+                  {data[0]?.type === 'Contest' ? `Rating: ${latestScore.toFixed(0)}` : `Score: ${latestScore}%`}
               </div>
           </div>
         </div>
@@ -148,11 +161,11 @@ const ProgressGraph = ({ reports, contestHistory, currentRating, variant = "card
             <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={tierColor} stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor={tierColor} stopOpacity={0}/>
+                  <stop offset="5%" stopColor={themeColor} stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor={themeColor} stopOpacity={0}/>
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} opacity={0.1} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} opacity={0.2} />
               <XAxis 
                 dataKey="dateStr" 
                 stroke="#6b7280" 
@@ -166,24 +179,24 @@ const ProgressGraph = ({ reports, contestHistory, currentRating, variant = "card
                 fontSize={11} 
                 tickLine={false} 
                 axisLine={false}
-                domain={data[0]?.type === 'Contest' ? ['dataMin - 100', 'dataMax + 100'] : [0, 100]}
+                domain={[0, (dataMax) => Math.max(dataMax + 100, 1000)]}
                 tickFormatter={(value) => data[0]?.type === 'Contest' ? value.toFixed(0) : `${value}%`}
               />
               <RechartsTooltip 
                 content={CustomTooltip} 
-                cursor={{ stroke: tierColor, strokeWidth: 1, strokeDasharray: '4 4' }} 
+                cursor={{ stroke: themeColor, strokeWidth: 1, strokeDasharray: '4 4' }} 
               />
               <Area 
-                type="monotone" 
+                type="linear" 
                 dataKey="score" 
-                stroke={tierColor} 
+                stroke={themeColor} 
                 strokeWidth={4}
                 fillOpacity={1} 
                 fill="url(#scoreGradient)" 
-                dot={{ r: 4, fill: tierColor, strokeWidth: 2, stroke: "#111b27" }}
-                activeDot={{ r: 7, fill: tierColor, stroke: "#fff", strokeWidth: 2, className: "animate-pulse" }}
+                dot={{ r: 4, fill: themeColor, strokeWidth: 2, stroke: "#111b27" }}
+                activeDot={{ r: 7, fill: themeColor, stroke: "#fff", strokeWidth: 2, className: "animate-pulse" }}
                 animationDuration={2000}
-                style={{ filter: `drop-shadow(0 0 8px ${tierColor}40)` }}
+                style={{ filter: `drop-shadow(0 0 8px ${themeColor}40)` }}
               />
             </AreaChart>
           </ResponsiveContainer>

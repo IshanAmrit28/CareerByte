@@ -79,28 +79,28 @@ const JobDescription = ({ jobId: propJobId }) => {
             {/* Hero Section */}
             <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-8'>
                 <div>
-                    <h1 className='font-extrabold text-3xl text-white tracking-tight'>{singleJob?.title}</h1>
-                    <div className='flex flex-wrap items-center gap-3 mt-4'>
-                        <Badge className='bg-blue-500/10 text-blue-400 border-none px-3 py-1' variant="outline">{singleJob?.postion} Positions</Badge>
-                        <Badge className='bg-orange-500/10 text-orange-400 border-none px-3 py-1' variant="outline">{singleJob?.jobType}</Badge>
-                        <Badge className='bg-purple-500/10 text-purple-400 border-none px-3 py-1' variant="outline">{singleJob?.salary} LPA</Badge>
+                    <h1 className='font-extrabold text-2xl md:text-3xl text-white tracking-tight leading-tight'>{singleJob?.title}</h1>
+                    <div className='flex flex-wrap items-center gap-2 md:gap-3 mt-4'>
+                        <Badge className='bg-blue-500/10 text-blue-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.postion} Positions</Badge>
+                        <Badge className='bg-orange-500/10 text-orange-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.jobType}</Badge>
+                        <Badge className='bg-purple-500/10 text-purple-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.salary} LPA</Badge>
                     </div>
                 </div>
                 <Button
                     onClick={isApplied ? null : applyJobHandler}
                     disabled={isApplied}
-                    className={`rounded-xl px-8 h-12 text-md font-bold transition-all duration-300 ${isApplied ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20'}`}>
+                    className={`w-full md:w-auto mt-4 md:mt-0 rounded-xl px-8 h-12 text-md font-bold transition-all duration-300 ${isApplied ? 'bg-slate-800 text-slate-400 cursor-not-allowed border border-slate-700' : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20'}`}>
                     {isApplied ? 'Already Applied' : 'Apply Now'}
                 </Button>
             </div>
 
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10'>
-                <div className='lg:col-span-2 space-y-10'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 mt-8 md:mt-10'>
+                <div className='lg:col-span-2 space-y-8 md:space-y-10'>
                     {/* Information Grid */}
-                    <div className='grid grid-cols-2 md:grid-cols-3 gap-y-8 gap-x-4 bg-slate-900/40 p-8 rounded-3xl border border-slate-800/50'>
+                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-6 md:gap-y-8 gap-x-4 bg-slate-900/40 p-6 md:p-8 rounded-3xl border border-slate-800/50'>
                         <div className='space-y-1'>
                             <p className='text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider'>Role</p>
-                            <p className='text-slate-200 font-medium'>{singleJob?.title}</p>
+                            <p className='text-slate-200 font-medium break-words'>{singleJob?.title}</p>
                         </div>
                         <div className='space-y-1'>
                             <p className='text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider'>Experience</p>
@@ -108,7 +108,7 @@ const JobDescription = ({ jobId: propJobId }) => {
                         </div>
                         <div className='space-y-1'>
                             <p className='text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider'>Location</p>
-                            <p className='text-slate-200 font-medium'>{singleJob?.location || 'Remote/India'}</p>
+                            <p className='text-slate-200 font-medium break-words'>{singleJob?.location || 'Remote/India'}</p>
                         </div>
                         <div className='space-y-1'>
                             <p className='text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider'>Salary</p>
@@ -126,11 +126,11 @@ const JobDescription = ({ jobId: propJobId }) => {
 
                     {/* Job Description */}
                     <div className='space-y-4'>
-                        <h2 className='text-xl font-bold text-white flex items-center gap-2'>
-                            <div className='w-1.5 h-6 bg-blue-500 rounded-full'></div>
+                        <h2 className='text-lg md:text-xl font-bold text-white flex items-center gap-2'>
+                            <div className='w-1.5 h-5 md:h-6 bg-blue-500 rounded-full'></div>
                             Job Description
                         </h2>
-                        <div className='text-slate-300 leading-relaxed bg-[#111b27] p-8 rounded-3xl border border-slate-800 shadow-xl'>
+                        <div className='text-sm md:text-base text-slate-300 leading-relaxed bg-[#111b27] p-6 md:p-8 rounded-3xl border border-slate-800 shadow-xl overflow-x-hidden break-words'>
                             {singleJob?.description || "No description provided for this role."}
                         </div>
                     </div>

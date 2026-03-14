@@ -31,7 +31,6 @@
 
 /* Navigation Links Container */
 .navbar-nav {
-  display: flex;
   flex: 1; /* Allow nav to take remaining space */
   justify-content: center; /* Center the links */
   padding: 0 var(--sp-6);
@@ -78,7 +77,6 @@
 
 /* Actions Area */
 .navbar-actions {
-  display: flex;
   align-items: center;
   margin-left: auto; /* Push to the right if space exists */
 }

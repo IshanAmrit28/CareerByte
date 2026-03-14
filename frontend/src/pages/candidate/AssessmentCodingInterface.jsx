@@ -136,9 +136,89 @@ const AssessmentCodingInterface = () => {
         return `${h > 0 ? h + ':' : ''}${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
     };
 
-    const handleAutoSubmit = () => {
+    const handleAutoSubmit = async () => {
         toast.error("Time is up! Submitting your assessment...");
-        navigate('/candidate/applied-jobs');
+        await doFinalSubmission(true);
+    };
+
+    const doFinalSubmission = async (isAuto = false) => {
+        try {
+            const savedSubmissions = JSON.parse(localStorage.getItem(`assessment_${assessmentId}_submissions`) || '{}');
+            
+            // Proactively collect code for questions that haven't been "submitted" (test run) yet
+            if (assessment?.questions) {
+                assessment.questions.forEach(q => {
+                    if (!savedSubmissions[q._id]) {
+                        // Check for saved code in current language or any language
+                        const languages = ['cpp', 'java', 'python', 'javascript', 'kotlin', 'php', 'perl', 'golang', 'c'];
+                        let foundCode = "";
+                        let foundLang = language;
+
+                        // Try current language first
+                        const currentLangCode = localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_${language}`);
+                        if (currentLangCode) {
+                            foundCode = currentLangCode;
+                        } else {
+                            // Try others
+                            for (const lang of languages) {
+                                const c = localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_${lang}`);
+                                if (c) {
+                                    foundCode = c;
+                                    foundLang = lang;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (foundCode) {
+                            savedSubmissions[q._id] = {
+                                problemId: q._id,
+                                code: foundCode,
+                                language: foundLang,
+                                passedCases: 0,
+                                totalCases: 0
+                            };
+                        }
+                    }
+                });
+            }
+
+            const submissionsArray = Object.values(savedSubmissions);
+            
+            if (submissionsArray.length === 0 && !isAuto) {
+                if (!window.confirm("You haven't attempted any problems yet. Submit empty assessment?")) return;
+            }
+
+            const res = await api.post('/assessments/submit', {
+                assessmentId,
+                submissions: submissionsArray
+            });
+
+            if (res.data.success) {
+                toast.success("Assessment submitted successfully!");
+                // Clear all local storage for this assessment
+                localStorage.removeItem(`assessment_${assessmentId}_submissions`);
+                if (assessment?.questions) {
+                    assessment.questions.forEach(q => {
+                        const languages = ['cpp', 'java', 'python', 'javascript', 'kotlin', 'php', 'perl', 'golang', 'c'];
+                        languages.forEach(lang => {
+                            localStorage.removeItem(`assessment_${assessmentId}_code_${q._id}_${lang}`);
+                        });
+                    });
+                }
+                navigate('/candidate/applied-jobs');
+            } else {
+                toast.error(res.data.message || "Submission failed");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to submit final assessment");
+        }
+    };
+
+    const handleFinalSubmit = async () => {
+        if (!window.confirm("Are you sure you want to finish the assessment? This will submit all your solutions.")) return;
+        await doFinalSubmission();
     };
 
     const handleRun = async () => {
@@ -212,32 +292,7 @@ const AssessmentCodingInterface = () => {
         }
     };
 
-    const handleFinalSubmit = async () => {
-        if (!window.confirm("Are you sure you want to finish the assessment? This will submit all your solutions.")) return;
-        
-        try {
-            const savedSubmissions = JSON.parse(localStorage.getItem(`assessment_${assessmentId}_submissions`) || '{}');
-            const submissionsArray = Object.values(savedSubmissions);
-            
-            if (submissionsArray.length === 0) {
-                if (!window.confirm("You haven't submitted any problems yet. Submit empty assessment?")) return;
-            }
 
-            const res = await api.post('/assessments/submit', {
-                assessmentId,
-                submissions: submissionsArray
-            });
-
-            if (res.data.success) {
-                toast.success("Assessment submitted successfully!");
-                localStorage.removeItem(`assessment_${assessmentId}_submissions`);
-                navigate('/candidate/applied-jobs');
-            }
-        } catch (err) {
-            console.error(err);
-            toast.error("Failed to submit final assessment");
-        }
-    };
 
     if (loading || !assessment) return <div className="h-screen bg-[#0a0a0a] flex items-center justify-center font-bold text-indigo-500">Loading Environment...</div>;
 

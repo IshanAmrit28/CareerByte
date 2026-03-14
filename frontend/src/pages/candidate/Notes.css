@@ -1,15 +1,14 @@
 /* Notes Layout */
 .notes-layout {
     display: grid;
-    grid-template-columns: 240px 1fr;
-    /* Fixed Sidebar + Fluid Grid */
+    grid-template-columns: 1fr;
     gap: var(--sp-6);
     align-items: start;
 }
 
 @media (max-width: 1024px) {
     .notes-layout {
-        grid-template-columns: 200px 1fr;
+        grid-template-columns: 1fr;
         gap: var(--sp-4);
     }
 }
@@ -19,57 +18,11 @@
         grid-template-columns: 1fr;
         gap: var(--sp-3);
     }
-
-    .notes-sidebar {
-        position: static;
-        margin-bottom: var(--sp-4);
-    }
 }
 
-/* Sidebar */
-.notes-sidebar {
-    position: sticky;
-    top: 80px;
-    /* Below Navbar */
-    background: var(--bg-surface);
-    border: 1px solid var(--border-main);
-    border-radius: var(--radius-md);
-    padding: var(--sp-2);
-}
-
-.category-btn {
-    display: flex;
-    align-items: center;
+/* Main Content area stays fluid */
+.notes-content {
     width: 100%;
-    padding: var(--sp-3) var(--sp-4);
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    transition: all 0.2s;
-    justify-content: space-between;
-}
-
-.category-btn:hover {
-    background: var(--bg-subtle);
-    color: var(--text-main);
-}
-
-.category-btn.active {
-    background: var(--primary-light);
-    color: var(--primary);
-    font-weight: 600;
-}
-
-.count-badge {
-    background: var(--bg-inset);
-    padding: 1px 6px;
-    border-radius: 10px;
-    font-size: 10px;
-    color: var(--text-muted);
 }
 
 /* Note Cards Grid */
@@ -115,12 +68,6 @@
 .note-meta {
     display: flex;
     gap: 8px;
-    font-size: 12px;
-    color: var(--text-muted);
-}
-
-.note-footer p {
-    margin: 0;
     font-size: 12px;
     color: var(--text-muted);
 }
@@ -177,21 +124,6 @@
 .pdf-action-btn.secondary:hover {
     background: var(--bg-surface);
     border-color: var(--primary);
-}
-
-.note-desc {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: var(--sp-4);
-    flex-grow: 1;
-    /* Pushes footer down */
-}
-
-.note-footer {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
 }
 
 .tag-pill {

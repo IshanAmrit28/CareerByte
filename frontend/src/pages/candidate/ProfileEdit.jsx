@@ -363,7 +363,7 @@ const ProfileEdit = () => {
                  <label className="text-sm font-medium text-gray-300 flex items-center gap-2">
                     <FileText className="w-4 h-4 text-pink-400" /> Resume / CV (PDF)
                  </label>
-                 <div className="flex items-center gap-4">
+                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                     <input 
                       type="file" 
                       accept="application/pdf"
@@ -381,7 +381,7 @@ const ProfileEdit = () => {
                     {(user?.profile?.resume || input.resume) && (
                         <button 
                           onClick={openResume}
-                          className="bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 px-4 py-3 rounded-xl transition whitespace-nowrap border border-indigo-500/30 flex items-center gap-2 cursor-pointer"
+                          className="w-full sm:w-auto bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 px-4 py-3 rounded-xl transition whitespace-nowrap border border-indigo-500/30 flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <Eye className="w-4 h-4" />
                           View {input.resume ? 'New' : 'Current'}

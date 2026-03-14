@@ -85,17 +85,26 @@ const CandidateAssessmentPortal = () => {
 
         try {
             const submissions = [];
+            const languages = ['cpp', 'java', 'python', 'javascript', 'kotlin', 'php', 'perl', 'golang', 'c'];
+            
             for (const q of assessment.questions) {
-                const savedCode = localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_cpp`) || 
-                                   localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_java`) ||
-                                   localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_python`) || "";
+                let savedCode = "";
+                let savedLang = "cpp"; // Default
+
+                for (const lang of languages) {
+                    const code = localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_${lang}`);
+                    if (code) {
+                        savedCode = code;
+                        savedLang = lang;
+                        break;
+                    }
+                }
                 
-                // For simplicity, we assume the candidate used the last saved language
-                // A better implementation would track the language too
                 submissions.push({
                     problemId: q._id,
                     code: savedCode,
-                    passedCases: 0, // In a real app, this would be updated per run
+                    language: savedLang,
+                    passedCases: 0,
                     totalCases: 0
                 });
             }

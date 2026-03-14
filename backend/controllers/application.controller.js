@@ -90,7 +90,7 @@ exports.getAppliedJobs = async (req, res) => {
                         startTime: assessment.startTime,
                         endTime: assessment.endTime,
                         duration: assessment.duration,
-                        isSubmitted: !!report
+                        isSubmitted: report && (report.status === 'completed' || report.status === 'submitted')
                     };
                 }
             }

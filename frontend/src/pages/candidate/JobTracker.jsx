@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Briefcase, Calendar, MapPin, DollarSign, Trash2, Edit2, Filter } from 'lucide-react'
+import { Plus, Briefcase, Calendar, MapPin, DollarSign, Trash2, Edit2, Filter, X } from 'lucide-react'
 import api from '../../services/api'
 
 import Button from '../../components/Button'
@@ -116,7 +116,7 @@ function JobTracker() {
 
 
             {/* Stats */}
-            <div className="job-stats">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div className="stat-card-job" style={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' }}>
                     <div className="stat-value">{stats.total}</div>
                     <div className="stat-label">Total Applications</div>
@@ -156,19 +156,19 @@ function JobTracker() {
             </div>
 
             {/* Job List */}
-            <div className="job-list">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6">
                 {filteredJobs.length === 0 ? (
-                    <div className="empty-state">
+                    <div className="empty-state col-span-full">
                         <Briefcase size={64} color="var(--text-muted)" />
                         <h3>No applications yet</h3>
                         <p>Start tracking your job applications by clicking "Add Application"</p>
                     </div>
                 ) : (
                     filteredJobs.map(job => (
-                        <div key={job._id} className="job-card">
-                            <div className="job-card-header">
+                        <div key={job._id} className="job-card flex flex-col h-full">
+                            <div className="flex flex-col sm:flex-row sm:justify-between items-start gap-3 sm:gap-4 mb-4">
                                 <div>
-                                    <h3>{job.roleTitle}</h3>
+                                    <h3 className="m-0 text-base md:text-lg">{job.roleTitle}</h3>
                                     <p className="company-name">{job.companyName}</p>
                                 </div>
                                 <span
@@ -197,11 +197,11 @@ function JobTracker() {
                                 </div>
                             </div>
                             {job.notes && (
-                                <div className="job-notes">
+                                <div className="job-notes flex-grow">
                                     <strong>Notes:</strong> {job.notes}
                                 </div>
                             )}
-                            <div className="job-card-actions">
+                            <div className="job-card-actions mt-auto">
                                 <button className="action-btn" onClick={() => editJob(job)}>
                                     <Edit2 size={16} /> Edit
                                 </button>
@@ -216,49 +216,57 @@ function JobTracker() {
 
             {/* Modal */}
             {showModal && (
-                <div className="modal-overlay" onClick={resetForm}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h2>{editingJob ? 'Edit Application' : 'Add New Application'}</h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Company *</label>
+                <div className="modal-overlay fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[1000]" onClick={resetForm}>
+                    <div className="modal-content bg-[#111b27] border border-slate-800 rounded-3xl p-6 md:p-8 w-full max-w-[600px] max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl md:text-2xl font-bold text-white m-0">{editingJob ? 'Edit Application' : 'Add New Application'}</h2>
+                            <button onClick={resetForm} className="text-gray-400 hover:text-white"><X size={24} /></button>
+                        </div>
+                        <form onSubmit={handleSubmit} className="flex flex-col gap-4 text-sm md:text-base">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="form-group flex flex-col gap-2">
+                                    <label className="text-gray-300 font-semibold">Company *</label>
                                     <input
                                         type="text"
                                         required
+                                        className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                         value={formData.companyName}
                                         onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Position *</label>
+                                <div className="form-group flex flex-col gap-2">
+                                    <label className="text-gray-300 font-semibold">Position *</label>
                                     <input
                                         type="text"
                                         required
+                                        className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                         value={formData.roleTitle}
                                         onChange={(e) => setFormData({ ...formData, roleTitle: e.target.value })}
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Location</label>
+                                <div className="form-group flex flex-col gap-2">
+                                    <label className="text-gray-300 font-semibold">Location</label>
                                     <input
                                         type="text"
+                                        className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                         value={formData.location}
                                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Salary Range</label>
+                                <div className="form-group flex flex-col gap-2">
+                                    <label className="text-gray-300 font-semibold">Salary Range</label>
                                     <input
                                         type="text"
                                         placeholder="e.g., $80k-$100k"
+                                        className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                         value={formData.salary}
                                         onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
                                     />
                                 </div>
-                                <div className="form-group">
-                                    <label>Status *</label>
+                                <div className="form-group flex flex-col gap-2">
+                                    <label className="text-gray-300 font-semibold">Status *</label>
                                     <select
+                                        className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                         value={formData.status}
                                         onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                                     >
@@ -267,31 +275,33 @@ function JobTracker() {
                                         ))}
                                     </select>
                                 </div>
-                                <div className="form-group">
-                                    <label>Applied Date *</label>
+                                <div className="form-group flex flex-col gap-2">
+                                    <label className="text-gray-300 font-semibold">Applied Date *</label>
                                     <input
                                         type="date"
                                         required
+                                        className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                         value={formData.dateApplied}
                                         onChange={(e) => setFormData({ ...formData, dateApplied: e.target.value })}
                                     />
                                 </div>
                             </div>
-                            <div className="form-group">
-                                <label>Notes</label>
+                            <div className="form-group flex flex-col gap-2 mt-2">
+                                <label className="text-gray-300 font-semibold">Notes</label>
                                 <textarea
+                                    className="w-full bg-[#1e293b] border border-slate-700 rounded-lg p-2.5 text-white"
                                     rows={3}
                                     value={formData.notes}
                                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                                     placeholder="Add any notes about this application..."
                                 />
                             </div>
-                            <div className="modal-actions">
-                                <Button type="submit" variant="primary" onClick={() => {}}>
-                                    {editingJob ? 'Update' : 'Add'} Application
-                                </Button>
+                            <div className="flex justify-end gap-3 mt-4">
                                 <Button type="button" variant="ghost" onClick={resetForm}>
                                     Cancel
+                                </Button>
+                                <Button type="submit" variant="primary">
+                                    {editingJob ? 'Update' : 'Add'} Application
                                 </Button>
                             </div>
                         </form>

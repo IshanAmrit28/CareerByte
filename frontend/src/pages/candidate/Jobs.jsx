@@ -17,17 +17,17 @@ const Jobs = () => {
             <div className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-900/10 blur-[80px] opacity-70 pointer-events-none" />
             <div className="fixed bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/10 blur-[80px] opacity-70 pointer-events-none" />
             
-            <div className='max-w-[1400px] mx-auto relative z-10'>
-                <div className='flex flex-row gap-8'>
-                    {/* Left Column: Filter (30%) */}
-                    <div className='w-[30%] min-w-[280px] max-w-[350px] flex-shrink-0'>
+            <div className='max-w-[1440px] mx-auto relative z-10 font-sans'>
+                <div className='grid grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[350px_1fr] gap-8 items-start'>
+                    {/* Left Column: Filter */}
+                    <aside className='w-full'>
                         <div className="sticky top-24">
                             <FilterCard />
                         </div>
-                    </div>
+                    </aside>
 
-                    {/* Right Column: Jobs (70%) */}
-                    <div className='flex-1'>
+                    {/* Right Column: Jobs */}
+                    <main className='w-full'>
                         {
                             allJobs.length <= 0 ? (
                                 <div className='flex flex-col items-center justify-center p-20 text-slate-500 bg-[#111b27]/50 rounded-3xl border border-slate-800/50 text-center'>
@@ -51,7 +51,7 @@ const Jobs = () => {
                                 </div>
                             )
                         }
-                    </div>
+                    </main>
                 </div>
             </div>
         </div>
