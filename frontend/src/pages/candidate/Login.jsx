@@ -47,7 +47,7 @@ const Login = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 bg-black rounded-3xl overflow-hidden shadow-2xl max-w-6xl w-full border border-gray-800">
         {/* Left Form Section */}
         <div className="flex flex-col justify-center px-6 md:px-16 py-12 md:py-16 items-center">
-          <h1 className="text-4xl font-semibold mb-10 text-center">Login</h1>
+          <h1 className="text-3xl font-semibold mb-10 text-center">Login</h1>
 
           {error && (
             <div className="w-full max-w-md mb-6 p-3 bg-red-500/10 border border-red-500/50 text-red-400 rounded-lg text-sm text-center">

@@ -70,14 +70,14 @@
 }
 
 .stat-value {
-    font-size: 36px;
+    font-size: var(--font-3xl);
     font-weight: 800;
     line-height: 1;
     margin-bottom: 4px;
 }
 
 .stat-label {
-    font-size: 13px;
+    font-size: var(--font-sm);
     opacity: 0.9;
     font-weight: 500;
 }
@@ -279,7 +279,7 @@
 }
 
 .greeting-title {
-    font-size: 36px;
+    font-size: var(--font-3xl);
     font-weight: 800;
     color: #000000;
     margin: 0 0 8px 0;
@@ -317,7 +317,7 @@
 }
 
 .current-time {
-    font-size: 32px;
+    font-size: var(--font-2xl);
     font-weight: 700;
     color: #000000;
     margin-bottom: 4px;
@@ -325,7 +325,7 @@
 }
 
 .current-date {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: rgba(0, 0, 0, 0.8);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -442,7 +442,7 @@
 }
 
 .action-content h3 {
-    font-size: 22px;
+    font-size: var(--font-lg);
     font-weight: 800;
     margin: 0 0 8px 0;
     color: #fff;
@@ -541,7 +541,7 @@
 }
 
 .topic-header h4 {
-    font-size: 20px;
+    font-size: var(--font-lg);
     font-weight: 800;
     margin: 0;
     color: #fff;
@@ -600,7 +600,7 @@
 }
 
 .topic-header h4 {
-    font-size: 18px;
+    font-size: var(--font-base);
     font-weight: 700;
     margin: 0;
     color: var(--text-main);
@@ -629,7 +629,7 @@
 .badge {
     padding: 6px 12px;
     border-radius: 8px;
-    font-size: 11px;
+    font-size: var(--font-xs);
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -686,7 +686,7 @@
     }
 
     .stat-value {
-        font-size: 32px;
+        font-size: var(--font-2xl);
     }
 
     .action-card-new {
@@ -712,7 +712,7 @@
     }
 
     .greeting-title {
-        font-size: 28px;
+        font-size: var(--font-2xl);
     }
 
     .quick-actions-grid {
@@ -753,7 +753,7 @@
 
 @media (max-width: 480px) {
     .greeting-title {
-        font-size: 24px;
+        font-size: var(--font-xl);
     }
 
     .stat-card-large {
@@ -767,7 +767,7 @@
     }
 
     .stat-value {
-        font-size: 24px;
+        font-size: var(--font-xl);
     }
 
     .stat-label {

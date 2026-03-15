@@ -83,7 +83,7 @@ const JobDescription = ({ jobId: propJobId }) => {
                     <div className='flex flex-wrap items-center gap-2 md:gap-3 mt-4'>
                         <Badge className='bg-blue-500/10 text-blue-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.postion} Positions</Badge>
                         <Badge className='bg-orange-500/10 text-orange-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.jobType}</Badge>
-                        <Badge className='bg-purple-500/10 text-purple-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.salary} LPA</Badge>
+                        <Badge className='bg-purple-500/10 text-purple-400 border-none px-3 py-1 text-xs md:text-sm' variant="outline">{singleJob?.salary}</Badge>
                     </div>
                 </div>
                 <Button
@@ -112,7 +112,7 @@ const JobDescription = ({ jobId: propJobId }) => {
                         </div>
                         <div className='space-y-1'>
                             <p className='text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider'>Salary</p>
-                            <p className='text-slate-200 font-medium'>{singleJob?.salary} LPA</p>
+                            <p className='text-slate-200 font-medium'>{singleJob?.salary}</p>
                         </div>
                         <div className='space-y-1'>
                             <p className='text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider'>Applicants</p>

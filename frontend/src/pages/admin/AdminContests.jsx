@@ -73,7 +73,7 @@ const AdminContests = () => {
         <div className="p-8 bg-black/40 min-h-screen text-white font-sans">
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
                         Weekly Contests
                     </h1>
                     <p className="text-gray-400 mt-2">Manage and schedule weekly coding challenges</p>

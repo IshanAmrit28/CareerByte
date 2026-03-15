@@ -139,7 +139,7 @@ const CodingInterface = () => {
                         <ChevronLeft className="w-5 h-5" />
                     </button>
                     <div className="flex flex-col">
-                        <span className="text-[10px] uppercase tracking-widest text-blue-500 font-bold">Practice</span>
+                        <span className="text-xs uppercase tracking-widest text-blue-500 font-bold">Practice</span>
                         <span className="font-bold text-sm truncate max-w-[180px]">
                             {problem?.title || "Loading..."}
                         </span>

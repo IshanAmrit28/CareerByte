@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Briefcase } from 'lucide-react'
 import FilterCard from '../../components/FilterCard'
 import Job from '../../components/Job';
@@ -6,11 +6,24 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import useGetAllJobs from '../../hooks/useGetAllJobs';
 import useGetAppliedJobs from '../../hooks/useGetAppliedJobs';
+import Pagination from '../../components/shared/Pagination';
 
 const Jobs = () => {
     useGetAllJobs();
     useGetAppliedJobs();
     const { allJobs = [] } = useSelector(store => store.job || {});
+
+    // Pagination state
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 15;
+
+    // Reset to first page when filters change (allJobs changes)
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [allJobs.length]);
+
+    const totalPages = Math.ceil(allJobs.length / itemsPerPage);
+    const displayedJobs = allJobs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
         <div className="min-h-screen bg-[#09090b] text-white pt-24 px-4 md:px-8 pb-12 font-sans overflow-x-hidden relative">
@@ -36,18 +49,29 @@ const Jobs = () => {
                                     <p className='text-sm mt-2'>Try adjusting your filters or search criteria.</p>
                                 </div>
                             ) : (
-                                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10'>
-                                    {
-                                        allJobs.map((job) => (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ duration: 0.3 }}
-                                                key={job?._id}>
-                                                <Job job={job} />
-                                            </motion.div>
-                                        ))
-                                    }
+                                <div className='pb-10'>
+                                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8'>
+                                        {
+                                            displayedJobs.map((job) => (
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    key={job?._id || job?.id}>
+                                                    <Job job={job} />
+                                                </motion.div>
+                                            ))
+                                        }
+                                    </div>
+
+                                    <Pagination 
+                                        currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={(page) => {
+                                            setCurrentPage(page);
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        }}
+                                    />
                                 </div>
                             )
                         }

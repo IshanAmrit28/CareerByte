@@ -26,6 +26,7 @@ const contestRouter = require("./routes/contest.route");
 const assessmentRouter = require("./routes/assessment.route");
 const errorsController = require("./controllers/errors");
 const { startCleanupTask } = require("./utils/cleanupTask");
+const { scheduleJobScraper } = require('./scripts/scrapedJobs.cron');
 
 // FATAL STARTUP VALIDATION
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.trim() === "") {
@@ -116,6 +117,7 @@ mongoose
   .then(() => {
     console.log("MongoDB Connected");
     startCleanupTask();
+    scheduleJobScraper(); // Init the external job scraper cron
     app.listen(PORT, () => {
       console.log(`Server: http://localhost:${PORT}`);
     });

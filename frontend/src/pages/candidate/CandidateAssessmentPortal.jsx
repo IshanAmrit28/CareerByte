@@ -198,7 +198,7 @@ const CandidateAssessmentPortal = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex items-center justify-between mb-10">
                         <div>
-                            <h1 className="text-4xl font-extrabold mb-2 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">Assessment Dashboard</h1>
+                            <h1 className="text-3xl font-extrabold mb-2 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">Assessment Dashboard</h1>
                             <p className="text-gray-400 text-lg">Select a problem to begin coding. Your progress is saved automatically.</p>
                         </div>
                         <div className="text-right">

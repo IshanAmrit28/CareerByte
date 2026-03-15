@@ -80,7 +80,7 @@ const CandidateContestPortal = () => {
 
                 <div className="flex justify-between items-start mb-8 pl-12">
                     <div>
-                        <h1 className="text-4xl font-extrabold mb-2">{contest?.title}</h1>
+                        <h1 className="text-3xl font-extrabold mb-2">{contest?.title}</h1>
                         <p className="text-gray-400">{contest?.description}</p>
                     </div>
                     <div className="p-4 bg-indigo-500/10 rounded-2xl shrink-0">

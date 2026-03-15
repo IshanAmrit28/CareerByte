@@ -126,24 +126,11 @@ function Chat() {
               <Bot size={32} />
             </div>
             <div>
-              <h2
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  margin: 0,
-                  color: "var(--text-main)",
-                }}
-              >
+              <h2 className="m-0 text-base font-semibold text-[var(--text-main)]">
                 Elite Career AI
               </h2>
               <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  fontSize: 12,
-                  color: "var(--text-muted)",
-                }}
+                className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]"
               >
                 <span className="status-dot"></span> Online
               </div>

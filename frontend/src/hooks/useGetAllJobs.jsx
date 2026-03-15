@@ -18,6 +18,7 @@ const useGetAllJobs = () => {
                 if (filterCriteria?.company) params.append('company', filterCriteria.company);
                 if (filterCriteria?.experience) params.append('experience', filterCriteria.experience);
                 if (filterCriteria?.salary) params.append('salary', filterCriteria.salary);
+                if (filterCriteria?.isExternal) params.append('source', 'external');
 
                 const res = await api.get(`${JOB_API_END_POINT}/get?${params.toString()}`);
                 if (res.data.success) {

@@ -25,7 +25,7 @@ function Forbidden() {
           </div>
         </div>
         
-        <h1 className="text-4xl font-extrabold text-white mb-2 tracking-tight">
+        <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-red-600">
             403
           </span>

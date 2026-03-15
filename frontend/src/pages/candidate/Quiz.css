@@ -475,6 +475,6 @@
     .topic-btn,
     .difficulty-btn {
         padding: 12px;
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
 }

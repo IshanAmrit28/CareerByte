@@ -39,12 +39,12 @@ function Notes() {
                             placeholder="Search by title or tags..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            style={{ border: 'none', background: 'transparent', width: '100%', fontSize: 14, outline: 'none', color: 'var(--text-main)' }}
+                            className="border-none bg-transparent w-full text-sm outline-none text-[var(--text-main)]"
                         />
                     </div>
 
                     {/* Stats */}
-                    <div style={{ marginBottom: 20, fontSize: 13, color: 'var(--text-muted)' }}>
+                    <div className="mb-5 text-sm text-[var(--text-muted)]">
                         Showing <strong>{displayedNotes.length}</strong> {displayedNotes.length === 1 ? 'resource' : 'resources'}
                     </div>
 
@@ -68,7 +68,7 @@ function Notes() {
                                             <FileText size={20} />
                                         </div>
                                         <div style={{ flexGrow: 1, minWidth: 0 }}>
-                                            <h3 style={{ margin: '0 0 4px 0', fontSize: 15, lineHeight: 1.3 }}>{note.title}</h3>
+                                            <h3 className="m-0 mb-1 text-base leading-tight">{note.title}</h3>
                                             <div className="note-meta">
                                                 <span className={`badge badge-${note.difficulty === 'Hard' ? 'orange' : note.difficulty === 'Medium' ? 'purple' : 'green'}`}>
                                                     {note.difficulty}

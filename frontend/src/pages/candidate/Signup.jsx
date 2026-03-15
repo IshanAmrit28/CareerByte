@@ -55,7 +55,7 @@ const Signup = () => {
         
         {/* Left Form Section */}
         <div className="flex flex-col justify-center px-6 md:px-16 py-10 md:py-12 items-center">
-          <h1 className="text-4xl font-semibold mb-8 text-center">Create Account</h1>
+          <h1 className="text-3xl font-semibold mb-8 text-center">Create Account</h1>
 
           {error && (
             <div className="w-full max-w-md mb-6 p-3 bg-red-500/10 border border-red-500/50 text-red-400 rounded-lg text-sm text-center">

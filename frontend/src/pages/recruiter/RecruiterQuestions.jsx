@@ -4,7 +4,10 @@ import { SquareTerminal, PlusCircle, Trash2, Loader2, XCircle, CheckCircle2, Cod
 import { toast } from 'react-hot-toast';
 import Pagination from "../../components/shared/Pagination";
 
+import { useAuth } from "../../context/AuthContext";
+
 const RecruiterQuestions = () => {
+  const { user } = useAuth();
   const [problems, setProblems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,15 +27,11 @@ const RecruiterQuestions = () => {
   const loadProblems = async () => {
     setLoading(true);
     try {
-      // For recruiters, /coding-problems returns public + their owned problems
-      // But we want to show only THEIR problems for management
       const res = await api.get('/coding-problems');
       if (res.data.success) {
-        // Filter to show only problems owned by this recruiter
-        // Note: The backend getAllProblems for recruiter includes their private ones.
-        // To be precise, we filter by visibilityStatus: 'private' or check ownerId if available in response
-        const myProblems = res.data.problems.filter(p => p.visibilityStatus === 'private');
-        setProblems(myProblems || []);
+        // Show all private problems to all recruiters
+        const privateProblems = res.data.problems.filter(p => p.visibilityStatus === 'private');
+        setProblems(privateProblems || []);
       }
     } catch (err) {
       setError(err.response?.data?.message || "Failed to load coding problems");
@@ -206,12 +205,14 @@ const RecruiterQuestions = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => handleDeleteProblem(p._id)}
-                      className="p-2 text-gray-500 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-colors border border-transparent hover:border-red-500/20"
-                    >
-                      <Trash2 size={18} />
-                    </button>
+                    {p.ownerId === user?._id && (
+                      <button
+                        onClick={() => handleDeleteProblem(p._id)}
+                        className="p-2 text-gray-500 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-colors border border-transparent hover:border-red-500/20"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

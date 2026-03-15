@@ -265,7 +265,7 @@ const UserDashboard = () => {
               <div className="text-center z-10 w-full flex-grow">
                  <div className="flex flex-col items-center justify-center gap-4 mb-6">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-black mb-1 tracking-tight">{user?.userName}</h1>
+                        <h1 className="text-3xl font-black mb-1 tracking-tight">{user?.userName}</h1>
                         <p className="text-gray-400 flex items-center justify-center gap-2 text-sm font-medium">
                           <Star className="w-4 h-4 text-yellow-500" /> Top {profileData.percentile}% Candidates
                         </p>

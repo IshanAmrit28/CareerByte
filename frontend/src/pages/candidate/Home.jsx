@@ -72,7 +72,7 @@ function Home() {
       <div className="dashboard-header rounded-3xl p-6 sm:p-10 mb-8 border border-gray-800 bg-[#111b27]/60 shadow-xl relative overflow-hidden text-gray-100">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-6">
           <div className="greeting-section flex-1">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-2 tracking-tight">{greeting}! 👋</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-3xl font-extrabold text-white mb-2 tracking-tight">{greeting}! 👋</h1>
             <p className="text-base md:text-lg text-gray-300">Ready to level up your skills today?</p>
           </div>
           <div className="time-display flex-shrink-0 bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 text-right w-full md:w-auto">

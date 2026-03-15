@@ -81,16 +81,7 @@ function StudyPlan() {
                             placeholder="Or type a custom role..."
                             value={role}
                             onChange={(e) => setRole(e.target.value)}
-                            style={{
-                                width: '100%',
-                                padding: 12,
-                                border: '1px solid var(--border-main)',
-                                borderRadius: 'var(--radius-md)',
-                                background: 'var(--bg-subtle)',
-                                color: 'var(--text-main)',
-                                fontSize: 14,
-                                marginBottom: 24
-                            }}
+                            className="w-full p-3 border border-[var(--border-main)] rounded-[var(--radius-md)] bg-[var(--bg-subtle)] color-[var(--text-main)] text-sm mb-6"
                         />
 
                         <Button variant="primary" size="large" onClick={handleGenerate} disabled={!role}>
@@ -106,7 +97,7 @@ function StudyPlan() {
                                 <h2 className="text-xl md:text-2xl font-bold mb-2">
                                     {role} Preparation Plan
                                 </h2>
-                                <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text-muted)' }}>
+                                <div className="flex gap-4 text-sm text-[var(--text-muted)]">
                                     <span>📅 Duration: 6 Weeks</span>
                                     <span>⚡ Intensity: High</span>
                                     <span>🎯 Focus: Interview Ready</span>
@@ -131,15 +122,7 @@ function StudyPlan() {
                                         </p>
                                     </div>
                                     <button
-                                        style={{
-                                            background: 'transparent',
-                                            border: '1px solid var(--border-main)',
-                                            borderRadius: 4,
-                                            padding: '6px 12px',
-                                            cursor: 'pointer',
-                                            fontSize: 12,
-                                            color: 'var(--text-muted)'
-                                        }}
+                                        className="bg-transparent border border-[var(--border-main)] rounded px-3 py-1.5 cursor-pointer text-xs text-[var(--text-muted)]"
                                     >
                                         <CheckCircle size={14} style={{ marginRight: 4 }} /> Mark Done
                                     </button>
@@ -147,8 +130,8 @@ function StudyPlan() {
                             ))}
                         </div>
 
-                        <div style={{ marginTop: 32, padding: 20, background: 'var(--bg-subtle)', borderRadius: 8, textAlign: 'center' }}>
-                            <p style={{ margin: '0 0 12px 0', fontSize: 13, color: 'var(--text-muted)' }}>
+                        <div className="mt-8 p-5 bg-[var(--bg-subtle)] rounded-lg text-center">
+                            <p className="m-0 mb-3 text-sm text-[var(--text-muted)]">
                                 Need a different plan?
                             </p>
                             <Button variant="ghost" onClick={() => setGenerated(false)}>

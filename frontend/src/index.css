@@ -125,6 +125,15 @@
   --radius-md: 8px;
   --radius-lg: 12px;
 
+  /* Typography Scale */
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-base: 16px;
+  --font-lg: 18px;
+  --font-xl: 20px;
+  --font-2xl: 24px;
+  --font-3xl: 28px;
+
   /* Spacing */
   --sp-1: 4px;
   --sp-2: 8px;
@@ -192,8 +201,8 @@ body {
   background-color: #000000 !important;
   color: var(--text-main);
   line-height: 1.5;
-  font-size: 14px;
-  /* Slightly denser text */
+  font-size: var(--font-base);
+  /* Standardized to 16px */
   -webkit-font-smoothing: antialiased;
   transition:
     background-color 300ms ease,
@@ -244,7 +253,7 @@ body {
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: var(--font-2xl);
   font-weight: 600;
   color: var(--text-main);
   margin: 0;
@@ -252,7 +261,7 @@ body {
 
 .page-subtitle {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--font-sm);
   margin-top: var(--sp-1);
 }
 
@@ -322,7 +331,7 @@ button {
   align-items: center;
   padding: 2px 8px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -377,7 +386,7 @@ img, video {
   }
 
   body {
-    font-size: 14px; /* text-sm equivalent */
+    font-size: var(--font-sm); /* 14px equivalent */
   }
 
   .page-header {

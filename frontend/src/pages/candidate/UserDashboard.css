@@ -2,12 +2,12 @@
 
 .heatmap-container text {
   fill: #9ca3af;
-  font-size: 10px;
+  font-size: var(--font-xs);
 }
 
 .heatmap-stretched-wrapper text {
   fill: #9ca3af;
-  font-size: 11px;
+  font-size: var(--font-xs);
 }
 
 .heatmap-stretched-wrapper .react-calendar-heatmap rect {

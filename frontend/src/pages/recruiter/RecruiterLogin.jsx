@@ -53,7 +53,7 @@ const RecruiterLogin = () => {
           <div className="mb-6 bg-blue-600 p-4 rounded-2xl shadow-lg shadow-blue-900/40">
             <Briefcase size={40} className="text-white" />
           </div>
-          <h1 className="text-4xl font-extrabold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">Recruiter Portal</h1>
+          <h1 className="text-3xl font-extrabold mb-2 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">Recruiter Portal</h1>
           <p className="text-gray-400 mb-10 font-medium">Manage your talent pipeline</p>
 
           {error && (

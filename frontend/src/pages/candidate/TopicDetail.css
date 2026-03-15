@@ -38,7 +38,7 @@
     border: 1px solid var(--border-subtle);
     border-radius: 20px;
     color: var(--text-muted);
-    font-size: 14px;
+    font-size: var(--font-sm);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -53,7 +53,7 @@
 }
 
 .topic-title {
-    font-size: 42px;
+    font-size: var(--font-3xl);
     font-weight: 800;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
@@ -65,7 +65,7 @@
 }
 
 .topic-description {
-    font-size: 18px;
+    font-size: var(--font-base);
     color: var(--text-secondary);
     max-width: 800px;
     line-height: 1.6;
@@ -82,7 +82,7 @@
 .meta-badge {
     padding: 6px 14px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
@@ -106,7 +106,7 @@
 }
 
 .content-section h2 {
-    font-size: 24px;
+    font-size: var(--font-xl);
     font-weight: 700;
     color: var(--text-main);
     margin: 0 0 24px 0;
@@ -116,7 +116,7 @@
 }
 
 .section-content {
-    font-size: 16px;
+    font-size: var(--font-base);
     line-height: 1.8;
     color: var(--text-secondary);
 }
@@ -135,12 +135,12 @@
 .section-content code {
     font-family: 'JetBrains Mono', 'Fira Code', monospace;
     color: #e2e8f0;
-    font-size: 14px;
+    font-size: var(--font-sm);
 }
 
 /* Practice & Resources Sidebar */
 .sidebar-section h3 {
-    font-size: 18px;
+    font-size: var(--font-base);
     font-weight: 700;
     color: var(--text-main);
     margin-bottom: 20px;
@@ -190,7 +190,7 @@
     color: white;
     border: none;
     border-radius: 16px;
-    font-size: 16px;
+    font-size: var(--font-base);
     font-weight: 700;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
@@ -233,11 +233,11 @@
     }
 
     .topic-title {
-        font-size: 36px;
+        font-size: var(--font-3xl);
     }
 
     .topic-description {
-        font-size: 16px;
+        font-size: var(--font-base);
     }
 }
 
@@ -256,12 +256,12 @@
     }
 
     .topic-title {
-        font-size: 28px;
+        font-size: var(--font-2xl);
         margin-bottom: 12px;
     }
 
     .topic-description {
-        font-size: 15px;
+        font-size: var(--font-sm);
     }
 
     .topic-meta {
@@ -271,7 +271,7 @@
 
     .meta-badge {
         padding: 5px 12px;
-        font-size: 12px;
+        font-size: var(--font-xs);
     }
 
     .glass-card {
@@ -282,17 +282,17 @@
 
 @media (max-width: 480px) {
     .topic-title {
-        font-size: 24px;
+        font-size: var(--font-xl);
         letter-spacing: -0.5px;
     }
 
     .topic-description {
-        font-size: 14px;
+        font-size: var(--font-sm);
     }
 
     .back-btn {
         padding: 6px 12px;
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
 
     .glass-card {
@@ -302,6 +302,6 @@
 
     .section-content li {
         padding-left: 20px;
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
 }

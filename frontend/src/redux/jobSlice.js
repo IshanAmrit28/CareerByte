@@ -13,7 +13,8 @@ const jobSlice = createSlice({
             location: "",
             company: "",
             experience: "",
-            salary: ""
+            salary: "",
+            isExternal: false
         },
     },
     reducers:{
@@ -40,7 +41,8 @@ const jobSlice = createSlice({
                     location: "",
                     company: "",
                     experience: "",
-                    salary: ""
+                    salary: "",
+                    isExternal: false
                 };
             }
             state.filterCriteria = { ...state.filterCriteria, ...action.payload };
@@ -51,7 +53,8 @@ const jobSlice = createSlice({
                 location: "",
                 company: "",
                 experience: "",
-                salary: ""
+                salary: "",
+                isExternal: false
             };
         }
     }

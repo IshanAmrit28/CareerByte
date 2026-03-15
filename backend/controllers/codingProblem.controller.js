@@ -65,7 +65,7 @@ const getAllProblems = async (req, res) => {
                 ]
             };
             // Optimize for recruiters (multi-select needs minimal data)
-            const problems = await CodingProblem.find(query).select("_id title difficulty").lean();
+            const problems = await CodingProblem.find(query).select("_id title difficulty visibilityStatus ownerId tags timeLimit memoryLimit").lean();
             return res.status(200).json({ success: true, problems });
         }
 

@@ -181,7 +181,7 @@ const PublicProfile = () => {
                  </div>
 
                  <div className="text-center md:text-left z-10 w-full">
-                    <h1 className="text-2xl md:text-4xl font-extrabold mb-1">{userName}</h1>
+                    <h1 className="text-2xl md:text-3xl font-extrabold mb-1">{userName}</h1>
                     <p className="text-gray-600 dark:text-gray-400 flex items-center justify-center md:justify-start gap-2 text-sm mb-6">
                         <Star className="w-4 h-4" /> Global Talent Profile
                     </p>
@@ -197,7 +197,7 @@ const PublicProfile = () => {
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 mb-6">
                        <div className="flex flex-col gap-1">
                           <span className="text-gray-500 dark:text-gray-400 text-[10px] uppercase tracking-tighter font-bold">CareerByte Rating</span>
-                          <div className={`text-3xl md:text-4xl font-black tracking-tighter ${ratingColors}`}>
+                          <div className={`text-2xl md:text-3xl font-black tracking-tighter ${ratingColors}`}>
                              {isUnrated ? "Unrated" : stats?.rating?.toFixed(1) || "0.0"}
                           </div>
                        </div>

@@ -8,13 +8,11 @@ import { JOB_API_END_POINT } from '@/utils/constant'
 
 const FilterCard = () => {
     const dispatch = useDispatch();
-    const { filterCriteria = { location: "", company: "", experience: "", salary: "" } } = useSelector(store => store.job || {});
+    const { filterCriteria = { location: "", company: "", salary: "" } } = useSelector(store => store.job || {});
     
     const [locations, setLocations] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(true);
-
-    const experienceOptions = ["Entry Level", "1-3 years", "3-5 years", "5+ years"];
 
     useEffect(() => {
         const fetchFilters = async () => {
@@ -63,7 +61,6 @@ const FilterCard = () => {
                 <div className="space-y-4">
                     <div className="h-10 bg-slate-800 rounded w-full"></div>
                     <div className="h-10 bg-slate-800 rounded w-full"></div>
-                    <div className="h-10 bg-slate-800 rounded w-full"></div>
                 </div>
             </div>
         );
@@ -71,53 +68,44 @@ const FilterCard = () => {
 
     return (
         <div className='w-full bg-[#111b27] p-5 rounded-2xl border border-slate-800 text-white shadow-2xl sticky top-24'>
-            <div className='flex items-center justify-between mb-6'>
-                <h1 className='font-bold text-xl tracking-tight'>Filter Jobs</h1>
+            <div className='flex items-center justify-between mb-5'>
+                <h1 className='font-bold text-lg tracking-tight'>Filter Jobs</h1>
                 {hasFilters && (
                     <button 
                         onClick={handleClearAll}
-                        className='text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors'
+                        className='text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors'
                     >
-                        <X size={14} /> Clear all
+                        <X size={12} /> Clear all
                     </button>
                 )}
             </div>
 
-            <div className='space-y-5'>
+            <div className='space-y-4'>
+                {/* Source Toggle */}
+                <div className='flex items-center justify-between p-2.5 bg-slate-900 rounded-lg border border-slate-700'>
+                    <span className='text-[12px] font-medium text-slate-300'>External Jobs</span>
+                    <button 
+                        onClick={() => handleSelectChange('isExternal', !filterCriteria.isExternal)}
+                        className={`w-9 h-5 rounded-full transition-colors relative ${filterCriteria.isExternal ? 'bg-blue-600' : 'bg-slate-700'}`}
+                    >
+                        <span className={`absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform ${filterCriteria.isExternal ? 'translate-x-4' : 'translate-x-0'}`} />
+                    </button>
+                </div>
+
                 {/* Location Filter */}
-                <div className='space-y-2'>
-                    <label className='text-sm font-medium text-slate-300 flex items-center gap-2'>
-                        <MapPin size={16} className="text-blue-500" /> Location
+                <div className='space-y-1.5'>
+                    <label className='text-[12px] font-medium text-slate-300 flex items-center gap-2'>
+                        <MapPin size={14} className="text-blue-500" /> Location
                     </label>
                     <Select value={filterCriteria.location || ""} onValueChange={(value) => handleSelectChange('location', value)}>
-                        <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-slate-200 focus:ring-blue-500">
+                        <SelectTrigger className="w-full h-9 bg-slate-900 border-slate-700 text-slate-200 focus:ring-blue-500 text-[12px]">
                             <SelectValue placeholder="All Locations" />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-900 border-slate-800 text-slate-200">
                             <SelectGroup>
-                                <SelectItem value="all" className="focus:bg-slate-800 focus:text-white">All Locations</SelectItem>
+                                <SelectItem value="all" className="focus:bg-slate-800 focus:text-white text-[12px]">All Locations</SelectItem>
                                 {locations.map((loc) => (
-                                    <SelectItem key={loc} value={loc} className="focus:bg-slate-800 focus:text-white">{loc}</SelectItem>
-                                ))}
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </div>
-
-                {/* Experience Filter */}
-                <div className='space-y-2'>
-                    <label className='text-sm font-medium text-slate-300 flex items-center gap-2'>
-                        <Briefcase size={16} className="text-purple-500" /> Experience
-                    </label>
-                    <Select value={filterCriteria.experience || ""} onValueChange={(value) => handleSelectChange('experience', value)}>
-                        <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-slate-200 focus:ring-purple-500">
-                            <SelectValue placeholder="All Experience Levels" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-slate-900 border-slate-800 text-slate-200">
-                            <SelectGroup>
-                                <SelectItem value="all" className="focus:bg-slate-800 focus:text-white">All Experience Levels</SelectItem>
-                                {experienceOptions.map((exp) => (
-                                    <SelectItem key={exp} value={exp} className="focus:bg-slate-800 focus:text-white">{exp}</SelectItem>
+                                    <SelectItem key={loc} value={loc} className="focus:bg-slate-800 focus:text-white text-[12px]">{loc}</SelectItem>
                                 ))}
                             </SelectGroup>
                         </SelectContent>
@@ -125,19 +113,19 @@ const FilterCard = () => {
                 </div>
 
                 {/* Company Filter */}
-                <div className='space-y-2'>
-                    <label className='text-sm font-medium text-slate-300 flex items-center gap-2'>
-                        <Building2 size={16} className="text-green-500" /> Company
+                <div className='space-y-1.5'>
+                    <label className='text-[12px] font-medium text-slate-300 flex items-center gap-2'>
+                        <Building2 size={14} className="text-green-500" /> Company
                     </label>
                     <Select value={filterCriteria.company || ""} onValueChange={(value) => handleSelectChange('company', value)}>
-                        <SelectTrigger className="w-full bg-slate-900 border-slate-700 text-slate-200 focus:ring-green-500">
+                        <SelectTrigger className="w-full h-9 bg-slate-900 border-slate-700 text-slate-200 focus:ring-green-500 text-[12px]">
                             <SelectValue placeholder="All Companies" />
                         </SelectTrigger>
                         <SelectContent className="bg-slate-900 border-slate-800 text-slate-200">
                             <SelectGroup>
-                                <SelectItem value="all" className="focus:bg-slate-800 focus:text-white">All Companies</SelectItem>
+                                <SelectItem value="all" className="focus:bg-slate-800 focus:text-white text-[12px]">All Companies</SelectItem>
                                 {companies.map((comp) => (
-                                    <SelectItem key={comp._id} value={comp._id} className="focus:bg-slate-800 focus:text-white">{comp.name}</SelectItem>
+                                    <SelectItem key={comp._id} value={comp._id} className="focus:bg-slate-800 focus:text-white text-[12px]">{comp.name}</SelectItem>
                                 ))}
                             </SelectGroup>
                         </SelectContent>

@@ -36,7 +36,7 @@
 }
 
 .upload-card h3 {
-    font-size: 24px;
+    font-size: var(--font-2xl);
     font-weight: 700;
     margin: 0 0 12px 0;
     color: var(--text-main);
@@ -100,7 +100,7 @@
 }
 
 .analysis-header h3 {
-    font-size: 20px;
+    font-size: var(--font-lg);
     font-weight: 700;
     margin: 0;
     color: var(--text-main);
@@ -122,7 +122,7 @@
 }
 
 .tips-section h3 {
-    font-size: 20px;
+    font-size: var(--font-lg);
     font-weight: 700;
     margin: 0 0 24px 0;
     color: var(--text-main);
@@ -155,7 +155,7 @@
 }
 
 .tip-card p {
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: var(--text-muted);
     margin: 0;
     line-height: 1.6;
@@ -202,11 +202,11 @@
     }
     
     .upload-card h3 {
-        font-size: 20px;
+        font-size: var(--font-lg);
     }
     
     .upload-card p {
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
 
     .tips-grid {
@@ -225,7 +225,7 @@
     }
     
     .analysis-header h3 {
-        font-size: 18px;
+        font-size: var(--font-base);
     }
     
     .tip-card {
@@ -246,7 +246,7 @@
     }
     
     .upload-card h3 {
-        font-size: 18px;
+        font-size: var(--font-base);
     }
     
     .upload-btn {
@@ -263,7 +263,7 @@
     }
     
     .analysis-content {
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
     
     .tip-card {

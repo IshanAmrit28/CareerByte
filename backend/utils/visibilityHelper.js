@@ -24,7 +24,9 @@ const canUserAccessProblem = async (problem, user) => {
     // 2. Recruiter access
     if (role === 'recruiter') {
         if (problem.visibilityStatus === 'public') return true;
-        // Check if recruiter owns the private question
+        if (problem.visibilityStatus === 'private') return true; // Visible to all companies
+        
+        // For 'contest' visibility or others, still check ownership or other rules if needed
         return problem.ownerId && problem.ownerId.toString() === user._id.toString();
     }
 

@@ -50,7 +50,7 @@ const ParticipantTile = ({
         <div
           className={`w-36 h-36 rounded-full flex items-center justify-center shadow-lg dark:shadow-2xl transition-all duration-300 ${isSpeaking ? "bg-gradient-to-br from-blue-600 to-indigo-600 scale-105" : "bg-[#111b27] border-2 border-slate-800"}`}
         >
-          <span className="text-6xl font-bold text-white tracking-wider">
+          <span className="text-3xl font-bold text-white tracking-wider">
             {name.charAt(0)}
           </span>
         </div>

@@ -13,7 +13,7 @@
     background: var(--bg-surface);
     cursor: pointer;
     text-align: center;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 500;
     transition: all 0.2s;
     color: var(--text-main);
@@ -66,13 +66,13 @@
 
 .week-content h4 {
     margin: 0 0 4px 0;
-    font-size: 15px;
+    font-size: var(--font-base);
     color: var(--text-main);
 }
 
 .week-content p {
     margin: 0;
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: var(--text-muted);
 }
 
@@ -84,7 +84,7 @@
     
     .role-chip {
         padding: var(--sp-2) var(--sp-3);
-        font-size: 12px;
+        font-size: var(--font-xs);
     }
 }
 
@@ -96,7 +96,7 @@
     
     .role-chip {
         padding: 12px 16px;
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
     
     .week-card {
@@ -107,22 +107,22 @@
     .week-number {
         width: 36px;
         height: 36px;
-        font-size: 14px;
+        font-size: var(--font-sm);
     }
     
     .week-content h4 {
-        font-size: 14px;
+        font-size: var(--font-sm);
     }
     
     .week-content p {
-        font-size: 12px;
+        font-size: var(--font-xs);
     }
 }
 
 @media (max-width: 480px) {
     .role-chip {
         padding: 10px 14px;
-        font-size: 12px;
+        font-size: var(--font-xs);
     }
     
     .week-card {
@@ -133,14 +133,14 @@
     .week-number {
         width: 32px;
         height: 32px;
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
     
     .week-content h4 {
-        font-size: 13px;
+        font-size: var(--font-sm);
     }
     
     .week-content p {
-        font-size: 11px;
+        font-size: var(--font-xs);
     }
 }

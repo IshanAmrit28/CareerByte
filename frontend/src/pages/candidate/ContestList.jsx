@@ -46,7 +46,7 @@ const ContestList = () => {
         <div className="p-8 bg-[#09090b] min-h-screen text-white pt-24">
             <div className="max-w-6xl mx-auto">
                 <div className="mb-12">
-                    <h1 className="text-4xl font-extrabold mb-4">Weekly Contests</h1>
+                    <h1 className="text-3xl font-extrabold mb-4">Weekly Contests</h1>
                     <p className="text-gray-400 text-lg">Challenge yourself and climb the leaderboard</p>
                 </div>
 

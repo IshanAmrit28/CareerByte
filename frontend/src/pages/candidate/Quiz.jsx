@@ -86,8 +86,8 @@ function Quiz() {
                                     {topic.difficulty}
                                 </span>
                             </div>
-                            <h3 style={{ margin: '0 0 4px 0', fontSize: 16, color: 'var(--text-main)' }}>{topic.name}</h3>
-                            <p style={{ margin: 0, fontSize: 13, color: 'var(--text-muted)' }}>{topic.count} questions available</p>
+                            <h3 className="m-0 mb-1 text-base text-[var(--text-main)]">{topic.name}</h3>
+                            <p className="m-0 text-sm text-[var(--text-muted)]">{topic.count} questions available</p>
                         </div>
                     ))}
                 </div>
@@ -102,7 +102,7 @@ function Quiz() {
                         <div style={{ flexGrow: 1, height: 4, background: 'var(--border-main)', borderRadius: 2 }}>
                             <div style={{ width: `${((currentQuestionIdx) / questions.length) * 100}%`, height: '100%', background: 'var(--primary)', borderRadius: 2 }}></div>
                         </div>
-                        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'monospace' }}>
+                        <span className="text-xs text-[var(--text-muted)] font-mono">
                             {currentQuestionIdx + 1} / {questions.length}
                         </span>
                     </div>
@@ -133,18 +133,10 @@ function Quiz() {
                                     <div
                                         key={opt}
                                         onClick={() => handleOptionSelect(idx)}
+                                        className={`p-4 border-[1px] rounded-[6px] transition-all flex items-center gap-3 text-sm text-[var(--text-main)] ${showResult ? 'cursor-default' : 'cursor-pointer'}`}
                                         style={{
-                                            padding: 16,
-                                            border: `1px solid ${borderColor}`,
+                                            borderColor: borderColor,
                                             background: bgColor,
-                                            borderRadius: 6,
-                                            cursor: showResult ? 'default' : 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 12,
-                                            fontSize: 14,
-                                            transition: 'all 0.2s',
-                                            color: 'var(--text-main)'
                                         }}
                                     >
                                         <div style={{
@@ -163,8 +155,8 @@ function Quiz() {
 
                         <div style={{ marginTop: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             {showResult && (
-                                <p style={{ margin: 0, fontSize: 13, color: 'var(--text-muted)' }}>
-                                    <span style={{ fontWeight: 600 }}>Explanation:</span> {currentQ.explanation}
+                                <p className="m-0 text-sm text-[var(--text-muted)]">
+                                    <span className="font-semibold">Explanation:</span> {currentQ.explanation}
                                 </p>
                             )}
                             <div style={{ display: 'flex', gap: 12, marginLeft: 'auto' }}>

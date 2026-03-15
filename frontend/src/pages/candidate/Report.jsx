@@ -113,7 +113,7 @@ const Report = () => {
           <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-green-500/20">
             <CheckCircle size={40} className="text-green-400" />
           </div>
-          <h1 className="text-4xl font-black text-white mb-4">Interview Submitted!</h1>
+          <h1 className="text-3xl font-black text-white mb-4">Interview Submitted!</h1>
           <p className="text-gray-400 text-lg leading-relaxed mb-8">
             Your technical interview for <span className="text-indigo-400 font-bold">{reportData.role || "this position"}</span> has been successfully captured. 
             Recruiters will review your performance alongside your application.
@@ -154,7 +154,7 @@ const Report = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-10 border-b border-gray-700 pb-6">
           <div>
-            <h1 className="text-4xl font-extrabold text-white">
+            <h1 className="text-3xl font-extrabold text-white">
               Interview Report: {reportData.role || "Technical Session"}
             </h1>
             {/* <p className="text-gray-400 mt-1">Report ID: {reportId}</p> */}
@@ -188,7 +188,7 @@ const Report = () => {
                 Overall Score
               </span>
             </div>
-            <p className="text-5xl font-extrabold text-blue-500">
+            <p className="text-3xl font-extrabold text-blue-500">
               {rs.overallScore || "N/A"}
               <span className="text-3xl font-bold ml-1 text-blue-400">
                 /100
@@ -204,7 +204,7 @@ const Report = () => {
                 Resume Score
               </span>
             </div>
-            <p className="text-5xl font-extrabold text-purple-500">
+            <p className="text-3xl font-extrabold text-purple-500">
               {rs.ResumeScore || "N/A"}
               <span className="text-3xl font-bold ml-1 text-purple-400">
                 /100
@@ -220,7 +220,7 @@ const Report = () => {
                 Avg Q Score
               </span>
             </div>
-            <p className="text-5xl font-extrabold text-yellow-500">
+            <p className="text-3xl font-extrabold text-yellow-500">
               {avgScore.toFixed(1)}
               <span className="text-3xl font-bold ml-1 text-yellow-400">
                 /10

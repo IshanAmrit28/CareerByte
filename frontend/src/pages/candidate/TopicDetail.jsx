@@ -137,7 +137,7 @@ function TopicDetail() {
                             {topic.difficulty}
                         </span>
                         <span className="meta-badge badge-purple">{topic.category}</span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--text-secondary)', fontWeight: 600 }}>
+                        <span className="flex items-center gap-1.5 text-sm text-[var(--text-secondary)] font-semibold">
                             <Clock size={14} /> {topic.time}
                         </span>
                     </div>
@@ -145,7 +145,7 @@ function TopicDetail() {
 
                 {/* Overview */}
                 <div className="glass-card" style={{ marginBottom: 32 }}>
-                    <h3 style={{ margin: '0 0 16px 0', fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-main)' }}>
+                    <h3 className="flex items-center gap-2 text-lg font-bold text-[var(--text-main)] mb-4">
                         <Award size={20} className="text-primary" /> What You'll Learn
                     </h3>
                     <p style={{ margin: '0 0 24px 0', lineHeight: 1.8, color: 'var(--text-secondary)' }}>{topic.overview}</p>
@@ -183,9 +183,9 @@ function TopicDetail() {
                                     rel="noopener noreferrer"
                                     className="practice-card-item"
                                 >
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ fontWeight: 600, fontSize: 15 }}>{problem.title}</span>
-                                        <span className={`meta-badge badge-${problem.difficulty === 'Hard' ? 'orange' : problem.difficulty === 'Medium' ? 'blue' : 'green'}`} style={{ fontSize: 11 }}>
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-semibold text-base">{problem.title}</span>
+                                        <span className={`meta-badge badge-${problem.difficulty === 'Hard' ? 'orange' : problem.difficulty === 'Medium' ? 'blue' : 'green'} text-xs`}>
                                             {problem.difficulty}
                                         </span>
                                     </div>
@@ -210,9 +210,9 @@ function TopicDetail() {
                                         <div className="resource-icon-wrapper">
                                             <BookOpen size={20} />
                                         </div>
-                                        <div style={{ flexGrow: 1 }}>
-                                            <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{resource.title}</div>
-                                            <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>{resource.type}</div>
+                                        <div className="flex-grow">
+                                            <div className="font-semibold text-base mb-1">{resource.title}</div>
+                                            <div className="text-sm text-[var(--text-muted)]">{resource.type}</div>
                                         </div>
                                         <ExternalLink size={16} color="var(--text-muted)" />
                                     </div>
@@ -237,8 +237,8 @@ function TopicDetail() {
 
                 {/* Video Tutorials Section */}
                 {topic.videos && topic.videos.length > 0 && (
-                    <div className="glass-card" style={{ marginTop: 32 }}>
-                        <h3 style={{ margin: '0 0 20px 0', fontSize: 18, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--text-main)' }}>
+                    <div className="glass-card mt-8">
+                        <h3 className="flex items-center gap-2 text-lg font-bold text-[var(--text-main)] mb-5">
                             <PlayCircle size={20} className="text-secondary" /> Video Tutorials
                         </h3>
                         <div className="video-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
@@ -272,9 +272,9 @@ function TopicDetail() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div style={{ padding: 12 }}>
-                                        <h4 style={{ margin: '0 0 4px 0', fontSize: 14, fontWeight: 600, color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{video.title}</h4>
-                                        <p style={{ margin: 0, fontSize: 12, color: 'var(--text-muted)' }}>{video.channel || 'YouTube'}</p>
+                                    <div className="p-3">
+                                        <h4 className="m-0 mb-1 text-sm font-semibold text-[var(--text-main)] overflow-hidden text-ellipsis whitespace-nowrap">{video.title}</h4>
+                                        <p className="m-0 text-xs text-[var(--text-muted)]">{video.channel || 'YouTube'}</p>
                                     </div>
                                 </a>
                             ))}

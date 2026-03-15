@@ -78,7 +78,7 @@ const InterviewDashboard = () => {
         {/* Header Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6 bg-gray-900/50 p-8 rounded-3xl border border-gray-800/60 shadow-2xl backdrop-blur-sm">
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
+            <h1 className="text-3xl font-extrabold mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
               Welcome back, {user?.userName || "Candidate"}!
             </h1>
             <p className="text-lg text-gray-400">

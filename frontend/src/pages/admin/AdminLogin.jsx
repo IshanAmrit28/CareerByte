@@ -57,7 +57,7 @@ const AdminLogin = () => {
           <div className="w-20 h-20 bg-gradient-to-br from-red-600 to-red-900 rounded-2xl mx-auto flex items-center justify-center mb-6 shadow-lg shadow-red-900/50 transform rotate-3">
             <Shield size={40} className="text-white" />
           </div>
-          <h2 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-red-600 mb-2">
+          <h2 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-red-400 to-red-600 mb-2">
             Super Admin Portal
           </h2>
           <p className="text-gray-400 font-medium">Restricted Access Login</p>

@@ -71,7 +71,7 @@ const RecruiterDashboard = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">Recruiter Dashboard</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight mb-2">Recruiter Dashboard</h1>
           <p className="text-gray-400 text-lg">Performance overview and high-level hiring metrics.</p>
         </div>
 

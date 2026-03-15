@@ -15,7 +15,7 @@
 }
 
 .stat-value {
-    font-size: 36px;
+    font-size: var(--font-3xl);
     font-weight: 700;
     margin-bottom: 8px;
 }
@@ -46,7 +46,7 @@
     background: var(--bg-secondary);
     color: var(--text-main);
     border-radius: 8px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
@@ -100,8 +100,21 @@
     gap: 16px;
 }
 
+.tracker-header h1 {
+    font-size: var(--font-3xl);
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    color: var(--text-main);
+}
+
+.tracker-header p {
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    margin: 0;
+}
+
 .job-card h3 {
-    font-size: 18px;
+    font-size: var(--font-base);
     font-weight: 700;
     margin: 0 0 4px 0;
     color: var(--text-main);
@@ -113,10 +126,10 @@
     margin: 0;
 }
 
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
+.status-pill {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: var(--font-sm);
     font-weight: 600;
     color: white;
     white-space: nowrap;
@@ -129,11 +142,19 @@
     margin-bottom: 12px;
 }
 
+.job-card .meta {
+    font-size: var(--font-sm);
+    color: var(--text-faint);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .detail-item {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     color: var(--text-muted);
 }
 
@@ -141,7 +162,7 @@
     padding: 12px;
     background: var(--bg-main);
     border-radius: 8px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     margin-bottom: 16px;
     line-height: 1.6;
 }
@@ -163,7 +184,7 @@
     background: var(--bg-main);
     color: var(--text-main);
     border-radius: 8px;
-    font-size: 13px;
+    font-size: var(--font-sm);
     font-weight: 500;
     cursor: pointer;
     display: flex;
@@ -209,8 +230,8 @@
     overflow-y: auto;
 }
 
-.modal-content h2 {
-    font-size: 24px;
+.add-job-modal h2 {
+    font-size: var(--font-xl);
     font-weight: 700;
     margin: 0 0 24px 0;
     color: var(--text-main);
@@ -229,12 +250,13 @@
     gap: 8px;
 }
 
-.form-group label {
-    font-size: 13px;
+.add-job-modal label {
+    display: block;
+    font-size: var(--font-sm);
     font-weight: 600;
     color: var(--text-main);
+    margin-bottom: 8px;
 }
-
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -273,6 +295,10 @@
     
     .stat-value {
         font-size: 32px;
+    }
+
+    .tracker-header h1 {
+        font-size: var(--font-2xl);
     }
 }
 
@@ -323,6 +349,13 @@
     .job-info p {
         font-size: 13px;
     }
+
+    .tracker-header h1 {
+        font-size: var(--font-2xl);
+    }
+    .tracker-header p {
+        font-size: var(--font-sm);
+    }
 }
 
 @media (max-width: 480px) {
@@ -359,5 +392,12 @@
     
     .job-info p {
         font-size: 12px;
+    }
+
+    .add-job-modal label {
+        font-size: var(--font-xs);
+    }
+    .add-job-modal h2 {
+        font-size: var(--font-lg);
     }
 }

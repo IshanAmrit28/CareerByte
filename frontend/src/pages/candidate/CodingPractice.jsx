@@ -210,9 +210,9 @@ function CodingPractice() {
             {!selectedRole ? (
                 /* Role Selection */
                 <div>
-                    <div className="section-header" style={{ marginBottom: 32, textAlign: 'center' }}>
-                        <h2 style={{ fontSize: 24, marginBottom: 12 }}>Select Your Target Role</h2>
-                        <p style={{ color: 'var(--text-muted)', fontSize: 15 }}>
+                    <div className="section-header mb-8 text-center">
+                        <h2 className="text-2xl mb-3">Select Your Target Role</h2>
+                        <p className="text-[var(--text-muted)] text-sm">
                             Choose a role to view curated interview questions
                         </p>
                     </div>
