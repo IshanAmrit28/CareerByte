@@ -52,6 +52,16 @@ const jobSchema = new mongoose.Schema({
     expiresAt: {
         type: Date,
         required: true
+    },
+    enableCompanyAIInterview: {
+        type: Boolean,
+        default: false
+    },
+    aiInterviewTitle: {
+        type: String
+    },
+    aiInterviewDescription: {
+        type: String
     }
 }, { 
     timestamps: true,

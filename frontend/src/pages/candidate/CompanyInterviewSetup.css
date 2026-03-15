@@ -1,0 +1,24 @@
+/* CompanyInterviewSetup.css - Inherits base styles from PracticeSetup.css */
+.job-info-card {
+    transition: all 0.3s ease;
+}
+
+.job-info-card:hover {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Custom styling for company setup */
+.setup-title {
+    background: linear-gradient(135deg, #818cf8, #a78bfa, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.btn-start {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+}
+
+.btn-start:hover:not(:disabled) {
+    box-shadow: 0 15px 35px -5px rgba(124, 58, 237, 0.5);
+}

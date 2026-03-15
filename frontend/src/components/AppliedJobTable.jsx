@@ -2,13 +2,13 @@ import React from 'react'
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
 import { Badge } from './ui/badge'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { ClipboardCheck, Play } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ClipboardCheck, Play, Brain, Clock } from 'lucide-react'
 
 const AppliedJobTable = ({ limit = null, variant = "default" }) => {
     /** @type {{ allAppliedJobs: any[] }} */
     const {allAppliedJobs} = useSelector(/** @param {any} store */ (store)=>store.job);
-    const navigate = useSelector(state => state.auth?.user ? null : null); // Simple trick or just use Link
+    const navigate = useNavigate();
     
     // Slice the jobs if a limit is provided
     const displayJobs = limit ? allAppliedJobs.slice(0, limit) : allAppliedJobs;
@@ -69,11 +69,11 @@ const AppliedJobTable = ({ limit = null, variant = "default" }) => {
                 <TableHeader>
                     <TableRow className="border-slate-800/50">
                         <TableHead className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Date</TableHead>
-                        <TableHead className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Job Role</TableHead>
-                        <TableHead className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Company</TableHead>
-                        <TableHead className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Assessment</TableHead>
-                        <TableHead className="text-gray-500 uppercase text-[10px] font-black tracking-widest">Next Steps</TableHead>
-                        <TableHead className="text-right text-gray-500 uppercase text-[10px] font-black tracking-widest">Status</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Job Role</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Company</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Assessment</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Interview</TableHead>
+                        <TableHead className="text-right text-gray-400 font-semibold">Status</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -117,11 +117,49 @@ const AppliedJobTable = ({ limit = null, variant = "default" }) => {
                                     )}
                                 </TableCell>
                                 <TableCell>
-                                    <div className="text-xs text-gray-500 italic max-w-[150px] truncate">
-                                        {appliedJob?.status === "rejected" ? "Review feedback soon" : 
-                                         appliedJob?.status === "pending" ? "Awaiting HR Review" : 
-                                         "Next interview stage"}
-                                    </div>
+                                    {appliedJob?.interviewStatus === 'eligible' && (
+                                        (appliedJob.interviewExpiresAt && new Date() > new Date(appliedJob.interviewExpiresAt)) ? (
+                                            <Badge variant="outline" className="bg-red-500/10 text-red-400 border-red-200/20 px-3 py-1">
+                                                Expired
+                                            </Badge>
+                                        ) : (
+                                            <button 
+                                                onClick={() => navigate(`/candidate/interview/setup?jobId=${appliedJob.job._id}&applicationId=${appliedJob._id}`)}
+                                                className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-blue-500/25 active:scale-95"
+                                            >
+                                                <Brain size={14} /> Start Interview
+                                            </button>
+                                        )
+                                    )}
+                                    {appliedJob?.interviewStatus === 'in_progress' && (
+                                        (appliedJob.interviewExpiresAt && new Date() > new Date(appliedJob.interviewExpiresAt)) ? (
+                                            <Badge variant="outline" className="bg-red-500/10 text-red-400 border-red-500/20 px-3 py-1">
+                                                Expired
+                                            </Badge>
+                                        ) : (
+                                            <button 
+                                                onClick={() => navigate(`/interview/${appliedJob.interviewReportId}`)}
+                                                className="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1 shadow-lg shadow-yellow-600/20"
+                                            >
+                                                <Clock size={14} /> Resume
+                                            </button>
+                                        )
+                                    )}
+                                    {appliedJob?.interviewStatus === 'completed' && (
+                                        <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20 px-3 py-1">
+                                            Submitted
+                                        </Badge>
+                                    )}
+                                    {appliedJob?.interviewStatus === 'locked' && appliedJob?.assessmentPercentage > 0 && (
+                                        <span className="text-[10px] text-gray-500 italic block leading-tight">
+                                            Did not meet <br/> score threshold
+                                        </span>
+                                    )}
+                                    {(!appliedJob?.interviewStatus || (appliedJob?.interviewStatus === 'locked' && !appliedJob?.assessmentPercentage)) && (
+                                        <Badge variant="outline" className="bg-gray-800 text-gray-500 border-gray-700 px-3 py-1">
+                                            Locked
+                                        </Badge>
+                                    )}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <Badge 

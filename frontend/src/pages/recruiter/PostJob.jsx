@@ -36,6 +36,12 @@ const PostJob = () => {
         questions: []
     });
 
+    const [aiInterviewEnabled, setAiInterviewEnabled] = useState(false);
+    const [aiInterviewData, setAiInterviewData] = useState({
+        title: "",
+        description: ""
+    });
+
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading]= useState(false);
     const navigate = useNavigate();
@@ -124,7 +130,10 @@ const PostJob = () => {
                 assessment: {
                     enabled: assessmentEnabled,
                     ...assessmentData
-                }
+                },
+                enableCompanyAIInterview: aiInterviewEnabled,
+                aiInterviewTitle: aiInterviewData.title,
+                aiInterviewDescription: aiInterviewData.description
             };
             const res = await postJob(payload);
             if(res.data.success){
@@ -353,6 +362,55 @@ const PostJob = () => {
                                             <p className="text-gray-400 text-xs uppercase font-bold">Max Score</p>
                                             <p className="text-2xl font-bold text-white mt-1">{liveStats.maxScore}</p>
                                         </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Company AI Interview Section */}
+                        <div className="md:col-span-2 mt-8 pt-8 border-t border-gray-800">
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h2 className="text-2xl font-bold">Company Technical AI Interview</h2>
+                                    <p className="text-gray-400 text-sm">Automated technical interview for passing candidates.</p>
+                                </div>
+                                <div 
+                                    onClick={() => setAiInterviewEnabled(!aiInterviewEnabled)}
+                                    className={`w-14 h-7 rounded-full p-1 cursor-pointer transition-colors duration-300 ${aiInterviewEnabled ? 'bg-indigo-600' : 'bg-gray-700'}`}
+                                >
+                                    <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-300 ${aiInterviewEnabled ? 'translate-x-7' : 'translate-x-0'}`} />
+                                </div>
+                            </div>
+
+                            {aiInterviewEnabled && (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <Label className="text-gray-300">Interview Title</Label>
+                                            <Input
+                                                type="text"
+                                                placeholder="e.g. Frontend Architecture Interview"
+                                                value={aiInterviewData.title}
+                                                onChange={(e) => setAiInterviewData({...aiInterviewData, title: e.target.value})}
+                                                className="bg-gray-800/50 border-gray-700 text-white focus:border-indigo-500 rounded-xl"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-gray-300">Description / Focus Areas</Label>
+                                            <Input
+                                                type="text"
+                                                placeholder="e.g. React, Redux, Systems Design"
+                                                value={aiInterviewData.description}
+                                                onChange={(e) => setAiInterviewData({...aiInterviewData, description: e.target.value})}
+                                                className="bg-gray-800/50 border-gray-700 text-white focus:border-indigo-500 rounded-xl"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="bg-indigo-600/10 border border-indigo-500/20 p-4 rounded-2xl">
+                                        <p className="text-xs text-indigo-300 leading-relaxed uppercase font-bold mb-1">How it works</p>
+                                        <p className="text-sm text-gray-400 leading-relaxed">
+                                            Candidates meeting the **75% assessment threshold** will unlock this interview. The AI will use your job description, resume, and these focus areas to generate relevant technical questions.
+                                        </p>
                                     </div>
                                 </div>
                             )}

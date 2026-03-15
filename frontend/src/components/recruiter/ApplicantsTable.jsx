@@ -43,10 +43,10 @@ const ApplicantsTable = () => {
                     <TableRow className="border-gray-800 hover:bg-transparent">
                         <TableHead className="text-gray-400 font-semibold">FullName</TableHead>
                         <TableHead className="text-gray-400 font-semibold">Email</TableHead>
-                        <TableHead className="text-gray-400 font-semibold">Contact</TableHead>
-                        <TableHead className="text-gray-400 font-semibold">Resume</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Assessment %</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Interview Score</TableHead>
+                        <TableHead className="text-gray-400 font-semibold">Interview Status</TableHead>
                         <TableHead className="text-gray-400 font-semibold">Status</TableHead>
-                        <TableHead className="text-gray-400 font-semibold">Date</TableHead>
                         <TableHead className="text-gray-400 font-semibold text-right">Action</TableHead>
                         <TableHead className="text-gray-400 font-semibold">Updated By</TableHead>
                     </TableRow>
@@ -57,22 +57,33 @@ const ApplicantsTable = () => {
                             <TableRow key={item._id} className="border-gray-800 hover:bg-gray-800/30 text-gray-300 transition-colors">
                                 <TableCell className="font-medium text-white">{item?.applicant?.fullname}</TableCell>
                                 <TableCell>{item?.applicant?.email}</TableCell>
-                                <TableCell>{item?.applicant?.phoneNumber || "N/A"}</TableCell>
+                                <TableCell>{item?.applicant?.email}</TableCell>
                                 <TableCell>
-                                    {
-                                        item.applicant?.profile?.resume ? (
-                                            <button 
-                                                onClick={() => openResume(item?.applicant?.profile?.resume, item?.applicant?.profile?.resumeOriginalName || "Resume")} 
-                                                className="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors group w-max border-none bg-transparent"
-                                            >
-                                                <FileText className="w-4 h-4" />
-                                                <span className="underline truncate max-w-[150px]">
-                                                    {item?.applicant?.profile?.resumeOriginalName || "View Resume"}
-                                                </span>
-                                                <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            </button>
-                                        ) : <span className="text-gray-500 italic">NA</span>
-                                    }
+                                    {item?.assessmentPercentage ? (
+                                        <span className={`font-bold ${item.assessmentPercentage >= 75 ? 'text-green-400' : 'text-red-400'}`}>
+                                            {Math.round(item.assessmentPercentage)}%
+                                        </span>
+                                    ) : <span className="text-gray-600">--</span>}
+                                </TableCell>
+                                <TableCell>
+                                    {item?.interviewScore ? (
+                                        <span className="font-bold text-indigo-400">{item.interviewScore}</span>
+                                    ) : <span className="text-gray-600">--</span>}
+                                </TableCell>
+                                <TableCell>
+                                    {item?.interviewStatus === 'locked' && (
+                                        <Badge variant="outline" className="bg-red-500/10 text-red-400 border-red-500/20">Locked</Badge>
+                                    )}
+                                    {item?.interviewStatus === 'eligible' && (
+                                        <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">Eligible</Badge>
+                                    )}
+                                    {item?.interviewStatus === 'in_progress' && (
+                                        <Badge variant="outline" className="bg-yellow-500/10 text-yellow-400 border-yellow-500/20">In Progress</Badge>
+                                    )}
+                                    {item?.interviewStatus === 'completed' && (
+                                        <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">Completed</Badge>
+                                    )}
+                                    {!item?.interviewStatus && <span className="text-gray-600">--</span>}
                                 </TableCell>
                                 <TableCell>
                                     {item?.status === "pending" && (

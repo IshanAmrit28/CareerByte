@@ -41,7 +41,10 @@ exports.postJob = async (req, res) => {
             position,
             company: req.user.company || companyId,
             created_by: userId,
-            expiresAt
+            expiresAt,
+            enableCompanyAIInterview: req.body.enableCompanyAIInterview === true || req.body.enableCompanyAIInterview === 'true',
+            aiInterviewTitle: req.body.aiInterviewTitle,
+            aiInterviewDescription: req.body.aiInterviewDescription
         });
 
         // Create Assessment if enabled
@@ -255,25 +258,38 @@ exports.updateJobStatus = async (req, res) => {
             });
         }
 
-        // Find the job and verify it belongs to the recruiter's company
-        const job = await Job.findOne({ _id: jobId, company: req.user.company });
+        // Find the job
+        const job = await Job.findById(jobId);
         if (!job) {
             return res.status(404).json({
-                message: "Job not found or access denied.",
+                message: "Job not found.",
                 success: false
             });
         }
 
-        job.status = status;
-        await job.save();
+        // Verify ownership (either by company or by the user who created it)
+        const isOwner = job.created_by.toString() === req.id.toString() || 
+                        (req.user.company && job.company && job.company.toString() === req.user.company.toString());
+
+        if (!isOwner) {
+            return res.status(403).json({
+                message: "Access denied. You do not have permission to update this job.",
+                success: false
+            });
+        }
+
+        await Job.updateOne({ _id: jobId }, { $set: { status } });
 
         return res.status(200).json({
             message: `Job status updated to ${status}.`,
             success: true
         });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal server error", success: false });
+        console.error("[ERROR] updateJobStatus failed:", error);
+        return res.status(500).json({ 
+            message: error.message || "Internal server error", 
+            success: false 
+        });
     }
 };
 
@@ -304,11 +320,22 @@ exports.deleteJob = async (req, res) => {
     try {
         const jobId = req.params.id;
         
-        // Find the job and verify it belongs to the recruiter's company
-        const job = await Job.findOne({ _id: jobId, company: req.user.company });
+        // Find the job
+        const job = await Job.findById(jobId);
         if (!job) {
             return res.status(404).json({
-                message: "Job not found or access denied.",
+                message: "Job not found.",
+                success: false
+            });
+        }
+
+        // Verify ownership
+        const isOwner = job.created_by.toString() === req.id.toString() || 
+                        (req.user.company && job.company && job.company.toString() === req.user.company.toString());
+
+        if (!isOwner) {
+            return res.status(403).json({
+                message: "Access denied. You do not have permission to delete this job.",
                 success: false
             });
         }
@@ -329,7 +356,10 @@ exports.deleteJob = async (req, res) => {
             success: true
         });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Internal server error", success: false });
+        console.error("[ERROR] deleteJob failed:", error);
+        return res.status(500).json({ 
+            message: error.message || "Internal server error", 
+            success: false 
+        });
     }
 };

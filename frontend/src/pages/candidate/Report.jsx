@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchReport } from "../../services/interviewService";
+import { useAuth } from "../../context/AuthContext";
 
 import {
   Loader2,
@@ -11,9 +12,11 @@ import {
   CheckCircle,
   XCircle,
   Briefcase,
+  X,
 } from "lucide-react";
 
 const Report = () => {
+  const { user } = useAuth();
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -99,15 +102,42 @@ const Report = () => {
     );
   }
 
-  if (!reportData || !reportData.reportStructure) {
+  const rs = reportData.reportStructure;
+
+  // Restricted view for company interviews (Candidates)
+  if (reportData.isRestricted) {
     return (
-      <div className="min-h-screen text-white flex items-center justify-center bg-gray-900 min-w-[1280px]">
-        No complete report data found.
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-6 min-w-[1280px]">
+        <div className="max-w-2xl w-full bg-gray-800 border border-indigo-500/20 rounded-3xl p-12 text-center shadow-2xl backdrop-blur-md relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500" />
+          <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-8 border border-green-500/20">
+            <CheckCircle size={40} className="text-green-400" />
+          </div>
+          <h1 className="text-4xl font-black text-white mb-4">Interview Submitted!</h1>
+          <p className="text-gray-400 text-lg leading-relaxed mb-8">
+            Your technical interview for <span className="text-indigo-400 font-bold">{reportData.role || "this position"}</span> has been successfully captured. 
+            Recruiters will review your performance alongside your application.
+          </p>
+          <div className="p-6 bg-indigo-600/5 rounded-2xl border border-indigo-500/10 mb-8 inline-block text-left">
+            <div className="flex items-center gap-3 text-indigo-300 font-bold uppercase text-xs mb-1">
+              <AlertCircle size={14} /> Next Steps
+            </div>
+            <p className="text-sm text-gray-400">
+              You will be notified via email or dashboard once the status of your application is updated.
+            </p>
+          </div>
+          <br/>
+          <button
+            onClick={() => navigate("/candidate/applied-jobs")}
+            className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-indigo-600/20"
+          >
+            Back to Applied Jobs
+          </button>
+        </div>
       </div>
     );
   }
 
-  const rs = reportData.reportStructure;
   const allQuestions = Object.keys(rs)
     .filter((key) => Array.isArray(rs[key]))
     .flatMap((key) => rs[key].map((q) => ({ ...q, category: key })));
@@ -129,12 +159,23 @@ const Report = () => {
             </h1>
             {/* <p className="text-gray-400 mt-1">Report ID: {reportId}</p> */}
           </div>
-          <button
-            onClick={() => navigate("/candidate/practice")}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition"
-          >
-            Start New Practice
-          </button>
+          {user?.userType === 'candidate' && (
+            <button
+              onClick={() => navigate("/candidate/practice")}
+              className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold transition"
+            >
+              Start New Practice
+            </button>
+          )}
+          {user?.userType !== 'candidate' && (
+            <button
+              onClick={() => navigate(-1)}
+              className="p-3 hover:bg-gray-800 rounded-xl text-gray-400 transition-all border border-gray-800 hover:text-white group"
+              title="Back to Results"
+            >
+              <X size={28} className="group-hover:rotate-90 transition-transform duration-300" />
+            </button>
+          )}
         </div>
 
         {/* Score Overview Cards */}

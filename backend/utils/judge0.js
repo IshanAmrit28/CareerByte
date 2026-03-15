@@ -1,5 +1,5 @@
 const axios = require("axios");
-const JUDGE0_URL = (process.env.JUDGE0_URL).trim().replace(/\/$/, "");
+const JUDGE0_URL = (process.env.JUDGE0_URL || "http://localhost:2358").trim().replace(/\/$/, "");
 
 
 const LANGUAGE_MAP = {
@@ -47,7 +47,7 @@ const executeBatch = async (submissions) => {
             redirect_stderr_to_stdout: false
         }));
 
-        const judge0Url = (process.env.JUDGE0_URL).trim().replace(/\/$/, "");
+        const judge0Url = (process.env.JUDGE0_URL || JUDGE0_URL).trim().replace(/\/$/, "");
 
         // 1. Create batch submissions
         const createResponse = await axios.post(`${judge0Url}/submissions/batch?base64_encoded=true`, {

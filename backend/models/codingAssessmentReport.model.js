@@ -18,8 +18,10 @@ const codingAssessmentReportSchema = new mongoose.Schema({
         },
         code: String,
         language: String,
-        score: Number, // Number of test cases passed
-        totalTestCases: Number
+        score: Number, // Number of test cases passed (RAW)
+        totalTestCases: Number, // Total test cases (RAW)
+        weightedScore: Number,
+        weightedTotal: Number
     }],
     totalScore: {
         type: Number,

@@ -396,8 +396,27 @@ exports.getRecruiterStats = async (req, res) => {
         const totalApplicants = await Application.countDocuments({ job: { $in: jobIds } });
 
         // 3. Fetch Assessment Stats
-        const activeAssessmentsCount = await Assessment.countDocuments({ recruiter: recruiterId, visibility: 'active' });
-        const closedAssessmentsCount = await Assessment.countDocuments({ recruiter: recruiterId, visibility: 'closed' });
+        const now = new Date();
+        const activeAssessmentsCount = await Assessment.countDocuments({ 
+            recruiter: recruiterId, 
+            visibility: 'active',
+            $or: [
+                { endTime: { $gt: now } },
+                { endTime: { $exists: false } },
+                { endTime: null }
+            ]
+        });
+        
+        const closedAssessmentsCount = await Assessment.countDocuments({ 
+            recruiter: recruiterId, 
+            $or: [
+                { visibility: 'closed' },
+                { 
+                    visibility: 'active', 
+                    endTime: { $lt: now } 
+                }
+            ]
+        });
 
         // 4. Candidates who attempted assessments
         const recruiterAssessments = await Assessment.find({ recruiter: recruiterId }).select('_id');

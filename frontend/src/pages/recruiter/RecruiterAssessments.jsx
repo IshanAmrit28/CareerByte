@@ -118,15 +118,21 @@ const RecruiterAssessments = () => {
 
                             <div className="flex items-center gap-6">
                                 <div className="text-right">
-                                    <span className={`text-xs px-3 py-1 rounded-full ${
-                                        assessment.visibility === 'active' ? 'bg-green-500/10 text-green-400' :
-                                        assessment.visibility === 'closed' ? 'bg-red-500/10 text-red-400' :
-                                        'bg-yellow-500/10 text-yellow-400'
-                                    }`}>
-                                        {assessment.visibility.toUpperCase()}
-                                    </span>
+                                    {assessment.endTime && new Date(assessment.endTime) < new Date() ? (
+                                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-500 uppercase tracking-widest font-black border border-red-500/20">
+                                            Ended
+                                        </span>
+                                    ) : (
+                                        <span className={`text-[10px] px-2 py-0.5 rounded-full uppercase tracking-widest font-black border ${
+                                            assessment.visibility === 'active' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+                                            assessment.visibility === 'closed' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
+                                            'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                                        }`}>
+                                            {assessment.visibility}
+                                        </span>
+                                    )}
                                     {assessment.endTime && (
-                                        <p className="text-xs text-gray-500 mt-1">Ends: {new Date(assessment.endTime).toLocaleString()}</p>
+                                        <p className="text-[10px] text-gray-500 mt-1 font-medium opacity-60">Ends: {new Date(assessment.endTime).toLocaleString()}</p>
                                     )}
                                 </div>
                                 

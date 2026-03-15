@@ -21,6 +21,33 @@ const applicationSchema = new mongoose.Schema({
     updatedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    assessmentScore: {
+        type: Number,
+        default: 0
+    },
+    assessmentPercentage: {
+        type: Number,
+        default: 0
+    },
+    interviewStatus: {
+        type: String,
+        enum: ['locked', 'eligible', 'in_progress', 'completed'],
+        default: 'locked'
+    },
+    interviewScore: {
+        type: Number,
+        default: 0
+    },
+    interviewReportId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Report'
+    },
+    interviewStartedAt: {
+        type: Date
+    },
+    interviewExpiresAt: {
+        type: Date
     }
 }, { timestamps: true });
 

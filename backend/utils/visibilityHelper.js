@@ -46,7 +46,7 @@ const canUserAccessProblem = async (problem, user) => {
     if (problem.visibilityStatus === 'private') {
         // Find if this problem belongs to an assessment the user is allowed to take
         const assessment = await Assessment.findOne({
-            questions: problem._id,
+            "questions.questionId": problem._id,
             startTime: { $lte: now },
             endTime: { $gte: now },
             visibility: 'active'

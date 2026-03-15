@@ -7,7 +7,8 @@ const CandidateLayout = () => {
   const hideNavbar = [
     "/practice/",
     "/solve/",
-    "/interview"
+    "/interview",
+    "/assessment/"
   ].some(path => location.pathname.includes(path));
 
   return (

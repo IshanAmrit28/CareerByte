@@ -100,10 +100,6 @@ const AdminJobsTable = () => {
                                         <Popover>
                                             <PopoverTrigger><MoreHorizontal className="text-gray-400 hover:text-white transition-colors" /></PopoverTrigger>
                                             <PopoverContent className="w-40 bg-gray-900 border-gray-800 text-gray-200 shadow-xl">
-                                                    <div onClick={()=> navigate(`/recruiter/jobs/${job._id}/applicants`)} className='flex items-center w-full gap-2 cursor-pointer mt-1 hover:bg-gray-800 p-2 rounded-md transition-colors'>
-                                                        <Eye className='w-4 text-indigo-400'/>
-                                                        <span>Applicants</span>
-                                                    </div>
                                                     <div onClick={() => statusHandler(job._id, job.status || 'active')} className='flex items-center w-full gap-2 cursor-pointer mt-1 hover:bg-gray-800 p-2 rounded-md transition-colors'>
                                                         {job.status === 'inactive' ? (
                                                             <>

@@ -7,11 +7,10 @@ const User = require("../models/user");
 // ✅ Import the new evaluateAnswers function
 // ✅ Import the new evaluateAnswers function
 const { processResume, evaluateAnswers, generateInterviewPrompt } = require("../utils/aiProcessor");
-
-// 🟢 Start Interview (Unchanged from previous step)
+// 🟢 Start Interview (Refactored to handle Company Interviews)
 exports.startInterview = async (req, res) => {
   try {
-    const { role, jobDescription } = req.body;
+    const { role, jobDescription, applicationId, isCompanyInterview } = req.body;
     const candidateId = req.user._id.toString();
     const resumeFile = req.file;
 
@@ -19,6 +18,51 @@ exports.startInterview = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     if (!resumeFile)
       return res.status(400).json({ message: "Resume file is required" });
+
+    let finalRole = role;
+    let finalJobDescription = jobDescription;
+    let jobId = null;
+
+    const Application = require("../models/application");
+    const Job = require("../models/job");
+
+    if (isCompanyInterview) {
+      if (!applicationId) {
+        return res.status(400).json({ message: "applicationId is required for company interviews" });
+      }
+      
+      const application = await Application.findById(applicationId).populate('job');
+      if (!application) {
+        return res.status(404).json({ message: "Application not found" });
+      }
+
+      // Check eligibility and session status
+      if (application.interviewStatus === "completed") {
+        return res.status(400).json({ message: "Interview already completed" });
+      }
+      if (application.interviewStatus === "in_progress") {
+        // Allow resuming if not expired
+        if (application.interviewExpiresAt && new Date() > application.interviewExpiresAt) {
+            return res.status(403).json({ message: "The window for this company technical interview has expired" });
+        }
+        return res.status(400).json({ message: "Interview already in progress. Please resume existing session." });
+      }
+      if (application.interviewStatus !== "eligible") {
+        return res.status(403).json({ message: "Candidate not eligible for this company interview" });
+      }
+      if (application.interviewExpiresAt && new Date() > application.interviewExpiresAt) {
+        return res.status(403).json({ message: "The window for this company technical interview has expired" });
+      }
+
+      jobId = application.job._id;
+      finalRole = application.job.title;
+      finalJobDescription = application.job.description;
+
+      // Update application status
+      application.interviewStatus = "in_progress";
+      application.interviewStartedAt = new Date();
+      await application.save();
+    }
 
     const fileBuffer = resumeFile.buffer; // --- 1. Fetch DB questions and AI analysis in parallel ---
 
@@ -36,7 +80,11 @@ exports.startInterview = async (req, res) => {
       getRandom("ALGORITHM", 2),
       getRandom("SQL", 2),
       getRandom("HR", 5),
-      processResume(fileBuffer, jobDescription, role),
+      processResume(fileBuffer, finalJobDescription, finalRole, isCompanyInterview ? {
+        jobTitle: finalRole,
+        jobDescription: finalJobDescription,
+        interviewType: "company"
+      } : null),
     ]); // --- 2. Build the Report Structure for the DATABASE ---
 
     // Define standard HR fallback if DB is empty
@@ -102,12 +150,19 @@ exports.startInterview = async (req, res) => {
 
     const report = await Report.create({
       candidateId,
-      role,
-      jobDescription,
+      jobId,
+      applicationId,
+      isCompanyInterview: !!isCompanyInterview,
+      role: finalRole,
+      jobDescription: finalJobDescription,
       resume: "stored_in_memory", // Save the path to the resume
       reportStructure: dbReportStructure,
     }); 
     
+    if (isCompanyInterview && applicationId) {
+      await Application.findByIdAndUpdate(applicationId, { interviewReportId: report._id });
+    }
+
     // --- 4. Build the Report Structure for the CLIENT ---
 
     const clientReportStructure = {
@@ -187,6 +242,15 @@ exports.endInterview = async (req, res) => {
 
     const report = await Report.findById(reportId);
     if (!report) return res.status(404).json({ message: "Report not found" });
+
+    // Session status check for company interviews
+    if (report.isCompanyInterview && report.applicationId) {
+        const Application = require("../models/application");
+        const application = await Application.findById(report.applicationId);
+        if (application && application.interviewStatus !== 'in_progress') {
+            return res.status(400).json({ message: "Interview session is not in progress or already completed" });
+        }
+    }
 
     // --- 1. Save answers immediately as a precaution ---
     const updateCategoryAnswers = (dbCategory, clientCategory) => {
@@ -292,7 +356,16 @@ const evaluateReport = async (reportId, candidateId) => {
     report.markModified("reportStructure");
     await report.save();
 
-    // Update User Rating
+    // Update Company Application if linked
+    if (report.isCompanyInterview && report.applicationId) {
+      const Application = require("../models/application");
+      await Application.findByIdAndUpdate(report.applicationId, {
+        interviewScore: aiEvaluation.overallScore,
+        interviewStatus: 'completed'
+      });
+    }
+
+    // Update User Rating (for mock interviews mostly, but keeping it)
     let delta = (aiEvaluation.overallScore - 60) * 0.5;
     if (report.reportStructure?.ResumeScore) {
        delta += (report.reportStructure.ResumeScore - 50) / 10;
@@ -348,6 +421,30 @@ exports.viewReport = async (req, res) => {
     const { reportId } = req.params;
     const report = await Report.findById(reportId);
     if (!report) return res.status(404).json({ message: "Report not found" });
+
+    // --- Strict Authorization ---
+    if (report.isCompanyInterview) {
+      if (req.user.userType === 'candidate') {
+        // Candidates only see submission success, not the report details
+        if (report.candidateId.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ message: "Access denied" });
+        }
+        return res.json({
+          reportId: report._id,
+          candidateId: report.candidateId,
+          status: report.status,
+          message: "Interview submitted successfully. The recruiter will review your application.",
+          isRestricted: true // Flag for frontend to show simple success view
+        });
+      } else if (req.user.userType === 'recruiter') {
+        // Recruiters must own the job associated with the report
+        const Job = require("../models/job");
+        const job = await Job.findById(report.jobId);
+        if (!job || job.created_by.toString() !== req.user._id.toString()) {
+          return res.status(403).json({ message: "Access denied. You can only view reports for your own jobs." });
+        }
+      }
+    }
 
     const populateQuestions = async (qs) => {
       if (!qs || qs.length === 0) return [];
@@ -413,7 +510,7 @@ exports.getUserReports = async (req, res) => {
   try {
     const candidateId = req.user._id;
     // Fetch all reports for the user, sort by most recent
-    const reports = await Report.find({ candidateId }).sort({ createdAt: -1 });
+    const reports = await Report.find({ candidateId, isCompanyInterview: false }).sort({ createdAt: -1 });
     
     // Map to a simplified structure for the dashboard table
     const simplifiedReports = reports.map(report => {

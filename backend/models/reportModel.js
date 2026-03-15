@@ -49,6 +49,24 @@ const reportSchema = new mongoose.Schema(
       default: "pending" 
     },
     retryCount: { type: Number, default: 0 },
+    jobId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Job",
+      index: true
+    },
+    applicationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Application",
+      index: true,
+      required: function() {
+        return this.isCompanyInterview === true;
+      }
+    },
+    isCompanyInterview: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
     reportStructure: reportStructureSchema,
   },
   { timestamps: true }

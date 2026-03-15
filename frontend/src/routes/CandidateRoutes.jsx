@@ -30,6 +30,7 @@ import CandidateAssessmentPortal from "../pages/candidate/CandidateAssessmentPor
 import AssessmentCodingInterface from "../pages/candidate/AssessmentCodingInterface";
 import CandidateContestPortal from "../pages/candidate/CandidateContestPortal";
 import ContestCodingInterface from "../pages/candidate/ContestCodingInterface";
+import CompanyInterviewSetup from "../pages/candidate/CompanyInterviewSetup";
 
 const CandidateRoutes = () => {
   return (
@@ -41,7 +42,7 @@ const CandidateRoutes = () => {
       <Route path="quiz" element={<ProtectedRoute allowedRoles={["candidate"]}><Quiz /></ProtectedRoute>} />
       <Route path="study-plan" element={<ProtectedRoute allowedRoles={["candidate"]}><StudyPlan /></ProtectedRoute>} />
       <Route path="topic/:topicId" element={<ProtectedRoute allowedRoles={["candidate"]}><TopicDetail /></ProtectedRoute>} />
-      <Route path="report/:reportId" element={<ProtectedRoute allowedRoles={["candidate"]}><Report /></ProtectedRoute>} />
+      <Route path="report/:reportId" element={<ProtectedRoute allowedRoles={["candidate", "recruiter", "admin"]}><Report /></ProtectedRoute>} />
       <Route path="resume-analyzer" element={<ProtectedRoute allowedRoles={["candidate"]}><ResumeAnalyzer /></ProtectedRoute>} />
       <Route path="job-tracker" element={<ProtectedRoute allowedRoles={["candidate"]}><JobTracker /></ProtectedRoute>} />
       <Route path="video-feed" element={<ProtectedRoute allowedRoles={["candidate"]}><VideoFeed /></ProtectedRoute>} />
@@ -58,6 +59,7 @@ const CandidateRoutes = () => {
         <Route path="practice" element={<ProtectedRoute allowedRoles={["candidate"]}><InterviewDashboard /></ProtectedRoute>} />
         <Route path="practice-setup" element={<ProtectedRoute allowedRoles={["candidate"]}><PracticeSetup /></ProtectedRoute>} />
         <Route path="interview" element={<ProtectedRoute allowedRoles={["candidate"]}><InterviewRoom /></ProtectedRoute>} />
+        <Route path="interview/setup" element={<ProtectedRoute allowedRoles={["candidate"]}><CompanyInterviewSetup /></ProtectedRoute>} />
         <Route path="coding-practice" element={<ProtectedRoute allowedRoles={["candidate"]}><CodingPractice /></ProtectedRoute>} />
         <Route path="coding-problems" element={<ProtectedRoute allowedRoles={["candidate"]}><CodingProblems /></ProtectedRoute>} />
         <Route path="practice/:problemId" element={<ProtectedRoute allowedRoles={["candidate"]}><CodingInterface /></ProtectedRoute>} />

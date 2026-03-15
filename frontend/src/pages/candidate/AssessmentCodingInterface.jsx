@@ -68,32 +68,47 @@ const AssessmentCodingInterface = () => {
     // Load problem
     useEffect(() => {
         const fetchProblem = async () => {
+            if (!assessment || !problemId) return;
+            
             setLoading(true);
             try {
-                const data = await codingService.getProblemById(problemId);
+                // The problemId from the URL is actually the subdocument _id in assessment.questions
+                const assessmentQuestion = assessment.questions.find(q => q._id?.toString() === problemId?.toString());
+                const actualProblemId = assessmentQuestion ? (assessmentQuestion.questionId._id || assessmentQuestion.questionId) : problemId;
+                
+                const data = await codingService.getProblemById(actualProblemId);
                 setProblem(data.problem);
             } catch (err) {
+                console.error("Fetch problem error:", err);
                 toast.error("Failed to load problem");
             } finally {
                 setLoading(false);
             }
         };
         fetchProblem();
-    }, [problemId]);
+    }, [problemId, assessment]);
 
-    // Update code template when language changes
+    // Update code template when language changes or problem loads
     useEffect(() => {
-        // Only update if we have the problem object AND it matches the current URL ID
-        if (problem && problem._id === problemId) {
-            const savedCode = localStorage.getItem(`assessment_${assessmentId}_code_${problemId}_${language}`);
-            const templateCode = problem.templates?.[language] || defaultTemplates[language];
-            setCode(savedCode || templateCode);
+        // Find the specific question ID (subdocument _id) for this problem in the assessment
+        const assessmentQuestion = assessment?.questions?.find(q => 
+            (q.questionId?._id?.toString() || q.questionId?.toString()) === problem?._id?.toString()
+        );
+        const assessmentQId = assessmentQuestion?._id?.toString();
+
+        if (problem && assessmentId && assessmentQId) {
+            const savedCode = localStorage.getItem(`assessment_${assessmentId}_code_${assessmentQId}_${language}`);
+            if (savedCode) {
+                setCode(savedCode);
+            } else {
+                const templateCode = problem.templates?.[language] || defaultTemplates[language];
+                setCode(templateCode);
+            }
         }
-    }, [language, problem, assessmentId, problemId]);
+    }, [language, problem, assessmentId, assessment]);
     
-    // Reset state when problem changes to prevent leakage
+    // Reset state when problem changes to prevent leakage (but don't clear code yet, let the loader handle it)
     useEffect(() => {
-        setCode('');
         setResults(null);
         setError(null);
     }, [problemId]);
@@ -161,7 +176,7 @@ const AssessmentCodingInterface = () => {
                         } else {
                             // Try others
                             for (const lang of languages) {
-                                const c = localStorage.getItem(`assessment_${assessmentId}_code_${q._id}_${lang}`);
+                                const c = localStorage.getItem(`assessment_${assessmentId}_code_${probId}_${lang}`);
                                 if (c) {
                                     foundCode = c;
                                     foundLang = lang;
@@ -171,8 +186,8 @@ const AssessmentCodingInterface = () => {
                         }
 
                         if (foundCode) {
-                            savedSubmissions[q._id] = {
-                                problemId: q._id,
+                            savedSubmissions[probId] = {
+                                problemId: probId,
                                 code: foundCode,
                                 language: foundLang,
                                 passedCases: 0,
@@ -200,9 +215,10 @@ const AssessmentCodingInterface = () => {
                 localStorage.removeItem(`assessment_${assessmentId}_submissions`);
                 if (assessment?.questions) {
                     assessment.questions.forEach(q => {
+                        const probId = q.questionId?._id || q.questionId;
                         const languages = ['cpp', 'java', 'python', 'javascript', 'kotlin', 'php', 'perl', 'golang', 'c'];
                         languages.forEach(lang => {
-                            localStorage.removeItem(`assessment_${assessmentId}_code_${q._id}_${lang}`);
+                            localStorage.removeItem(`assessment_${assessmentId}_code_${probId}_${lang}`);
                         });
                     });
                 }
@@ -222,11 +238,12 @@ const AssessmentCodingInterface = () => {
     };
 
     const handleRun = async () => {
+        if (!problem) return;
         setIsRunning(true);
         setResults(null);
         setError(null);
         try {
-            const data = await codingService.runCode(problemId, language, code);
+            const data = await codingService.runCode(problem._id, language, code);
             setResults(data.results);
             if (data.results.every(r => r.status === 'Accepted')) {
                 toast.success("Sample test cases passed!");
@@ -241,12 +258,13 @@ const AssessmentCodingInterface = () => {
     };
 
     const handleSubmit = async () => {
+        if (!problem) return;
         setIsRunning(true);
         setResults(null);
         setError(null);
         try {
             // Use submitCode to run all test cases (including hidden/private ones)
-            const data = await codingService.submitCode(problemId, language, code);
+            const data = await codingService.submitCode(problem._id, language, code);
             
             // Filter and display results
             const submissionResults = data.submission.results;
@@ -254,23 +272,48 @@ const AssessmentCodingInterface = () => {
             
             const passedCount = submissionResults.filter(r => r.status === 'Accepted').length;
             const totalCount = submissionResults.length;
+            
+            setResults(submissionResults);
+
+            // Calculate weighted points for the toast
+            const diff = (problem.difficulty || 'Medium').toLowerCase();
+            const weights = { 'easy': 1, 'medium': 2, 'hard': 3 };
+            const weight = weights[diff] || 1;
+            const weightedPoints = passedCount * weight;
 
             if (passedCount === totalCount) {
-                toast.success(`Solution Submitted: All ${totalCount} test cases passed!`);
+                toast.success(`Success! All test cases passed. You earned ${weightedPoints} points.`);
             } else {
-                toast(`Solution Submitted: ${passedCount}/${totalCount} test cases passed.`, { icon: '⚠️' });
+                toast(`${passedCount}/${totalCount} cases passed. (${weightedPoints} points earned)`, {
+                    icon: 'ℹ️',
+                });
             }
 
             // Save individual submission to local storage for final collection
             const submissions = JSON.parse(localStorage.getItem(`assessment_${assessmentId}_submissions`) || '{}');
-            submissions[problemId] = {
-                problemId,
+            submissions[problem._id] = {
+                problemId: problem._id,
                 code,
                 language,
                 passedCases: passedCount,
                 totalCases: totalCount
             };
             localStorage.setItem(`assessment_${assessmentId}_submissions`, JSON.stringify(submissions));
+
+            // ✅ PERSIST INDIVIDUAL PROGRESS TO DB
+            try {
+                await api.post('/assessments/submit-problem', {
+                    assessmentId,
+                    problemId: problem._id,
+                    code,
+                    language,
+                    score: passedCount,
+                    totalTestCases: totalCount
+                });
+            } catch (pErr) {
+                console.error("Failed to persist partial progress:", pErr);
+                // Non-blocking for the user
+            }
 
         } catch (err) {
             setError(err.message || "Submission failed");
@@ -281,7 +324,8 @@ const AssessmentCodingInterface = () => {
     };
 
     const handleNext = () => {
-        const currentIndex = assessment.questions.findIndex(q => q._id === problemId);
+        if (!assessment || !problemId) return;
+        const currentIndex = assessment.questions.findIndex(q => q._id?.toString() === problemId?.toString());
         if (currentIndex < assessment.questions.length - 1) {
             const nextProblemId = assessment.questions[currentIndex + 1]._id;
             navigate(`/candidate/assessment/${assessmentId}/solve/${nextProblemId}`);

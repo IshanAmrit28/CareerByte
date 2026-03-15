@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
 import DesktopOnlyRoute from "../components/DesktopOnlyRoute";
+import Report from "../pages/candidate/Report";
 
 import RecruiterDashboard from "../pages/recruiter/RecruiterDashboard";
 import AdminJobs from "../pages/recruiter/RecruiterJobs";
@@ -26,6 +27,7 @@ const RecruiterRoutes = () => {
         <Route path="jobs/:id/applicants" element={<ProtectedRoute allowedRoles={["recruiter"]}><Applicants /></ProtectedRoute>} />
         <Route path="assessments" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterAssessments /></ProtectedRoute>} />
         <Route path="assessments/:assessmentId/reports" element={<ProtectedRoute allowedRoles={["recruiter"]}><AssessmentReports /></ProtectedRoute>} />
+        <Route path="report/:reportId" element={<ProtectedRoute allowedRoles={["recruiter", "admin"]}><Report /></ProtectedRoute>} />
         <Route path="questions" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterQuestions /></ProtectedRoute>} />
       </Route>
     </Routes>
