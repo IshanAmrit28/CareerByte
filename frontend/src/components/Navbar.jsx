@@ -52,9 +52,12 @@ function Navbar() {
     <header className="minimal-navbar">
       <div className="navbar-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Brand Logo - Text Only */}
-        <Link to="/" className="navbar-brand">
-          CareerByte
+        {/* Brand Logo - With Image */}
+        <Link to="/" className="navbar-brand flex items-center gap-2">
+          <div className="w-10 h-10 flex items-center justify-center">
+            <img src="/logo.png" alt="CareerByte Logo" className="max-h-full max-w-full object-contain" />
+          </div>
+          <span>CareerByte</span>
         </Link>
 
         {/* Mobile menu toggle */}
