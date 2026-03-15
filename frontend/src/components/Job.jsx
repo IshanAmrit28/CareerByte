@@ -5,11 +5,24 @@ import { Avatar, AvatarImage } from './ui/avatar'
 import { useSelector } from 'react-redux'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { getViewedJobs, markJobAsViewed } from '../utils/storage'
 
 const Job = ({ job, isSelected, onClick }) => {
     const navigate = useNavigate();
     const { allAppliedJobs } = useSelector(store => store.job);
     const isApplied = allAppliedJobs?.some(application => application.job?._id === job?._id);
+    const [isViewed, setIsViewed] = useState(false);
+
+    useEffect(() => {
+        const checkViewed = () => {
+            const viewed = getViewedJobs();
+            setIsViewed(viewed.includes(job?.id || job?._id));
+        };
+        checkViewed();
+        window.addEventListener('viewedJobsUpdated', checkViewed);
+        return () => window.removeEventListener('viewedJobsUpdated', checkViewed);
+    }, [job?.id, job?._id]);
 
     const daysAgoFunction = (mongodbTime) => {
         const createdAt = new Date(mongodbTime);
@@ -21,9 +34,12 @@ const Job = ({ job, isSelected, onClick }) => {
     return (
         <div 
             onClick={(e) => {
-                if (job?.isExternal && job?.applyUrl) {
-                    window.open(job.applyUrl, '_blank');
-                    return;
+                if (job?.isExternal) {
+                    markJobAsViewed(job?.id || job?._id);
+                    if (job?.applyUrl) {
+                        window.open(job.applyUrl, '_blank');
+                        return;
+                    }
                 }
                 if (onClick) onClick(e);
             }}
@@ -33,9 +49,14 @@ const Job = ({ job, isSelected, onClick }) => {
                 <Avatar className="h-10 w-10 border border-slate-700 rounded-lg">
                     <AvatarImage src={job?.company?.logo} />
                 </Avatar>
-                <p className='text-[9px] whitespace-nowrap text-slate-500 bg-slate-800/50 px-2 py-0.5 rounded-full'>
-                    {job?.createdAt ? (daysAgoFunction(job?.createdAt) === 0 ? "Today" : `${daysAgoFunction(job?.createdAt)}d ago`) : "N/A"}
-                </p>
+                <div className='flex items-center gap-1.5'>
+                    {isViewed && job?.isExternal && (
+                        <Badge className="text-[9px] bg-slate-800/50 text-slate-400 border-slate-700 px-2 py-0.5 rounded-full">Viewed</Badge>
+                    )}
+                    <p className='text-[9px] whitespace-nowrap text-slate-500 bg-slate-800/50 px-2 py-0.5 rounded-full'>
+                        {job?.createdAt ? (daysAgoFunction(job?.createdAt) === 0 ? "Today" : `${daysAgoFunction(job?.createdAt)}d ago`) : "N/A"}
+                    </p>
+                </div>
             </div>
 
             <div className='mb-3 space-y-0.5'>
@@ -78,6 +99,7 @@ const Job = ({ job, isSelected, onClick }) => {
                             className="flex-1 h-8 text-[11px] bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20 font-semibold"
                             onClick={(e) => {
                                 e.stopPropagation();
+                                markJobAsViewed(job?.id || job?._id);
                                 window.open(job?.applyUrl, '_blank');
                             }}
                         >
