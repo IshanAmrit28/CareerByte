@@ -1,0 +1,15 @@
+﻿app.js(3,22): error TS2307: Cannot find module 'path' or its corresponding type declarations.
+app.js(31,14): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+app.js(32,19): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+controllers/authController.js(11,5): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+controllers/reportController.js(3,20): error TS2307: Cannot find module 'fs' or its corresponding type declarations.
+controllers/reportController.js(253,33): error TS2339: Property '_doc' does not exist on type '{ CN: DocumentArray<{ aiScore: number; question?: string; questionId?: any; }, Subdocument<ObjectId, any, { aiScore: number; question?: string; questionId?: any; }> & { aiScore: number; question?: string; questionId?: any; }>; ... 9 more ...; hiringChance?: string; }'.
+controllers/reportController.js(259,76): error TS2339: Property 'map' does not exist on type 'DocumentArray<{ aiScore: number; question?: string; questionId?: any; }, Subdocument<ObjectId, any, { aiScore: number; question?: string; questionId?: any; }> & { aiScore: number; question?: string; questionId?: any; }>'.
+middleware/authMiddleware.js(16,41): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+routes/reportRoutes.js(5,22): error TS2307: Cannot find module 'path' or its corresponding type declarations.
+utils/aiProcessor.js(3,20): error TS2307: Cannot find module 'fs' or its corresponding type declarations.
+utils/aiProcessor.js(10,39): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+utils/aiProcessor.js(11,39): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+utils/aiProcessor.js(12,39): error TS2580: Cannot find name 'process'. Do you need to install type definitions for node? Try `npm i --save-dev @types/node`.
+utils/aiProcessor.js(30,27): error TS2351: This expression is not constructable.
+  Type 'typeof import("C:/Users/HP/Desktop/InterView/backend/node_modules/pdf2json/dist/pdfparser")' has no construct signatures.
