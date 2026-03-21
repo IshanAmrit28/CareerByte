@@ -1,4 +1,3 @@
-@@ -0,0 +1,103 @@
 # CareerByte
 
 CareerByte is a comprehensive developer preparation platform designed to bridge the gap between learning and employment. It provides a dual-interface experience for both candidates looking to sharpen their skills and recruiters seeking to streamline their hiring process.
