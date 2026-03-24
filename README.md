@@ -1,4 +1,3 @@
-@@ -0,0 +1,103 @@
 # CareerByte
 
 ![CareerByte Landing](images/Screenshot%202026-03-24%20162559.png)
