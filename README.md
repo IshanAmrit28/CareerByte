@@ -9,21 +9,26 @@ CareerByte is a comprehensive developer preparation platform designed to bridge 
 ### For Candidates
 - **Interactive Dashboard**: Visualize your learning progress, contest performance, and application status.
   <br>![Candidate Dashboard](images/Screenshot%202026-03-24%20165215.png)
-- **Coding Playground**: Solve complex coding problems with a real-time execution environment.
+- **Coding Playground**: Solve complex coding problems with a real-time execution environment (powered by Judge0).
   <br>![Coding Playground](images/Screenshot%202026-03-24%20162449.png)
 - **Interview Simulation**: Practice with mock interview questions and platform-specific assessments.
   <br>![Interview Simulation](images/Screenshot%202026-03-24%20163741.png)
-- **Leaderboard & Contests**: Compete with other developers in timed coding contests and climb the ranks.
+- **Leaderboard & Contests**: Compete with other developers in timed coding contests and climb the ranks with dynamic ratings.
   <br>![Leaderboard](images/Screenshot%202026-03-24%20162633.png)
-- **Job Tracker**: Manage your applications and track your progress in the hiring pipeline.
+- **Job Tracker**: Manage your applications and track your progress in the hiring pipeline from 'Applied' to 'Hired'.
 
 ### For Recruiters
-- **Candidate Analytics**: View detailed reports and performance metrics for applicants.
+- **Candidate Analytics**: View detailed reports and performance metrics for applicants to make data-driven hiring decisions.
   <br>![Recruiter Dashboard](images/Screenshot%202026-03-24%20162314.png)
-- **Job Management**: Create, update, and manage job postings with ease.
-- **Assessment Builder**: Design custom technical assessments to evaluate candidate skills.
+- **Job Management**: Create, update, and manage job postings with specific technical requirements.
+- **Assessment Builder**: Design custom technical assessments to evaluate candidate skills using coding problems or MCQs.
   <br>![Assessment Builder](images/Screenshot%202026-03-24%20161741.png)
-- **Company Profile**: Customize your organization's presence on the platform.
+- **Company Profile**: Customize your organization's presence and establish a professional brand on the platform.
+
+### For Super Admins
+- **Platform Governance**: Oversee all users (Candidates & Recruiters) and verify company profile registrations.
+- **Problem Management**: Create, update, and manage the platform's central repository of coding problems and interview questions.
+- **Contest Orchestration**: Schedule and manage platform-wide contests, monitor performance, and maintain leaderboard integrity.
 
 ---
 
@@ -41,8 +46,10 @@ CareerByte is a comprehensive developer preparation platform designed to bridge 
 - **Database**: MongoDB (Mongoose)
 - **Cache**: Redis (Upstash)
 - **AI Integration**: Google Generative AI (Gemini)
+- **Code Execution**: Judge0 (Dockerized)
 - **Authentication**: Passport.js & JWT
 - **Storage**: AWS S3
+- **Automation**: Cron-based External Job Scraper
 
 ---
 
@@ -50,9 +57,17 @@ CareerByte is a comprehensive developer preparation platform designed to bridge 
 
 ```text
 InterView/
-├── backend/            # Express server, MongoDB models, and API logic
-├── frontend/           # React application, components, and state management
-├── judge0_setup.md     # Guide for setting up the code execution engine
+├── backend/            # Express server
+│   ├── controllers/    # API request handlers
+│   ├── middleware/     # Auth (JWT) & Protection layers
+│   ├── models/         # MongoDB schemas
+│   ├── routes/         # Endpoint definitions
+│   └── utils/          # Cron jobs, cleanups & helpers
+├── frontend/           # React application
+│   ├── src/pages/      # Candidate, Recruiter & Admin interfaces
+│   ├── src/redux/      # State management (Toolkit)
+│   └── src/components/ # Reusable UI components
+├── judge0_setup.md     # Code execution setup guide
 └── README.md           # Project documentation
 ```
 
