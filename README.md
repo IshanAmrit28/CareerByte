@@ -1,22 +1,29 @@
 @@ -0,0 +1,103 @@
 # CareerByte
 
+![CareerByte Landing](images/Screenshot%202026-03-24%20162559.png)
+
 CareerByte is a comprehensive developer preparation platform designed to bridge the gap between learning and employment. It provides a dual-interface experience for both candidates looking to sharpen their skills and recruiters seeking to streamline their hiring process.
 
 ## 🚀 Key Features
 
 ### For Candidates
-- **Coding Playground**: Solve complex coding problems with a real-time execution environment.
-- **AI Resume Analyzer**: Get instant feedback and optimization tips for your resume using Gemini AI.
-- **Interview Simulation**: Practice with mock interview questions and platform-specific assessments.
-- **Job Tracker**: Manage your applications and track your progress in the hiring pipeline.
-- **Leaderboard & Contests**: Compete with other developers in timed coding contests and climb the ranks.
 - **Interactive Dashboard**: Visualize your learning progress, contest performance, and application status.
+  <br>![Candidate Dashboard](images/Screenshot%202026-03-24%20165215.png)
+- **Coding Playground**: Solve complex coding problems with a real-time execution environment.
+  <br>![Coding Playground](images/Screenshot%202026-03-24%20162449.png)
+- **Interview Simulation**: Practice with mock interview questions and platform-specific assessments.
+  <br>![Interview Simulation](images/Screenshot%202026-03-24%20163741.png)
+- **Leaderboard & Contests**: Compete with other developers in timed coding contests and climb the ranks.
+  <br>![Leaderboard](images/Screenshot%202026-03-24%20162633.png)
+- **Job Tracker**: Manage your applications and track your progress in the hiring pipeline.
 
 ### For Recruiters
+- **Candidate Analytics**: View detailed reports and performance metrics for applicants.
+  <br>![Recruiter Dashboard](images/Screenshot%202026-03-24%20162314.png)
 - **Job Management**: Create, update, and manage job postings with ease.
 - **Assessment Builder**: Design custom technical assessments to evaluate candidate skills.
-- **Candidate Analytics**: View detailed reports and performance metrics for applicants.
+  <br>![Assessment Builder](images/Screenshot%202026-03-24%20161741.png)
 - **Company Profile**: Customize your organization's presence on the platform.
 
 ---
