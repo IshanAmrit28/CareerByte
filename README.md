@@ -2,33 +2,76 @@
 
 ![CareerByte Landing](images/Screenshot%202026-03-24%20162559.png)
 
-CareerByte is a comprehensive developer preparation platform designed to bridge the gap between learning and employment. It provides a dual-interface experience for both candidates looking to sharpen their skills and recruiters seeking to streamline their hiring process.
+CareerByte is a comprehensive developer preparation platform designed to bridge the gap between learning and employment. It provides a multi-interface experience tailored for **Candidates**, **Recruiters**, and **Super Admins**.
 
-## 🚀 Key Features
+---
 
-### For Candidates
-- **Interactive Dashboard**: Visualize your learning progress, contest performance, and application status.
-  <br>![Candidate Dashboard](images/Screenshot%202026-03-24%20165215.png)
-- **Coding Playground**: Solve complex coding problems with a real-time execution environment (powered by Judge0).
-  <br>![Coding Playground](images/Screenshot%202026-03-24%20162449.png)
-- **Interview Simulation**: Practice with mock interview questions and platform-specific assessments.
-  <br>![Interview Simulation](images/Screenshot%202026-03-24%20163741.png)
-- **Leaderboard & Contests**: Compete with other developers in timed coding contests and climb the ranks with dynamic ratings.
-  <br>![Leaderboard](images/Screenshot%202026-03-24%20162633.png)
-- **Job Tracker**: Manage your applications and track your progress in the hiring pipeline from 'Applied' to 'Hired'.
+## 🚀 Feature Showcase
 
-### For Recruiters
-- **Candidate Analytics**: View detailed reports and performance metrics for applicants to make data-driven hiring decisions.
-  <br>![Recruiter Dashboard](images/Screenshot%202026-03-24%20162314.png)
-- **Job Management**: Create, update, and manage job postings with specific technical requirements.
-- **Assessment Builder**: Design custom technical assessments to evaluate candidate skills using coding problems or MCQs.
-  <br>![Assessment Builder](images/Screenshot%202026-03-24%20161741.png)
-- **Company Profile**: Customize your organization's presence and establish a professional brand on the platform.
+### 👤 For Candidates
+Empowering developers with tools to learn, practice, and land their dream jobs.
 
-### For Super Admins
-- **Platform Governance**: Oversee all users (Candidates & Recruiters) and verify company profile registrations.
-- **Problem Management**: Create, update, and manage the platform's central repository of coding problems and interview questions.
-- **Contest Orchestration**: Schedule and manage platform-wide contests, monitor performance, and maintain leaderboard integrity.
+*   **Personalized Dashboard & Performance Tracking**
+    Visualize your progress, interview scores, and skill distribution to identify areas for improvement.
+    ![Candidate Profile](images/Screenshot%202026-03-24%20162523.png)
+    ![Performance History](images/Screenshot%202026-03-24%20162531.png)
+
+*   **Interactive Coding Playground**
+    Solve high-impact DSA problems in a secure, real-time development environment.
+    ![Problem List](images/Screenshot%202026-03-24%20162440.png)
+    ![Coding Playground](images/Screenshot%202026-03-24%20162449.png)
+
+*   **AI-Powered Interview Simulation**
+    Practice with an AI interviewer that provides real-time feedback and technical assessments.
+    ![Interview Dashboard](images/Screenshot%202026-03-24%20165215.png)
+    ![Interview Simulation](images/Screenshot%202026-03-24%20163741.png)
+
+*   **Competitive Programming & Leaderboards**
+    Compete in weekly contests and benchmark your skills against a global community.
+    ![Contests](images/Screenshot%202026-03-24%20162503.png)
+    ![Global Leaderboard](images/Screenshot%202026-03-24%20162542.png)
+    ![Detailed Leaderboard](images/Screenshot%202026-03-24%20162633.png)
+
+*   **Job Discovery & Tracking**
+    Discover external job opportunities and manage your application pipeline in one place.
+    ![External Jobs](images/Screenshot%202026-03-24%20162424.png)
+
+---
+
+### 💼 For Recruiters
+Streamlining the hiring process with data-driven insights and automated assessments.
+
+*   **Recruitment Analytics Dashboard**
+    Get a high-level view of your hiring funnel, success rates, and active job posts.
+    ![Recruiter Dashboard](images/Screenshot%202026-03-24%20162314.png)
+
+*   **Assessment & Question Management**
+    Build custom technical assessments using a library of public and private coding problems.
+    ![Assessment Management](images/Screenshot%202026-03-24%20162324.png)
+    ![Private Question Management](images/Screenshot%202026-03-24%20162103.png)
+
+*   **Detailed Candidate Reports**
+    Evaluate candidate performance with granular reports on coding efficiency and interview responses.
+    ![Candidate Reports](images/Screenshot%202026-03-24%20162351.png)
+
+---
+
+### 🛡️ For Super Admins
+Maintaining platform integrity and managing the global ecosystem.
+
+*   **User & Company Governance**
+    Oversee the entire community and verify company registrations to ensure a professional environment.
+    ![User Overview](images/Screenshot%202026-03-24%20161448.png)
+    ![Company Management](images/Screenshot%202026-03-24%20161928.png)
+
+*   **Global Problem Database**
+    Curate and manage the central repository of coding problems available platform-wide.
+    ![Question Database](images/Screenshot%202026-03-24%20161513.png)
+    ![Add Problem](images/Screenshot%202026-03-24%20161531.png)
+
+*   **Contest Orchestration**
+    Schedule and manage global contests to engage the developer community.
+    ![Admin Contests](images/Screenshot%202026-03-24%20161741.png)
 
 ---
 
